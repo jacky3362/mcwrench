@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/mcwrench.jpg" alt="mcwrench — configure and tune any Minecraft server" width="100%">
+<img src="assets/banner.jpg" alt="mcwrench — configure and tune any Minecraft server" width="100%">
 
 Audit configs, kill lag, wire proxies and permissions, pick plugin stacks, bootstrap servers, and
 learn **any** plugin's docs on demand — for **any** server type and **any** plugin.

@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>mcwrench, AI Minecraft server admin</title>
+<meta name="description" content="mcwrench turns your AI assistant into an expert Minecraft server administrator. It audits configs, fixes lag, sets up proxies and permissions, picks plugin stacks, bootstraps servers, and learns any plugin's docs on demand. Works in Claude Code, Claude.ai, Codex, Antigravity, and Gemini CLI.">
+<link rel="canonical" href="https://mcwrench.teddy.bar/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="mcwrench, AI Minecraft server admin">
+<meta property="og:description" content="Configure and tune any Minecraft server, from your AI. 10 skills, 5 AI runtimes, on-demand plugin docs.">
+<meta property="og:url" content="https://mcwrench.teddy.bar/">
+<meta property="og:image" content="https://mcwrench.teddy.bar/assets/banner.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0f1115">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔧</text></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  // dark theme, palette from the mcwrench banner: charcoal, stone-silver, gold/amber.
+  tailwind.config = {
+    corePlugins: { boxShadow: false },
+    theme: { extend: {
+      colors: {
+        base:'#14161b', panel:'#1b1e25', deep:'#0f1115', line:'#2a2e38',
+        gold:{ light:'#f4c95d', DEFAULT:'#e0992e', dark:'#b9741a' },
+        rock:{ light:'#d7dade', DEFAULT:'#9aa0a8', dark:'#6b7079' },
+        crit:'#e85c5c', warn:'#e0992e',
+      },
+      fontFamily: {
+        sans:['Inter','system-ui','sans-serif'], mono:['"JetBrains Mono"','ui-monospace','monospace'],
+        pixel:['MinecraftCraftron','Monocraft','system-ui','sans-serif'],
+        label:['MinecraftCraftron','Monocraft','monospace'],
+      },
+      borderRadius:{ none:'0',DEFAULT:'0',sm:'2px',md:'2px',lg:'2px',xl:'2px' },
+    } }
+  }
+</script>
+<style>
+  @font-face { font-family:'Monocraft'; src:url('https://cdn.jsdelivr.net/gh/IdreesInc/Monocraft@main/dist/Monocraft-ttf/Monocraft.ttf') format('truetype'); font-weight:400 700; font-display:swap; }
+  @font-face { font-family:'MinecraftCraftron'; src:url('fonts/Minecraft.ttf') format('truetype'); font-weight:400 700; font-display:swap; }
+  .pixelgrid { background-image: linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px), linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px); background-size:24px 24px; }
+  .blocks { background-image: repeating-linear-gradient(90deg,#b9741a 0 16px,#e0992e 16px 32px,#f4c95d 32px 48px); }
+  .eyebrow { font-family:'MinecraftCraftron','Monocraft',monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase; }
+  .btn { display:inline-flex; align-items:center; justify-content:center; gap:.5rem; border:3px solid; border-radius:0; font-weight:700; line-height:1; transition:transform .04s, background-color .12s; }
+  .btn:active { transform:translateY(2px); }
+  .btn-gold { background:#e0992e; color:#15110a; border-color:#8a5612; box-shadow: inset 0 3px 0 rgba(255,255,255,.30), inset 0 -3px 0 rgba(0,0,0,.25); }
+  .btn-gold:hover { background:#cf8a26; }
+  .btn-ghost { background:transparent; color:#d7dade; border-color:#3a3f4b; }
+  .btn-ghost:hover { background:#1b1e25; border-color:#525868; }
+  .card { position:relative; border:3px solid #2a2e38; background:#1b1e25; transition:border-color .12s; }
+  .card:hover { border-color:#e0992e; }
+  .card::before { content:""; position:absolute; top:-3px; left:-3px; width:10px; height:10px; background:#e0992e; opacity:0; transition:opacity .12s; }
+  .card:hover::before { opacity:1; }
+  .navlink.active { color:#f4c95d; }
+  details > summary { list-style:none; cursor:pointer; }
+  details > summary::-webkit-details-marker { display:none; }
+  ::selection { background:#f4c95d; color:#15110a; }
+</style>
+</head>
+
+<body class="font-sans text-rock-light bg-base antialiased">
+
+<!-- NAV -->
+<header class="sticky top-0 z-40 border-b-[3px] border-line bg-deep/95 backdrop-blur-sm">
+  <nav class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-5">
+    <a href="#top" class="flex items-center"><img src="assets/mcwrench.png" alt="mcwrench" class="h-6 w-auto" width="160" height="32"></a>
+    <div class="hidden items-center gap-7 text-sm font-semibold text-rock md:flex">
+      <a href="#why" class="navlink hover:text-gold-light">Why</a>
+      <a href="#skills" class="navlink hover:text-gold-light">Skills</a>
+      <a href="#example" class="navlink hover:text-gold-light">Example</a>
+      <a href="#install" class="navlink hover:text-gold-light">Install</a>
+      <a href="#commands" class="navlink hover:text-gold-light">Commands</a>
+      <a href="./docs/" class="hover:text-gold-light">Docs</a>
+      <a href="./changelog/" class="hover:text-gold-light">Changelog</a>
+    </div>
+    <a href="https://github.com/Teddy563/mcwrench" class="btn btn-ghost px-3.5 py-2 text-sm">
+      <svg viewBox="0 0 16 16" class="h-4 w-4" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38v-1.32c-2.23.49-2.7-1.08-2.7-1.08-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.21 1.87.86 2.33.66.07-.52.28-.86.5-1.06-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.83-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.52.56.83 1.28.83 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+      <span class="hidden sm:inline">GitHub</span>
+    </a>
+  </nav>
+</header>
+
+<a id="top"></a>
+
+<!-- HERO (hero info + stats bar fill one screen height) -->
+<section class="pixelgrid flex min-h-[calc(100svh-64px)] flex-col bg-deep">
+  <div class="flex flex-1 items-center">
+    <div class="mx-auto w-full max-w-5xl px-4 py-12 text-center sm:px-5">
+    <h1 class="sr-only">mcwrench, configure and tune any Minecraft server</h1>
+    <p class="sr-only">Your AI Minecraft server administrator.</p>
+
+    <span class="inline-flex items-center gap-2 border-[3px] border-gold-dark bg-gold/10 px-3 py-1 eyebrow text-gold-light">
+      v1.0.0 · MIT · open source
+    </span>
+
+    <img src="assets/mcwrench.png" alt="mcwrench" class="mx-auto mt-8 w-full max-w-[560px]" fetchpriority="high">
+    <img src="assets/mcwrench_subtitle.png" alt="Configure and tune any Minecraft server" class="mx-auto mt-4 w-full max-w-[620px]">
+
+    <p class="mx-auto mt-8 max-w-2xl text-base leading-relaxed text-rock-light sm:text-lg">
+      Your AI assistant becomes an expert Minecraft <strong class="text-white">server administrator</strong>.
+      It audits configs, kills lag, wires proxies and permissions, picks plugin stacks, bootstraps
+      servers, and <strong class="text-white">learns any plugin's docs on demand</strong>. Any server type, any plugin, any panel.
+    </p>
+
+    <div class="mx-auto mt-8 flex max-w-md flex-col items-stretch justify-center gap-3 sm:max-w-none sm:flex-row sm:items-center">
+      <a href="#install" class="btn btn-gold px-6 py-3">Install it</a>
+      <a href="./docs/" class="btn btn-ghost px-6 py-3">Read the docs</a>
+      <a href="https://github.com/Teddy563/mcwrench" class="btn btn-ghost px-6 py-3">Star on GitHub</a>
+    </div>
+
+    <div class="mt-8 flex flex-wrap items-center justify-center gap-2 text-xs font-semibold text-rock">
+      <span class="border-2 border-line px-2 py-1">Claude Code</span>
+      <span class="border-2 border-line px-2 py-1">Claude.ai</span>
+      <span class="border-2 border-line px-2 py-1">OpenAI Codex</span>
+      <span class="border-2 border-line px-2 py-1">Google Antigravity</span>
+      <span class="border-2 border-line px-2 py-1">Gemini CLI</span>
+    </div>
+    </div>
+  </div>
+
+  <!-- stats bar, pinned to the bottom of the hero -->
+  <div class="border-t-[3px] border-line">
+    <div class="mx-auto grid max-w-6xl grid-cols-2 md:grid-cols-4">
+      <div class="border-r-[3px] border-line p-5 text-center sm:p-6"><div class="font-pixel text-2xl font-bold text-gold sm:text-3xl">10</div><div class="mt-1 text-xs font-medium text-rock sm:text-sm">specialist skills</div></div>
+      <div class="border-r-[3px] border-line p-5 text-center sm:p-6"><div class="font-pixel text-2xl font-bold text-gold sm:text-3xl">5</div><div class="mt-1 text-xs font-medium text-rock sm:text-sm">AI runtimes</div></div>
+      <div class="border-r-[3px] border-line p-5 text-center sm:p-6"><div class="font-pixel text-2xl font-bold text-gold sm:text-3xl">8</div><div class="mt-1 text-xs font-medium text-rock sm:text-sm">doc sources</div></div>
+      <div class="p-5 text-center sm:p-6"><div class="font-pixel text-2xl font-bold text-gold sm:text-3xl">11</div><div class="mt-1 text-xs font-medium text-rock sm:text-sm">gamemode stacks</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="blocks h-2 w-full"></div>
+
+<!-- WHY -->
+<section id="why" class="mx-auto max-w-6xl px-4 py-20 sm:px-5">
+  <p class="eyebrow text-gold">// why mcwrench</p>
+  <h2 class="mt-3 max-w-3xl font-pixel text-3xl font-semibold leading-tight text-white sm:text-4xl">Server admin is config archaeology. This is the map.</h2>
+  <p class="mt-4 max-w-2xl text-rock">YAML footguns, JVM flags, proxy handshakes, permission nodes, and a thousand plugins that each document themselves differently. mcwrench knows the patterns and looks up the rest.</p>
+
+  <div class="mt-10 grid gap-5 md:grid-cols-2">
+    <div class="border-[3px] border-line bg-panel p-6">
+      <h3 class="eyebrow text-rock">Without it</h3>
+      <ul class="mt-4 space-y-3 text-sm text-rock-light">
+        <li class="flex gap-2"><span class="text-crit">✕</span> Ten browser tabs of wikis and Discord pins</li>
+        <li class="flex gap-2"><span class="text-crit">✕</span> Copy-pasted flags that OOM your container</li>
+        <li class="flex gap-2"><span class="text-crit">✕</span> online-mode and forwarding mismatches that break joins</li>
+        <li class="flex gap-2"><span class="text-crit">✕</span> AI that invents config keys that do not exist</li>
+      </ul>
+    </div>
+    <div class="border-[3px] border-gold bg-gold/[.07] p-6">
+      <h3 class="eyebrow text-gold-light">With mcwrench</h3>
+      <ul class="mt-4 space-y-3 text-sm text-rock-light">
+        <li class="flex gap-2"><span class="text-gold">✓</span> One assistant that routes to the right specialist</li>
+        <li class="flex gap-2"><span class="text-gold">✓</span> Flags and limits tuned to your version and host</li>
+        <li class="flex gap-2"><span class="text-gold">✓</span> Cross-file checks that catch the real footguns</li>
+        <li class="flex gap-2"><span class="text-gold">✓</span> Real keys only, fetched from the plugin's own docs</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="border-y-[3px] border-line bg-panel">
+  <div class="mx-auto max-w-6xl px-4 py-20 sm:px-5">
+    <p class="eyebrow text-gold">// the toolbox</p>
+    <h2 class="mt-3 font-pixel text-3xl font-semibold text-white sm:text-4xl">Ten skills, one router.</h2>
+    <p class="mt-3 max-w-2xl text-rock">An always-on router engages on any server-admin topic and hands off to the right specialist. You just describe the problem.</p>
+
+    <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="card p-5"><div class="text-xl">🧭</div><h3 class="mt-3 font-bold text-white">minecraft-server-router</h3><p class="mt-1 text-sm text-rock">Always-on hub. Engages on any topic and routes to a specialist.</p></div>
+      <div class="card p-5"><div class="text-xl">🔍</div><h3 class="mt-3 font-bold text-white">audit-config</h3><p class="mt-1 text-sm text-rock">Lints a config tree for footguns, performance and security.</p></div>
+      <div class="card p-5"><div class="text-xl">⚡</div><h3 class="mt-3 font-bold text-white">performance-tuning</h3><p class="mt-1 text-sm text-rock">TPS, MSPT, OOM, Spark profiling, Aikar's flags, view and sim distance.</p></div>
+      <div class="card p-5"><div class="text-xl">🔐</div><h3 class="mt-3 font-bold text-white">permissions-helper</h3><p class="mt-1 text-sm text-rock">LuckPerms groups, tracks, contexts, meta and node conventions.</p></div>
+      <div class="card p-5"><div class="text-xl">🌐</div><h3 class="mt-3 font-bold text-white">proxy-network</h3><p class="mt-1 text-sm text-rock">Velocity and Bungee modern forwarding, and the forwarding.secret handshake.</p></div>
+      <div class="card p-5"><div class="text-xl">🎮</div><h3 class="mt-3 font-bold text-white">gamemode-stacks</h3><p class="mt-1 text-sm text-rock">Canonical plugin stacks for 11 archetypes, with pitfalls.</p></div>
+      <div class="card p-5"><div class="text-xl">🚀</div><h3 class="mt-3 font-bold text-white">new-server-bootstrap</h3><p class="mt-1 text-sm text-rock">Fill v3 Paper download, Java 25, EULA, Aikar startup, starter configs.</p></div>
+      <div class="card p-5"><div class="text-xl">🪺</div><h3 class="mt-3 font-bold text-white">pterodactyl-ops</h3><p class="mt-1 text-sm text-rock">Pterodactyl and Pelican: RCON, the Xmx and OOM footgun, backups, client API.</p></div>
+      <div class="card p-5"><div class="text-xl">📜</div><h3 class="mt-3 font-bold text-white">skript-author</h3><p class="mt-1 text-sm text-rock">Write and debug Skript with live syntax from the Skript Hub API.</p></div>
+      <div class="card p-5 sm:col-span-2 lg:col-span-3"><div class="text-xl">📚</div><h3 class="mt-3 font-bold text-white">learn-plugin-docs</h3><p class="mt-1 text-sm text-rock">Fetches and condenses ANY plugin's real docs into a local reference, so answers cite sources and never guess.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXAMPLE -->
+<section id="example" class="mx-auto max-w-6xl px-4 py-20 sm:px-5">
+  <p class="eyebrow text-gold">// see it work</p>
+  <h2 class="mt-3 font-pixel text-3xl font-semibold text-white sm:text-4xl">You ask in plain words. It answers with real keys.</h2>
+  <p class="mt-3 max-w-2xl text-rock">A prioritised audit, the way mcwrench reports it. Critical first, with the exact file and key to change.</p>
+
+  <div class="mt-10 grid gap-6 lg:grid-cols-5">
+    <div class="lg:col-span-3 border-[3px] border-line bg-deep font-mono text-[13px] text-rock-light">
+      <div class="flex items-center gap-2 border-b-[3px] border-line px-4 py-2 text-xs text-rock"><span class="h-3 w-3 border-2 border-rock-dark"></span> audit-config</div>
+      <div class="space-y-3 p-4 leading-relaxed">
+        <p><span class="text-gold-light">you ▸</span> audit my paper config, it is behind velocity</p>
+        <div class="space-y-2">
+          <p><span class="inline-block border-2 border-crit px-1.5 font-bold text-crit">CRIT</span> <span class="text-white">spigot.yml</span> <span class="text-rock">bungeecord:true</span> + <span class="text-rock">paper-global velocity.enabled:true</span> will not start. Pick one.</p>
+          <p><span class="inline-block border-2 border-warn px-1.5 font-bold text-warn">HIGH</span> <span class="text-white">server.properties</span> <span class="text-rock">online-mode=true</span> behind a proxy breaks UUIDs and skins. Set false.</p>
+          <p><span class="inline-block border-2 border-warn px-1.5 font-bold text-warn">HIGH</span> <span class="text-white">paper-global.yml</span> <span class="text-rock">proxies.velocity.secret</span> is empty. Paste the proxy forwarding.secret.</p>
+          <p><span class="inline-block border-2 border-rock-dark px-1.5 font-bold text-rock">MED</span> <span class="text-white">server.properties</span> simulation-distance=10. 6 is plenty for your player count.</p>
+          <p class="text-gold-light">▸ 1 critical, 2 high, 1 medium. Fix the critical first; it blocks boot.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="lg:col-span-2 space-y-4">
+      <div class="border-[3px] border-line bg-panel p-5">
+        <h3 class="eyebrow text-rock">It never guesses</h3>
+        <p class="mt-2 text-sm text-rock-light">Unsure about a plugin? It runs <code class="border border-line bg-deep px-1 text-rock-light">learn-plugin-docs</code> and reads the real docs before answering.</p>
+      </div>
+      <div class="border-[3px] border-line bg-panel p-5">
+        <h3 class="eyebrow text-rock">It is careful</h3>
+        <p class="mt-2 text-sm text-rock-light">Deleting worlds, exposing RCON, flipping online-mode: it warns and confirms first.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-12">
+    <p class="eyebrow text-rock">// learns from</p>
+    <div class="mt-4 flex flex-wrap gap-2 text-sm font-medium text-rock">
+      <span class="border-2 border-line px-3 py-1">Modrinth</span>
+      <span class="border-2 border-line px-3 py-1">Hangar</span>
+      <span class="border-2 border-line px-3 py-1">GitHub</span>
+      <span class="border-2 border-line px-3 py-1">Oraxen</span>
+      <span class="border-2 border-line px-3 py-1">SpigotMC</span>
+      <span class="border-2 border-line px-3 py-1">Skript Hub</span>
+      <span class="border-2 border-line px-3 py-1">PaperMC</span>
+      <span class="border-2 border-line px-3 py-1">GitBook</span>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section class="border-y-[3px] border-line bg-panel">
+  <div class="mx-auto max-w-6xl px-4 py-20 sm:px-5">
+    <p class="eyebrow text-gold">// how it works</p>
+    <h2 class="mt-3 font-pixel text-3xl font-semibold text-white sm:text-4xl">Trigger, route, learn, advise.</h2>
+    <div class="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div class="border-[3px] border-line bg-base p-6"><div class="font-pixel text-2xl font-bold text-gold">01</div><h3 class="mt-2 font-bold text-white">Trigger</h3><p class="mt-1 text-sm text-rock">Say "my SMP is laggy" or run <code class="border border-line bg-deep px-1 text-rock-light">/mcwrench:audit</code>.</p></div>
+      <div class="border-[3px] border-line bg-base p-6"><div class="font-pixel text-2xl font-bold text-gold">02</div><h3 class="mt-2 font-bold text-white">Route</h3><p class="mt-1 text-sm text-rock">It picks the right specialist and reads its playbook.</p></div>
+      <div class="border-[3px] border-line bg-base p-6"><div class="font-pixel text-2xl font-bold text-gold">03</div><h3 class="mt-2 font-bold text-white">Learn</h3><p class="mt-1 text-sm text-rock">Unsure about a plugin? It fetches the real docs to <code class="border border-line bg-deep px-1 text-rock-light">_cache/</code> first.</p></div>
+      <div class="border-[3px] border-line bg-base p-6"><div class="font-pixel text-2xl font-bold text-gold">04</div><h3 class="mt-2 font-bold text-white">Advise</h3><p class="mt-1 text-sm text-rock">Prioritised findings with exact <code class="border border-line bg-deep px-1 text-rock-light">file:key</code> changes.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- INSTALL -->
+<section id="install" class="border-b-[3px] border-line bg-deep">
+  <div class="mx-auto max-w-6xl px-4 py-20 sm:px-5">
+    <p class="eyebrow text-gold">// install</p>
+    <h2 class="mt-3 font-pixel text-3xl font-semibold text-white sm:text-4xl">Pick your runtime.</h2>
+    <p class="mt-3 max-w-2xl text-rock">Skills are filesystem-based and do not sync between tools. Install in each surface you use.</p>
+
+    <div class="mt-10 grid gap-4 lg:grid-cols-2">
+      <div class="border-[3px] border-line bg-panel p-6">
+        <h3 class="font-bold text-white">Claude Code <span class="ml-2 border-2 border-gold/50 px-2 py-0.5 text-xs font-semibold text-gold-light">plugin + slash</span></h3>
+        <div class="code mt-4" data-code="/plugin marketplace add Teddy563/mcwrench&#10;/plugin install mcwrench@mcwrench"></div>
+      </div>
+      <div class="border-[3px] border-line bg-panel p-6">
+        <h3 class="font-bold text-white">Gemini CLI <span class="ml-2 border-2 border-gold/50 px-2 py-0.5 text-xs font-semibold text-gold-light">GEMINI.md + TOML</span></h3>
+        <div class="code mt-4" data-code="git clone https://github.com/Teddy563/mcwrench&#10;cd mcwrench && gemini"></div>
+      </div>
+      <div class="border-[3px] border-line bg-panel p-6">
+        <h3 class="font-bold text-white">Codex / Antigravity <span class="ml-2 border-2 border-gold/50 px-2 py-0.5 text-xs font-semibold text-gold-light">.agents/skills</span></h3>
+        <div class="code mt-4" data-code="git clone https://github.com/Teddy563/mcwrench&#10;# .agents/skills + AGENTS.md load automatically"></div>
+      </div>
+      <div class="border-[3px] border-line bg-panel p-6">
+        <h3 class="font-bold text-white">Claude.ai <span class="ml-2 border-2 border-gold/50 px-2 py-0.5 text-xs font-semibold text-gold-light">zip upload</span></h3>
+        <div class="code mt-4" data-code="node scripts/pack-skill.mjs --all&#10;# upload dist/*.skill.zip via Customize, Skills"></div>
+      </div>
+    </div>
+    <p class="mt-6 text-sm text-rock">Full guide: <a class="font-semibold text-gold-light underline underline-offset-2" href="./docs/">the docs</a>.</p>
+  </div>
+</section>
+
+<!-- COMMANDS -->
+<section id="commands" class="mx-auto max-w-6xl px-4 py-20 sm:px-5">
+  <p class="eyebrow text-gold">// command reference</p>
+  <h2 class="mt-3 font-pixel text-3xl font-semibold text-white sm:text-4xl">Nine slash commands.</h2>
+  <p class="mt-3 max-w-2xl text-rock">Shown for Claude Code (<code class="border border-line bg-panel px-1 text-rock-light">/mcwrench:*</code>). The same intent works as plain language everywhere.</p>
+
+  <div class="mt-10 overflow-x-auto border-[3px] border-line">
+    <table class="w-full text-left text-sm">
+      <thead class="border-b-[3px] border-line bg-panel text-rock">
+        <tr><th class="px-5 py-3 font-label text-[10px] uppercase">Command</th><th class="px-5 py-3 font-label text-[10px] uppercase">Does</th><th class="hidden px-5 py-3 font-label text-[10px] uppercase md:table-cell">Example</th></tr>
+      </thead>
+      <tbody class="divide-y-2 divide-line">
+        <tr><td class="px-5 py-3 font-mono font-semibold text-gold-light">/mcwrench:audit</td><td class="px-5 py-3">Lint a config tree, prioritised critical to low</td><td class="hidden px-5 py-3 font-mono text-xs text-rock md:table-cell">audit ./myserver</td></tr>
+        <tr><td class="px-5 py-3 font-mono font-semibold text-gold-light">/mcwrench:learn</td><td class="px-5 py-3">Fetch and condense any plugin's docs</td><td class="hidden px-5 py-3 font-mono text-xs text-rock md:table-cell">learn LuckPerms</td></tr>
+        <tr><td class="px-5 py-3 font-mono font-semibold text-gold-light">/mcwrench:perf</td><td class="px-5 py-3">Fix lag, low TPS, or OOM (Spark-led)</td><td class="hidden px-5 py-3 font-mono text-xs text-rock md:table-cell">perf TPS drops at night</td></tr>
+        <tr><td class="px-5 py-3 font-mono font-semibold text-gold-light">/mcwrench:perms</td><td class="px-5 py-3">LuckPerms ranks, contexts, prefixes</td><td class="hidden px-5 py-3 font-mono text-xs text-rock md:table-cell">perms VIP fly in creative</td></tr>
+        <tr><td class="px-5 py-3 font-mono font-semibold text-gold-light">/mcwrench:proxy</td><td class="px-5 py-3">Velocity and Bungee modern forwarding</td><td class="hidden px-5 py-3 font-mono text-xs text-rock md:table-cell">proxy invalid forwarding</td></tr>
+        <tr><td class="px-5 py-3 font-mono font-semibold text-gold-light">/mcwrench:bootstrap</td><td class="px-5 py-3">Stand up a new Paper or Velocity server</td><td class="hidden px-5 py-3 font-mono text-xs text-rock md:table-cell">bootstrap an SMP on Pterodactyl</td></tr>
+        <tr><td class="px-5 py-3 font-mono font-semibold text-gold-light">/mcwrench:panel</td><td class="px-5 py-3">Pterodactyl and Pelican RCON, OOM, backups</td><td class="hidden px-5 py-3 font-mono text-xs text-rock md:table-cell">panel set up RCON</td></tr>
+        <tr><td class="px-5 py-3 font-mono font-semibold text-gold-light">/mcwrench:gamemode</td><td class="px-5 py-3">Canonical plugin stack for an archetype</td><td class="hidden px-5 py-3 font-mono text-xs text-rock md:table-cell">gamemode skyblock</td></tr>
+        <tr><td class="px-5 py-3 font-mono font-semibold text-gold-light">/mcwrench:skript</td><td class="px-5 py-3">Write and debug Skript with live syntax</td><td class="hidden px-5 py-3 font-mono text-xs text-rock md:table-cell">skript a daily /kit</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="mt-6 text-sm text-rock">Every command with examples lives in <a class="font-semibold text-gold-light underline underline-offset-2" href="./docs/">the docs</a>.</p>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="border-t-[3px] border-line bg-panel">
+  <div class="mx-auto max-w-3xl px-4 py-20 sm:px-5">
+    <p class="eyebrow text-gold">// questions</p>
+    <h2 class="mt-3 font-pixel text-3xl font-semibold text-white sm:text-4xl">Good to know.</h2>
+    <div class="mt-8 space-y-3">
+      <details class="group border-[3px] border-line bg-base open:border-gold">
+        <summary class="flex items-center justify-between gap-4 px-5 py-4 font-bold text-white">Does it change my server by itself?<span class="font-pixel text-gold transition group-open:rotate-45">+</span></summary>
+        <p class="px-5 pb-5 text-sm text-rock">No. It reads and advises, and gives you exact edits. Anything destructive (deleting worlds, exposing RCON) it warns about and confirms first.</p>
+      </details>
+      <details class="group border-[3px] border-line bg-base open:border-gold">
+        <summary class="flex items-center justify-between gap-4 px-5 py-4 font-bold text-white">Which AI tools does it work in?<span class="font-pixel text-gold transition group-open:rotate-45">+</span></summary>
+        <p class="px-5 pb-5 text-sm text-rock">Claude Code, Claude.ai, OpenAI Codex, Google Antigravity, and Gemini CLI. One source of truth, installed per tool.</p>
+      </details>
+      <details class="group border-[3px] border-line bg-base open:border-gold">
+        <summary class="flex items-center justify-between gap-4 px-5 py-4 font-bold text-white">Does it support Folia or Bedrock?<span class="font-pixel text-gold transition group-open:rotate-45">+</span></summary>
+        <p class="px-5 pb-5 text-sm text-rock">It targets Paper, Purpur, Folia, Vanilla, and Velocity. It defaults to recommending Paper, and engages on Java plus Bedrock via Geyser or Floodgate. Bedrock-only servers are out of scope.</p>
+      </details>
+      <details class="group border-[3px] border-line bg-base open:border-gold">
+        <summary class="flex items-center justify-between gap-4 px-5 py-4 font-bold text-white">Is it free and open source?<span class="font-pixel text-gold transition group-open:rotate-45">+</span></summary>
+        <p class="px-5 pb-5 text-sm text-rock">Yes. MIT licensed. The docs-learner runs on stock Node 18+ with no install for the common paths.</p>
+      </details>
+      <details class="group border-[3px] border-line bg-base open:border-gold">
+        <summary class="flex items-center justify-between gap-4 px-5 py-4 font-bold text-white">Will it invent config keys?<span class="font-pixel text-gold transition group-open:rotate-45">+</span></summary>
+        <p class="px-5 pb-5 text-sm text-rock">No. When it is not confident about a plugin, it fetches that plugin's real documentation first and answers from it, citing the source.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="relative border-y-[3px] border-gold-dark bg-gold">
+  <div class="pixelgrid absolute inset-0 opacity-10"></div>
+  <div class="relative mx-auto max-w-3xl px-4 py-20 text-center sm:px-5">
+    <h2 class="font-pixel text-3xl font-bold leading-tight text-[#15110a] sm:text-4xl">Stop guessing at YAML.</h2>
+    <p class="mx-auto mt-5 max-w-xl text-[#3a2a08]">
+      Drop mcwrench into your AI assistant and let it audit, tune, and run your server, with answers that cite real docs.
+    </p>
+    <div class="mx-auto mt-8 flex max-w-md flex-col items-stretch justify-center gap-3 sm:max-w-none sm:flex-row">
+      <a href="https://github.com/Teddy563/mcwrench" class="btn px-6 py-3" style="background:#15110a;color:#fff;border-color:#000;">Get it on GitHub</a>
+      <a href="https://github.com/Teddy563/mcwrench/releases/latest" class="btn px-6 py-3" style="background:#fff;color:#15110a;border-color:#15110a;">Download v1.0.0</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="border-t-[3px] border-line bg-deep">
+  <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 py-10 text-sm text-rock sm:px-5 md:flex-row">
+    <div class="flex items-center gap-3">
+      <img src="assets/mcwrench.png" alt="mcwrench" class="h-5 w-auto">
+      <span>· MIT</span>
+    </div>
+    <nav class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 font-medium">
+      <a class="hover:text-gold-light" href="./docs/">Docs</a>
+      <a class="hover:text-gold-light" href="./changelog/">Changelog</a>
+      <a class="hover:text-gold-light" href="https://github.com/Teddy563/mcwrench">GitHub</a>
+      <a class="hover:text-gold-light" href="https://github.com/Teddy563/mcwrench/releases/latest">Releases</a>
+      <a class="hover:text-gold-light" href="mailto:real@teddy.bar">real@teddy.bar</a>
+    </nav>
+  </div>
+  <p class="pb-8 text-center text-xs text-rock-dark">Not affiliated with Mojang or Microsoft. "Minecraft" is a trademark of Mojang Synergies AB.</p>
+</footer>
+
+<script>
+  document.querySelectorAll('.code').forEach((el) => {
+    const code = el.getAttribute('data-code').replaceAll('&#10;', '\n');
+    el.innerHTML = '';
+    const wrap = document.createElement('div');
+    wrap.className = 'relative border-[3px] border-line bg-black/40 font-mono text-[13px] text-rock-light';
+    const pre = document.createElement('pre'); pre.className = 'overflow-x-auto p-4 pr-16'; pre.textContent = code;
+    const btn = document.createElement('button');
+    btn.className = 'btn absolute right-2 top-2 border-2 border-line bg-white/5 px-2 py-1 text-xs text-rock-light hover:bg-white/10';
+    btn.textContent = 'copy';
+    btn.addEventListener('click', async () => { try { await navigator.clipboard.writeText(code); btn.textContent='copied'; } catch { btn.textContent='select'; } setTimeout(()=>btn.textContent='copy',1500); });
+    wrap.append(pre, btn); el.append(wrap);
+  });
+  const links = [...document.querySelectorAll('.navlink')];
+  const map = new Map(links.map((l) => [l.getAttribute('href').slice(1), l]));
+  const obs = new IntersectionObserver((entries) => { entries.forEach((e) => { if (e.isIntersecting) { links.forEach((l) => l.classList.remove('active')); const l = map.get(e.target.id); if (l) l.classList.add('active'); } }); }, { rootMargin: '-45% 0px -50% 0px' });
+  ['why','skills','example','install','commands'].forEach((id) => { const s = document.getElementById(id); if (s) obs.observe(s); });
+</script>
+</body>
+</html>

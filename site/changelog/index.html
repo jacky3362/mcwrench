@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>mcwrench changelog</title>
+<meta name="description" content="mcwrench release history and changelog.">
+<link rel="canonical" href="https://mcwrench.teddy.bar/changelog/">
+<meta property="og:title" content="mcwrench changelog">
+<meta property="og:image" content="https://mcwrench.teddy.bar/assets/banner.jpg">
+<meta name="theme-color" content="#0f1115">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔧</text></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    corePlugins: { boxShadow: false },
+    theme: { extend: {
+      colors: { base:'#14161b', panel:'#1b1e25', deep:'#0f1115', line:'#2a2e38', gold:{light:'#f4c95d',DEFAULT:'#e0992e',dark:'#b9741a'}, rock:{light:'#d7dade',DEFAULT:'#9aa0a8',dark:'#6b7079'} },
+      fontFamily: { sans:['Inter','system-ui','sans-serif'], mono:['"JetBrains Mono"','ui-monospace','monospace'], pixel:['MinecraftCraftron','Monocraft','system-ui','sans-serif'], label:['MinecraftCraftron','Monocraft','monospace'] },
+      borderRadius:{ none:'0',DEFAULT:'0',sm:'2px',md:'2px',lg:'2px',xl:'2px' },
+    } }
+  }
+</script>
+<style>
+  @font-face { font-family:'Monocraft'; src:url('https://cdn.jsdelivr.net/gh/IdreesInc/Monocraft@main/dist/Monocraft-ttf/Monocraft.ttf') format('truetype'); font-weight:400 700; font-display:swap; }
+  @font-face { font-family:'MinecraftCraftron'; src:url('../fonts/Minecraft.ttf') format('truetype'); font-weight:400 700; font-display:swap; }
+  .eyebrow { font-family:'MinecraftCraftron','Monocraft',monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase; }
+  .btn { display:inline-flex; align-items:center; justify-content:center; gap:.5rem; border:3px solid; border-radius:0; font-weight:700; line-height:1; transition:transform .04s, background-color .12s; }
+  .btn:active { transform:translateY(2px); }
+  .btn-gold { background:#e0992e; color:#15110a; border-color:#8a5612; box-shadow: inset 0 3px 0 rgba(255,255,255,.30), inset 0 -3px 0 rgba(0,0,0,.25); }
+  .btn-ghost { background:transparent; color:#d7dade; border-color:#3a3f4b; }
+  .btn-ghost:hover { background:#1b1e25; border-color:#525868; }
+  code { font-family:'JetBrains Mono',monospace; font-size:.85em; border:1px solid #2a2e38; background:#0f1115; color:#d7dade; padding:0 .25rem; }
+  ::selection { background:#f4c95d; color:#15110a; }
+</style>
+</head>
+<body class="font-sans text-rock-light bg-base antialiased">
+
+<header class="sticky top-0 z-40 border-b-[3px] border-line bg-deep/95 backdrop-blur-sm">
+  <nav class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-5">
+    <a href="../" class="flex items-center gap-2.5">
+      <img src="../assets/mcwrench.png" alt="mcwrench" class="h-6 w-auto">
+      <span class="border-2 border-line px-2 py-0.5 text-xs font-semibold text-rock">changelog</span>
+    </a>
+    <div class="flex items-center gap-4 text-sm font-semibold text-rock">
+      <a href="../" class="hidden hover:text-gold-light sm:block">Home</a>
+      <a href="../docs/" class="hidden hover:text-gold-light sm:block">Docs</a>
+      <a href="https://github.com/Teddy563/mcwrench/releases" class="btn btn-ghost px-3.5 py-2">Releases</a>
+    </div>
+  </nav>
+</header>
+
+<main class="mx-auto max-w-3xl px-4 py-14 sm:px-5">
+  <p class="eyebrow text-gold">// release history</p>
+  <h1 class="mt-3 font-pixel text-4xl font-bold text-white sm:text-5xl">Changelog</h1>
+  <p class="mt-4 text-rock">Versioned with <a class="text-gold-light underline underline-offset-2" href="https://semver.org">SemVer</a>. The canonical log lives in
+    <a class="text-gold-light underline underline-offset-2" href="https://github.com/Teddy563/mcwrench/blob/main/CHANGELOG.md">CHANGELOG.md</a>.</p>
+
+  <!-- 1.0.0 -->
+  <article class="mt-12 border-l-[3px] border-gold pl-6">
+    <div class="flex flex-wrap items-center gap-3">
+      <h2 class="font-pixel text-2xl font-bold text-white">v1.0.0</h2>
+      <span class="border-2 border-gold px-2 py-0.5 text-xs font-bold text-gold-light">latest</span>
+      <span class="text-sm text-rock">2026-06-07</span>
+    </div>
+    <p class="mt-4 text-rock">First public release. A gamemode-agnostic Minecraft server config and operations assistant, packaged for Claude Code, Claude.ai, OpenAI Codex, Google Antigravity, and Gemini CLI from one source of truth.</p>
+
+    <h3 class="eyebrow mt-7 text-gold">Skills (10)</h3>
+    <ul class="mt-3 space-y-2 text-sm text-rock">
+      <li class="flex gap-2"><span class="text-gold">+</span> minecraft-server-router, the always-on hub</li>
+      <li class="flex gap-2"><span class="text-gold">+</span> audit-config, with scan-server-tree and diff-against-defaults helpers</li>
+      <li class="flex gap-2"><span class="text-gold">+</span> performance-tuning (Spark, Aikar vs Java-25 ZGC, view and sim distance)</li>
+      <li class="flex gap-2"><span class="text-gold">+</span> permissions-helper, proxy-network, skript-author</li>
+      <li class="flex gap-2"><span class="text-gold">+</span> gamemode-stacks, 11 archetypes</li>
+      <li class="flex gap-2"><span class="text-gold">+</span> new-server-bootstrap, with a Fill v3 Paper downloader</li>
+      <li class="flex gap-2"><span class="text-gold">+</span> pterodactyl-ops (Pterodactyl and Pelican)</li>
+      <li class="flex gap-2"><span class="text-gold">+</span> learn-plugin-docs, the on-demand docs engine</li>
+    </ul>
+
+    <h3 class="eyebrow mt-7 text-gold">Docs learner</h3>
+    <p class="mt-3 text-sm text-rock">Every adapter wired and live-tested: Modrinth, Hangar (slug-only API), GitHub README, Oraxen, SpigotMC (BBCode to markdown), Skript Hub, PaperMC (tree-searches the source repo). GitBook and a generic Readability fallback are best-effort.</p>
+
+    <h3 class="eyebrow mt-7 text-gold">Cross-tool packaging</h3>
+    <p class="mt-3 text-sm text-rock">One source of truth in <code>skills/</code>, with no duplicated SKILL.md. Claude Code plugin and marketplace; <code>.agents/skills</code> symlink, <code>AGENTS.md</code>, and workflows for Codex and Antigravity; <code>GEMINI.md</code> and TOML commands for Gemini CLI; a zip packer for Claude.ai.</p>
+
+    <h3 class="eyebrow mt-7 text-gold">Notes</h3>
+    <p class="mt-3 text-sm text-rock">Knowledge dated 2026-06-07: Minecraft 26.1.x, Paper requires Java 25, Velocity 3.5.0-SNAPSHOT, Paper downloads via Fill v3, Pelican is Pterodactyl-compatible (beta). The Aikar's-flags Java-25 caveat is attributed to community and hosting sources, not PaperMC.</p>
+
+    <div class="mt-7 flex flex-wrap gap-3">
+      <a href="https://github.com/Teddy563/mcwrench/releases/tag/v1.0.0" class="btn btn-gold px-5 py-2.5 text-sm">Release v1.0.0</a>
+      <a href="https://github.com/Teddy563/mcwrench/releases/download/v1.0.0/mcwrench-v1.0.0.zip" class="btn btn-ghost px-5 py-2.5 text-sm">Source zip</a>
+    </div>
+  </article>
+
+  <div class="mt-16 border-t-[3px] border-line pt-8">
+    <a href="../" class="btn btn-ghost px-5 py-2.5 text-sm">Back home</a>
+  </div>
+</main>
+
+<footer class="border-t-[3px] border-line bg-deep">
+  <p class="mx-auto max-w-6xl px-5 py-8 text-center text-xs text-rock-dark">mcwrench, MIT. Not affiliated with Mojang or Microsoft. "Minecraft" is a trademark of Mojang Synergies AB.</p>
+</footer>
+</body>
+</html>
