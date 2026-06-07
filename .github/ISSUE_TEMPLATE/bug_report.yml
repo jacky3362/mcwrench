@@ -1,0 +1,39 @@
+name: Bug report
+description: Something in mcwrench is wrong (bad advice, broken script, skill won't trigger).
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Where are you running mcwrench?
+      options:
+        - Claude Code
+        - Claude.ai
+        - OpenAI Codex
+        - Google Antigravity
+        - Gemini CLI
+        - Other / not sure
+    validations:
+      required: true
+  - type: input
+    id: skill
+    attributes:
+      label: Which skill / command?
+      placeholder: "e.g. audit-config, learn-plugin-docs, /mcwrench:perf"
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened vs what you expected
+      description: Include the prompt you used and the output. For wrong MC advice, link the official source.
+    validations:
+      required: true
+  - type: input
+    id: mcversion
+    attributes:
+      label: Minecraft / server software version (if relevant)
+      placeholder: "e.g. Paper 26.1.2, Java 25"
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / script output (if a script failed)
+      render: shell

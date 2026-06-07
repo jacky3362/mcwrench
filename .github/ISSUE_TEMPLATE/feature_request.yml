@@ -1,0 +1,28 @@
+name: Feature / skill request
+description: Request a new skill, plugin coverage, gamemode, or docs adapter.
+labels: ["enhancement"]
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of request?
+      options:
+        - New skill
+        - New gamemode archetype
+        - New docs adapter (a plugin host mcwrench can't fetch yet)
+        - Better coverage of an existing plugin
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: detail
+    attributes:
+      label: Describe it
+      description: What should it do, and what triggers should activate it? Link official docs for any plugin involved.
+    validations:
+      required: true
+  - type: input
+    id: docs
+    attributes:
+      label: Official docs URL (for plugin/host requests)
+      placeholder: "https://…  — mcwrench never invents config keys; it needs a real source"

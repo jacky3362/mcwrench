@@ -1,0 +1,8 @@
+description = "Fetch and condense docs for any Minecraft plugin into a local reference."
+prompt = """Act as mcwrench's learn-plugin-docs specialist. Read skills/learn-plugin-docs/SKILL.md
+and follow it for the plugin: {{args}}
+
+First check skills/_cache/<slug>/REFERENCE.md; if missing or stale, run:
+  node skills/learn-plugin-docs/scripts/learn-docs.mjs "{{args}}"
+Then read the generated REFERENCE.md and summarise the key config keys, permission nodes and
+commands, citing the cache path and source URL. Do not invent config keys."""

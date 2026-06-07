@@ -1,0 +1,10 @@
+description = "Bootstrap a brand-new Minecraft server (Paper, optionally with a Velocity proxy)."
+prompt = """Act as mcwrench's new-server-bootstrap specialist. Read skills/new-server-bootstrap/SKILL.md
+and follow it for: {{args}}
+
+Download the latest Paper via the Fill v3 API (run
+`node skills/new-server-bootstrap/scripts/fetch-paper.mjs 26.1.2` — never hand-construct URLs),
+install Java 25, accept the EULA, apply the Java-25 + Aikar's-flags startup template
+(assets/startup.sh.tmpl, Xms==Xmx with headroom), and set sane server.properties. For a network,
+set up Velocity modern forwarding. Then hand the gamemode stack to gamemode-stacks and review with
+audit-config."""

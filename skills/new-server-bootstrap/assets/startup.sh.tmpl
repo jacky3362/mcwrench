@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# mcwrench — Paper startup template (Java 25 + Aikar's flags, G1GC).
+# Verified 2026-06-07. Paper 26.1+ requires Java 25.
+#
+# Edit MEMORY and JAR, then: chmod +x start.sh && ./start.sh
+# Rules:
+#   - Keep Xms == Xmx (set both to $MEMORY).
+#   - Leave host headroom: do NOT allocate all system RAM. On a panel (Pterodactyl/Pelican),
+#     set MEMORY BELOW the container limit (reserve ~1-1.5 GB for JVM native memory), or the
+#     container will OOM at boot because of -XX:+AlwaysPreTouch.
+#   - For heaps >= 12G, bump: G1NewSizePercent=40 G1MaxNewSizePercent=50 G1HeapRegionSize=16M
+#     G1ReservePercent=15 InitiatingHeapOccupancyPercent=20.
+
+MEMORY="${MEMORY:-6G}"
+JAR="${JAR:-paper.jar}"
+
+exec java -Xms"${MEMORY}" -Xmx"${MEMORY}" \
+  -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 \
+  -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch \
+  -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M \
+  -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 \
+  -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 \
+  -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 \
+  -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 \
+  -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true \
+  -jar "${JAR}" --nogui

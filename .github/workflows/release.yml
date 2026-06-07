@@ -1,0 +1,63 @@
+name: release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to release (e.g. v1.0.0)'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate before releasing
+        run: node scripts/validate.mjs
+
+      - name: Resolve tag
+        id: tag
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then TAG="${{ inputs.tag }}"; fi
+          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+          echo "version=${TAG#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Build source archive (export-ignore aware)
+        run: |
+          TAG="${{ steps.tag.outputs.tag }}"
+          git archive --format=zip --prefix="mcwrench-${TAG}/" -o "mcwrench-${TAG}.zip" "${TAG}"
+
+      - name: Extract release notes from CHANGELOG
+        run: |
+          VER="${{ steps.tag.outputs.version }}"
+          awk -v v="$VER" '
+            $0 ~ "^## \\[" v "\\]" {f=1; print; next}
+            f && /^## \[/ {exit}
+            f {print}
+          ' CHANGELOG.md > RELEASE_BODY.md
+          if [ ! -s RELEASE_BODY.md ]; then cp RELEASE-NOTES.md RELEASE_BODY.md; fi
+
+      - name: Create GitHub Release (with source archive)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="${{ steps.tag.outputs.tag }}"
+          gh release create "$TAG" \
+            --title "mcwrench $TAG" \
+            --notes-file RELEASE_BODY.md \
+            "mcwrench-${TAG}.zip"

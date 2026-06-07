@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: How do I install / use a skill?
+    url: https://github.com/Teddy563/mcwrench#install
+    about: See the README install sections for Claude Code, Claude.ai, Codex, Antigravity, and Gemini CLI.

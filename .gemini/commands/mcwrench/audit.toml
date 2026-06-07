@@ -1,0 +1,9 @@
+description = "Audit a Minecraft server config tree for footguns, performance and security."
+prompt = """Act as mcwrench's audit-config specialist. Read skills/audit-config/SKILL.md and its
+references (paper-global-checklist.md, common-footguns.md) and follow them to audit the server
+config at: {{args}} (default: the current directory).
+
+Locate server.properties, paper-global.yml, paper-world-defaults.yml, spigot.yml, bukkit.yml,
+purpur.yml and velocity.toml; run the cross-file consistency, security and performance passes;
+then report findings prioritised critical -> high -> medium -> low, quoting the exact file + key.
+If a plugin's keys are unfamiliar, run learn-plugin-docs first. Do not invent config keys."""

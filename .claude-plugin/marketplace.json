@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "mcwrench",
+  "owner": {
+    "name": "Teddy563",
+    "url": "https://github.com/Teddy563"
+  },
+  "metadata": {
+    "description": "Minecraft server configuration & plugin-operations skills for Claude Code",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "mcwrench",
+      "source": "./",
+      "description": "General-purpose Minecraft server config & ops assistant: audits configs, diagnoses lag, tunes performance, sets up proxies and permissions, and learns any plugin's docs on demand. Gamemode- and plugin-agnostic. See plugin.json for the full description.",
+      "license": "MIT",
+      "category": "ops",
+      "keywords": [
+        "minecraft",
+        "paper",
+        "velocity",
+        "luckperms",
+        "skript",
+        "server-admin"
+      ]
+    }
+  ]
+}

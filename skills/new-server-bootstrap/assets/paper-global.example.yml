@@ -1,0 +1,31 @@
+# mcwrench — paper-global.yml example (backend behind a Velocity proxy). Verified 2026-06-07.
+# This shows ONLY the keys most relevant to bootstrapping a proxied backend. Do not paste the
+# whole file blindly — Paper generates the full paper-global.yml; only change what you understand.
+# When behind Velocity, ALSO set online-mode=false in server.properties.
+
+proxies:
+  velocity:
+    enabled: true
+    # Must equal the proxy's online-mode (velocity.toml online-mode).
+    online-mode: true
+    # Must EXACTLY equal the contents of the proxy's forwarding.secret file.
+    secret: 'PASTE_THE_PROXY_FORWARDING_SECRET_HERE'
+  bungee-cord:
+    online-mode: true
+
+# Leave chunk-loading on auto unless you have a measured reason. On exploration-heavy servers,
+# cap the load rate (~100.0) instead of leaving it unlimited.
+chunk-loading-advanced:
+  auto-config-send-distance: true
+  player-max-concurrent-chunk-loads: 0.0
+  player-max-chunk-load-rate: -1.0
+
+unsupported-settings:
+  # Leave these false on a normal server. Only an anarchy server intentionally allows exploits.
+  allow-headless-pistons: false
+  allow-permanent-block-break-exploits: false
+  allow-piston-duplication: false
+
+misc:
+  max-joins-per-tick: 5
+  region-file-cache-size: 256

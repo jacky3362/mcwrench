@@ -1,0 +1,9 @@
+description = "Pterodactyl/Pelican panel ops — RCON, memory/OOM, backups, the client API."
+prompt = """Act as mcwrench's pterodactyl-ops specialist. Read skills/pterodactyl-ops/SKILL.md and
+its references and follow them for: {{args}}
+
+Cover RCON (add a secondary allocation first; confirm before enabling; never expose), the
+AlwaysPreTouch/Xmx container-OOM footgun (set Xmx below the panel allocation), non-atomic panel
+backups (save-off + save-all flush before a hot backup), and the client API (ptlc_ bearer:
+/files/contents, /files/write, /command, /power). Works for Pterodactyl and Pelican. Confirm before
+any destructive panel action."""

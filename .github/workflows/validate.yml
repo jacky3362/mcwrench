@@ -1,0 +1,51 @@
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (with symlinks)
+        uses: actions/checkout@v4
+        with:
+          # Ensure the .agents/skills symlink is materialised as a real symlink on Linux.
+          submodules: false
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Structural + portability validation
+        run: node scripts/validate.mjs
+
+      - name: Assert .agents/skills is a symlink to skills/ (one source of truth)
+        run: |
+          set -e
+          if [ ! -L .agents/skills ]; then
+            echo "::error::.agents/skills is not a symlink"; exit 1
+          fi
+          target="$(readlink .agents/skills)"
+          echo ".agents/skills -> $target"
+          if [ "$target" != "../skills" ]; then
+            echo "::error::.agents/skills should point to ../skills (got $target)"; exit 1
+          fi
+          test -f .agents/skills/minecraft-server-router/SKILL.md
+          echo "Codex symlink resolves correctly."
+
+      - name: JSON manifests parse
+        run: |
+          node -e "JSON.parse(require('fs').readFileSync('.claude-plugin/plugin.json','utf8')); console.log('plugin.json OK')"
+          node -e "JSON.parse(require('fs').readFileSync('.claude-plugin/marketplace.json','utf8')); console.log('marketplace.json OK')"
+
+      - name: Docs-learner imports cleanly (no syntax errors)
+        run: node --check skills/learn-plugin-docs/scripts/learn-docs.mjs
+
+      # Optional: validate with the official CLI when available.
+      # The Claude Code CLI is not assumed present in CI; run `claude plugin validate . --strict`
+      # locally before publishing. See docs/CONTRIBUTING.md.

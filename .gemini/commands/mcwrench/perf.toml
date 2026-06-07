@@ -1,0 +1,8 @@
+description = "Diagnose and fix Minecraft server lag, low TPS, high MSPT, GC pauses or OOM."
+prompt = """Act as mcwrench's performance-tuning specialist. Read skills/performance-tuning/SKILL.md
+and its references (aikars-flags.md, spark-cheatsheet.md) and follow them for: {{args}}
+
+Measure first with Spark, then tune heap/JVM flags (Xms==Xmx, host headroom; Aikar's/G1 default;
+ZGC only as a clean Java-25 alternative, never mixed) and config (view/simulation distance,
+entity-activation-range, mob spawn limits, hoppers, chunk load rate). Give a concrete current ->
+recommended diff tied to the profile. Confirm Java 25 for Paper 26.1+."""

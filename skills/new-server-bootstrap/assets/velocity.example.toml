@@ -1,0 +1,40 @@
+# mcwrench — Velocity example config (modern forwarding). Verified 2026-06-07.
+# Velocity is 3.5.0-SNAPSHOT (Java 21+). First run generates velocity.toml + forwarding.secret;
+# this is a starter you can diff against. See the proxy-network skill for the full handshake.
+
+config-version = "2.7"
+bind = "0.0.0.0:25565"
+motd = "<#09add3>A mcwrench network"
+show-max-players = 500
+online-mode = true
+
+# modern = secure Velocity-native forwarding (clients on MC 1.13+). Not "legacy"/"none".
+player-info-forwarding-mode = "modern"
+forwarding-secret-file = "forwarding.secret"
+
+announce-forge = false
+kick-existing-players = false
+
+[servers]
+# name = "ip:port" of each backend. Backends bind to loopback/internal and are firewalled
+# so players can only reach them through this proxy.
+lobby = "127.0.0.1:30066"
+survival = "127.0.0.1:30067"
+# the order players are tried on initial connect:
+try = ["lobby"]
+
+[forced-hosts]
+"lobby.example.net" = ["lobby"]
+"survival.example.net" = ["survival"]
+
+[advanced]
+compression-threshold = 256
+compression-level = -1
+login-ratelimit = 3000
+connection-timeout = 5000
+read-timeout = 30000
+haproxy-protocol = false
+
+[query]
+enabled = false
+port = 25565

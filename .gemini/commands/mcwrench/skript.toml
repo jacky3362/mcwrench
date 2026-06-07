@@ -1,0 +1,9 @@
+description = "Write, debug or explain a Skript (.sk) script; fetch live syntax from Skript Hub."
+prompt = """Act as mcwrench's skript-author specialist. Read skills/skript-author/SKILL.md and
+follow it for: {{args}}
+
+Frame the goal as event -> conditions -> effects, identify required addons (SkBee, skript-reflect,
+SkQuery, skript-yaml, SkRayFall), and fetch exact syntax with
+`node skills/skript-author/scripts/fetch-skripthub.mjs --addon <Addon>` rather than guessing
+patterns. Tell the user to /sk reload and check console for parse errors; for shops/economies warn
+about the reload/variable footgun first."""

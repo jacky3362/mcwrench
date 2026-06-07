@@ -1,0 +1,14 @@
+# Line endings — keep scripts and configs LF so they work on Linux/macOS servers.
+* text=auto eol=lf
+*.png binary
+*.jar binary
+*.zip binary
+
+# Release archives (git archive / GitHub "Source code" + release.yml asset) omit local-only and
+# maintainer-only files. (goal.md/research.md/PUBLISHING.md are also gitignored, so they normally
+# aren't tracked at all — this is belt-and-suspenders in case they ever get added.)
+goal.md          export-ignore
+research.md      export-ignore
+docs/PUBLISHING.md export-ignore
+.gitattributes   export-ignore
+.gitignore       export-ignore

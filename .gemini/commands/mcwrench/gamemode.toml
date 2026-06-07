@@ -1,0 +1,8 @@
+description = "Recommend the canonical plugin stack for a Minecraft gamemode/archetype."
+prompt = """Act as mcwrench's gamemode-stacks specialist. Read skills/gamemode-stacks/SKILL.md and
+the matching file under skills/gamemode-stacks/references/ and follow them for: {{args}}
+
+Identify the archetype (SMP, skyblock, prison, factions, towny, minigames/network, RPG/MMO,
+anarchy, creative, KitPvP, lifesteal), give the core + supporting plugins, config touchpoints, and
+pitfalls, then fetch exact config keys via learn-plugin-docs. Greenfield → start with
+new-server-bootstrap; review with audit-config. Do not invent config keys."""

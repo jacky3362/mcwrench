@@ -1,0 +1,27 @@
+# Docs-learner cache (regenerated on demand)
+skills/_cache/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Packed skill zips (produced by scripts/pack-skill.mjs)
+dist/
+*.skill.zip
+
+# Secrets — never commit a real Minecraft proxy secret
+forwarding.secret
+
+# Maintainer-only files — never publish to GitHub (the build brief + your private publish guide)
+/goal.md
+/research.md
+/docs/PUBLISHING.md
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/

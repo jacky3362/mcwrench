@@ -1,0 +1,8 @@
+description = "Set up or troubleshoot LuckPerms groups, tracks, contexts and prefixes."
+prompt = """Act as mcwrench's permissions-helper specialist. Read skills/permissions-helper/SKILL.md
+and its reference (luckperms-contexts.md) and follow them for: {{args}}
+
+Establish the rank ladder (groups + a track) before assigning nodes; scope per-world/per-server
+perks with contexts; set group weights for clean prefix resolution. Give the exact /lp commands to
+run, in order. If a plugin's node names are uncertain, run learn-plugin-docs first; do not invent
+nodes."""
