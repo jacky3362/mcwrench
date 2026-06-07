@@ -1,17 +1,32 @@
-# mcwrench 🔧
+<div align="center">
 
-**A general-purpose, gamemode-agnostic Minecraft server config & operations assistant** for
-Claude Code, Claude.ai, OpenAI Codex, Google Antigravity, and Gemini CLI.
+<img src="assets/mcwrench.jpg" alt="mcwrench — configure and tune any Minecraft server" width="100%">
 
-mcwrench turns Claude (or Codex) into an expert Minecraft **server administrator** — for *any*
+Audit configs, kill lag, wire proxies and permissions, pick plugin stacks, bootstrap servers, and
+learn **any** plugin's docs on demand — for **any** server type and **any** plugin.
+
+[![validate](https://github.com/Teddy563/mcwrench/actions/workflows/validate.yml/badge.svg)](https://github.com/Teddy563/mcwrench/actions/workflows/validate.yml)
+&nbsp;![version](https://img.shields.io/badge/version-1.0.0-blue)
+&nbsp;![license](https://img.shields.io/badge/license-MIT-green)
+&nbsp;![Minecraft](https://img.shields.io/badge/Minecraft-26.1.x-brightgreen)
+&nbsp;![Java](https://img.shields.io/badge/Java-25-orange)
+
+**Claude Code · Claude.ai · OpenAI Codex · Google Antigravity · Gemini CLI**
+
+</div>
+
+mcwrench turns your AI assistant into an expert Minecraft **server administrator** — for *any*
 server type (SMP, skyblock, prison, factions, towny, minigames, RPG/MMO, anarchy, creative,
-KitPvP, lifesteal) and *any* plugin. It audits your config files, diagnoses lag, tunes
-performance, sets up proxies and permissions, and **learns any plugin's docs on demand**.
+KitPvP, lifesteal) and *any* plugin. It audits config files, diagnoses lag, tunes performance,
+sets up proxies and permissions, recommends gamemode plugin stacks, bootstraps new servers, and
+**learns any plugin's docs on demand**.
 
 > Not a mod/plugin *development* tool — mcwrench is for **running and configuring** a server.
 
 Verified for **2026**: Minecraft `26.1.x` (the `1.` prefix is gone), **Paper requires Java 25**,
 Velocity `3.5.0-SNAPSHOT`. Knowledge files are dated and cite sources.
+
+**📖 New here?** The **[usage guide](docs/USAGE.md)** explains how it works and every command with examples.
 
 ---
 
@@ -37,8 +52,8 @@ GitBook `.md` trick + `llms.txt`, raw GitHub READMEs — and caches results unde
 
 ## Install
 
-> Skills are filesystem-based and **do not sync** between Claude Code, Claude.ai, and Codex.
-> Install in each surface you use.
+> Skills are filesystem-based and **do not sync** across Claude Code, Claude.ai, Codex,
+> Antigravity, and Gemini CLI. Install in each surface you use.
 
 ### 1. Claude Code (plugin + marketplace)
 
@@ -99,7 +114,7 @@ Antigravity uses the same **Agent Skills** standard and its native skills path *
 the symlink resolves; on Windows run `node scripts/setup-symlinks.mjs` first). Antigravity also
 reads the root **`AGENTS.md`** (and `.agents/rules/mcwrench.md`) for rules, and exposes the
 **workflows** in `.agents/workflows/` as slash commands: `/audit`, `/learn`, `/perf`, `/perms`,
-`/proxy`. Just describe the task to auto-trigger a skill.
+`/proxy`, `/bootstrap`, `/panel`, `/gamemode`, `/skript`. Just describe the task to auto-trigger a skill.
 
 ### 5. Gemini CLI
 
@@ -107,7 +122,8 @@ Gemini CLI loads memory from **`GEMINI.md`** automatically; `.gemini/settings.js
 `AGENTS.md`/`CLAUDE.md` into context (`context.fileName`). Gemini has no built-in skills loader, so
 `GEMINI.md` points it at the `skills/<name>/SKILL.md` playbooks. Slash commands live in
 `.gemini/commands/mcwrench/`: `/mcwrench:audit`, `/mcwrench:learn`, `/mcwrench:perf`,
-`/mcwrench:perms`, `/mcwrench:proxy`. From the repo root:
+`/mcwrench:perms`, `/mcwrench:proxy`, `/mcwrench:bootstrap`, `/mcwrench:panel`, `/mcwrench:gamemode`,
+`/mcwrench:skript`. From the repo root:
 
 ```bash
 gemini        # GEMINI.md + AGENTS.md load as context; then ask "audit my paper config"
@@ -121,24 +137,6 @@ Say things like: *"my server is laggy / low TPS"*, *"audit my paper config"*, *"
 my Paper server"*, *"set up Velocity modern forwarding"*, *"give VIP rank fly in the creative
 world"*, *"how do I configure MythicMobs spawners"*, *"find me an anti-cheat plugin"*. mcwrench's
 descriptions are deliberately pushy so the right skill engages.
-
----
-
-## Before you push (template checklist)
-
-This repo ships with the placeholder **`Teddy563`**. Replace it everywhere before publishing:
-
-```bash
-# from the repo root, replace Teddy563 with your GitHub username
-grep -rl 'Teddy563' . --exclude-dir=.git | xargs sed -i 's/Teddy563/<YOUR_GH>/g'
-```
-
-Files affected: `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`, `README.md`,
-`CHANGELOG.md`, `LICENSE`, `docs/CONTRIBUTING.md`, and the docs-learner `User-Agent`.
-
-This repo is already `git init`'d with the `.agents/skills` symlink committed as a proper git
-symlink object (so it materialises correctly on Linux/macOS clones). To start history fresh:
-`rm -rf .git && git init`. Then add your remote and push.
 
 ---
 
@@ -156,13 +154,14 @@ agents/                  optional subagents (config-auditor, docs-learner)
 .gemini/commands/        Gemini CLI slash commands (TOML)
 CLAUDE.md / AGENTS.md / GEMINI.md   matching guidance per tool
 scripts/                 validate.mjs, setup-symlinks.mjs, pack-skill.mjs
-docs/                    RESEARCH-NOTES, NAME, DECISIONS, CONTRIBUTING
-.github/workflows/        validate.yml (CI)
+docs/                    USAGE.md (guide) + CONTRIBUTING.md
+.github/workflows/        validate.yml + release.yml (CI + tagged releases)
 ```
 
 ## Caveats
 
-- **Slash commands are Claude Code only.** On Claude.ai/Codex, rely on auto-trigger.
+- **Slash commands** work in Claude Code, Gemini CLI, and Antigravity; on Claude.ai and Codex,
+  rely on auto-trigger from the (pushy) skill descriptions.
 - **Folia** support across plugins is still poor in 2026 — mcwrench defaults to recommending
   **Paper**, and checks `folia-supported: true` before suggesting plugins for Folia.
 - **Aikar's flags** are G1GC and remain PaperMC's documented default; the "use ZGC on Java 25"
@@ -179,5 +178,5 @@ GitHub Release (with the matching CHANGELOG section as the notes).
 
 ## License
 
-[MIT](LICENSE). See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) to contribute and
-[docs/RESEARCH-NOTES.md](docs/RESEARCH-NOTES.md) for sourced, dated facts behind the knowledge base.
+[MIT](LICENSE). New here? Read the **[usage guide](docs/USAGE.md)**. Want to contribute? See
+[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md).

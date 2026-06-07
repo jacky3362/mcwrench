@@ -50,7 +50,5 @@ and Gemini CLI** from a single source of truth (`skills/`).
 - Knowledge dated **2026-06-07**: Minecraft `26.1.x`, **Paper requires Java 25**, Velocity
   `3.5.0-SNAPSHOT`, Paper downloads via **Fill v3** (`fill.papermc.io`), Pelican still beta/AGPLv3.
   The Aikar's-flags Java-25 caveat is attributed to community/hosting (not PaperMC).
-- Repo/author URLs use the placeholder `Teddy563` — replace before publishing
-  (see `docs/PUBLISHING.md`, kept local-only).
 
 [1.0.0]: https://github.com/Teddy563/mcwrench/releases/tag/v1.0.0

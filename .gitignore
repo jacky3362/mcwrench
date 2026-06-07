@@ -14,10 +14,12 @@ dist/
 # Secrets — never commit a real Minecraft proxy secret
 forwarding.secret
 
-# Maintainer-only files — never publish to GitHub (the build brief + your private publish guide)
+# Maintainer-only / local dev — never publish to GitHub.
+# Build brief, original research, and the local-only dev docs (how-it-was-built notes,
+# name rationale, decisions log, publishing guide).
 /goal.md
 /research.md
-/docs/PUBLISHING.md
+/.dev-docs/
 
 # OS / editor
 .DS_Store
