@@ -1,9 +1,9 @@
 <div align="center">
 
-<img src="assets/banner.jpg" alt="mcwrench — configure and tune any Minecraft server" width="100%">
+<img src="assets/banner.jpg" alt="mcwrench, configure and tune any Minecraft server" width="100%">
 
 Audit configs, kill lag, wire proxies and permissions, pick plugin stacks, bootstrap servers, and
-learn **any** plugin's docs on demand — for **any** server type and **any** plugin.
+learn **any** plugin's docs on demand, for **any** server type and **any** plugin.
 
 [![validate](https://github.com/Teddy563/mcwrench/actions/workflows/validate.yml/badge.svg)](https://github.com/Teddy563/mcwrench/actions/workflows/validate.yml)
 &nbsp;![version](https://img.shields.io/badge/version-1.1.0-blue)
@@ -15,13 +15,13 @@ learn **any** plugin's docs on demand — for **any** server type and **any** pl
 
 </div>
 
-mcwrench turns your AI assistant into an expert Minecraft **server administrator** — for *any*
+mcwrench turns your AI assistant into an expert Minecraft **server administrator**, for *any*
 server type (SMP, skyblock, prison, factions, towny, minigames, RPG/MMO, anarchy, creative,
 KitPvP, lifesteal) and *any* plugin. It audits config files, diagnoses lag, tunes performance,
 sets up proxies and permissions, recommends gamemode plugin stacks, bootstraps new servers, and
 **learns any plugin's docs on demand**.
 
-> Not a mod/plugin *development* tool — mcwrench is for **running and configuring** a server.
+> Not a mod/plugin *development* tool. mcwrench is for **running and configuring** a server.
 
 Verified for **2026**: Minecraft `26.1.x` (the `1.` prefix is gone), **Paper requires Java 25**,
 Velocity `3.5.0-SNAPSHOT`. Knowledge files are dated and cite sources.
@@ -46,8 +46,8 @@ Velocity `3.5.0-SNAPSHOT`. Knowledge files are dated and cite sources.
 | `skript-author` | Skript, `.sk`, "my script doesn't work", `/sk reload` | Event→effect model, reload-safety, live Skript Hub syntax. |
 | `learn-plugin-docs` | "how do I configure X", any unfamiliar plugin | Fetches + condenses real docs; **64 popular plugins pre-loaded** in `library/`; `--pin` keeps any permanently. |
 
-The **docs-learner** routes to the cheapest channel per host — Modrinth & Hangar REST APIs, the
-GitBook `.md` trick + `llms.txt`, raw GitHub READMEs — and caches results under `skills/_cache/`
+The **docs-learner** routes to the cheapest channel per host (Modrinth & Hangar REST APIs, the
+GitBook `.md` trick + `llms.txt`, raw GitHub READMEs) and caches results under `skills/_cache/`
 (configurable TTL, stale-while-revalidate). **64 popular plugins ship pre-fetched** in the committed
 `library/` for zero-network lookups. A **server profile** (`scan-server-tree.mjs --write-profile`)
 lets every skill tailor answers without re-asking version/host/stack.
@@ -88,7 +88,7 @@ claude --plugin-dir ./
 
 ### 2. Claude.ai (web / desktop)
 
-Claude.ai has no custom slash commands — skills **auto-trigger** from their descriptions. Upload
+Claude.ai has no custom slash commands, so skills **auto-trigger** from their descriptions. Upload
 the skill(s) you want:
 
 ```bash
@@ -96,7 +96,7 @@ node scripts/pack-skill.mjs --all      # writes dist/<skill>.skill.zip (skill fo
 ```
 
 Then in Claude.ai: **Customize → Skills → Create skill → Upload** the zip. Requires **code
-execution enabled** (Pro/Max/Team/Enterprise). To invoke, just describe the task — e.g.
+execution enabled** (Pro/Max/Team/Enterprise). To invoke, just describe the task, e.g.
 *"audit my paper server config"* or *"my SMP is laggy, low TPS"*.
 
 ### 3. OpenAI Codex
@@ -114,7 +114,7 @@ Codex auto-select by description.
 ### 4. Google Antigravity
 
 Antigravity uses the same **Agent Skills** standard and its native skills path **is**
-`.agents/skills/` — so opening this repo as a workspace already loads the skills (on Linux/macOS
+`.agents/skills/`, so opening this repo as a workspace already loads the skills (on Linux/macOS
 the symlink resolves; on Windows run `node scripts/setup-symlinks.mjs` first). Antigravity also
 reads the root **`AGENTS.md`** (and `.agents/rules/mcwrench.md`) for rules, and exposes the
 **workflows** in `.agents/workflows/` as slash commands: `/audit`, `/learn`, `/perf`, `/perms`,
@@ -157,16 +157,16 @@ agents/                  optional subagents (config-auditor, docs-learner)
 .gemini/settings.json    Gemini CLI context alias (reads AGENTS.md/CLAUDE.md)
 .gemini/commands/        Gemini CLI slash commands (TOML)
 CLAUDE.md / AGENTS.md / GEMINI.md   matching guidance per tool
-scripts/                 validate.mjs, setup-symlinks.mjs, pack-skill.mjs
+scripts/                 validate.mjs, setup-symlinks.mjs, pack-skill.mjs, refresh-library.mjs
 docs/                    USAGE.md (guide) + CONTRIBUTING.md
-.github/workflows/        validate.yml + release.yml (CI + tagged releases)
+.github/workflows/        validate.yml, release.yml, refresh-docs.yml (CI, releases, doc refresh)
 ```
 
 ## Caveats
 
 - **Slash commands** work in Claude Code, Gemini CLI, and Antigravity; on Claude.ai and Codex,
   rely on auto-trigger from the (pushy) skill descriptions.
-- **Folia** support across plugins is still poor in 2026 — mcwrench defaults to recommending
+- **Folia** support across plugins is still poor in 2026, so mcwrench defaults to recommending
   **Paper**, and checks `folia-supported: true` before suggesting plugins for Folia.
 - **Aikar's flags** are G1GC and remain PaperMC's documented default; the "use ZGC on Java 25"
   guidance is community/hosting, not PaperMC. mcwrench never mixes G1 and ZGC flag sets.
