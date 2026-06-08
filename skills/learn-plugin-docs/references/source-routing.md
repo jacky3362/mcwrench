@@ -14,12 +14,12 @@ see notes under the table). The "Status" column reflects the original build orde
 | **GitBook docs** | `.md`-suffix trick (GA since 2025-06-24), then `llms-full.txt` | Append `.md` to a page URL; fall back to `<root>/llms-full.txt`. **Per-site toggleable** — may 404; then fall back further. | **Wired** |
 | **GitHub README** | Raw markdown | `https://raw.githubusercontent.com/{owner}/{repo}/HEAD/README.md` | **Wired** |
 | **GitHub wiki** | Raw markdown | `https://raw.githubusercontent.com/{owner}/{repo}.wiki/HEAD/Home.md` | TODO |
-| **Oraxen** | Content negotiation (dropped standalone llms.txt) | `.md` suffix / `?format=md` / `Accept: text/markdown`; bulk `/api/docs/_index`, `/api/docs/_all` | TODO |
-| **Skript Hub** | Undocumented JSON API | `GET https://skripthub.net/api/v1/addonsyntaxlist/` → filter by `addon` | TODO |
-| **SpigotMC** | XenforoResourceManagerAPI | `https://api.spigotmc.org/simple/0.2/index.php?action=getResource&id={id}` → description is **BBCode**, convert to markdown (lossy; warn) | TODO |
-| **PaperMC docs** | Starlight — `.md` trick does NOT work | Raw markdown from `github.com/PaperMC/docs` | TODO |
-| **MythicMobs** | Self-hosted **GitLab** wiki (not GitBook) | `git.mythiccraft.io` — use GitLab raw, not the GitBook `.md` trick | TODO |
-| **Unknown host** | Headless fetch → `@mozilla/readability` → `turndown` | Generic fallback; cache aggressively | TODO (stub) |
+| **Oraxen** | Content negotiation (dropped standalone llms.txt) | `.md` suffix / `?format=md` / `Accept: text/markdown`; bulk `/api/docs/_index`, `/api/docs/_all` | **Wired** |
+| **Skript Hub** | Undocumented JSON API | `GET https://skripthub.net/api/v1/addonsyntaxlist/` → filter by `addon.name` | **Wired** |
+| **SpigotMC** | XenforoResourceManagerAPI | `https://api.spigotmc.org/simple/0.2/index.php?action=getResource&id={id}` → description is **BBCode**, convert to markdown (lossy; warn) | **Wired** |
+| **PaperMC docs** | Starlight — `.md` trick does NOT work; tree-searches the source repo | Raw markdown from `github.com/PaperMC/docs` (`src/content/docs/**.mdx`) | **Wired** |
+| **MythicMobs** | Self-hosted **GitLab** wiki (not GitBook) | `git.mythiccraft.io` — GitLab raw, not the GitBook `.md` trick | **Wired** |
+| **Unknown host** | Headless fetch → `@mozilla/readability` → `turndown` | Generic fallback; needs optional deps | **Wired** (best-effort) |
 
 ## Resolution order for a bare name
 

@@ -124,13 +124,44 @@ Panel-specific: RCON, the memory/OOM footgun, backups, the client API.
   or set `Xmx` below the container limit and drop `-XX:+AlwaysPreTouch`.
 
 ### `/mcwrench:gamemode` — pick a plugin stack
-Canonical plugin stacks + config touchpoints + pitfalls for 11 archetypes.
+Canonical plugin stacks + config touchpoints + pitfalls for 25 archetypes.
 
 - **Slash:** `/mcwrench:gamemode skyblock` · `/mcwrench:gamemode prison`
 - **Natural:** *"what plugins do I need for a factions server?"*
 - **You get:** the core + supporting plugins for that archetype, what to configure, and the common
   footguns (e.g. *one* claims plugin, *one* skyblock engine), then a hand-off to `learn-plugin-docs`
   for exact keys.
+
+### `/mcwrench:conflicts` — check plugin conflicts
+Flags clashing plugins, missing dependencies, and proxy or Folia mismatches in a plugin set.
+
+- **Slash:** `/mcwrench:conflicts ./myserver` · `/mcwrench:conflicts --list "BentoBox,SuperiorSkyblock2,Vault"`
+- **Natural:** *"do any of my plugins conflict?"*
+- **You get:** a prioritised list (two skyblock engines, two claim systems, ItemsAdder + Oraxen,
+  Vault without an economy, LibsDisguises without ProtocolLib, Folia-unsupported plugins). Reads
+  `<root>/plugins/`, a `--list`, or `--profile`. Conservative by design, so verify a hit with
+  `learn-plugin-docs` before removing anything.
+
+### `/mcwrench:brand` — build a brand kit
+Turns a server **name + vibe** into a cohesive brand kit, emitting each piece in the format the
+target plugin actually parses (MiniMessage vs legacy `&#RRGGBB`).
+
+- **Slash:** `/mcwrench:brand a cozy skyblock called Willow Hollow`
+- **Natural:** *"help me name my hardcore anarchy server and write a MOTD"*
+- **You get:** identity (names, tagline, palette + gradient), a 2-line MOTD in both MiniMessage and
+  legacy hex, a themed rank ladder (handed to `permissions-helper` for LuckPerms), and optional
+  store/Discord/in-game copy. Expand a gradient to legacy hex with
+  `node skills/server-branding/scripts/format.mjs --to-legacy "<gradient:#a:#b>text</gradient>"`.
+
+### `/mcwrench:profile` — remember the server
+Writes a small **server profile** (`skills/_cache/server-profile.json`) so later answers stop
+re-asking the version, host, and stack.
+
+- **Slash:** `/mcwrench:profile ./myserver` · `/mcwrench:profile set java 25` · `/mcwrench:profile clear`
+- **Natural:** *"scan my server and remember the setup"*
+- **You get:** auto-detected software, MC version, gamemode, proxy, online-mode, plugins, worlds, and
+  chat formatter — read first by every skill. Set `java`/`host`/`ramMB` manually; confirm the
+  auto-detected MC version and formatter before relying on them.
 
 ### `/mcwrench:skript` — write/debug Skript
 Event→effect modelling, reload-safety, and live syntax from Skript Hub.
@@ -166,7 +197,20 @@ It routes each plugin to the **cheapest authoritative source** and caches the re
 | GitBook / unknown | `.md` → `llms-full.txt` → Readability fallback (optional deps) |
 
 Output lands in `skills/_cache/<slug>/REFERENCE.md` (condensed, with `source_url` + `fetched_at`)
-and `RAW.md` (full). The cache is git-ignored. Re-running within 7 days reuses the cache.
+and `RAW.md` (full). The cache is git-ignored. Re-running within the TTL reuses the cache.
+
+**Library + durability.** **64 popular plugins ship pre-fetched** in the committed
+`skills/learn-plugin-docs/library/` (with a name/alias `registry.json`), so common lookups need
+**zero network**. Resolution order: **library → `_cache/` → registry URL → Modrinth/Hangar search**.
+
+- `--pin` — re-fetch from the canonical source and store **permanently** into the library (survives
+  the cache TTL). For a registry name it fetches the registry's URL, avoiding by-name mis-resolution.
+- `--refresh` — bypass library + cache and re-fetch.
+- `MCWRENCH_CACHE_TTL=<days>` — change the cache TTL (default 7).
+- **stale-while-revalidate** — if a refetch fails (host/network down) but a cache exists, the cached
+  copy is served instead of erroring. A `meta.json` sidecar stores HTTP validators for conditional
+  revalidation (304 → reuse). `scripts/refresh-library.mjs` (+ the `refresh-docs` CI) re-pins the
+  whole library and opens a PR with the diffs.
 
 ---
 
@@ -177,8 +221,12 @@ and `RAW.md` (full). The cache is git-ignored. Re-running within 7 days reuses t
 | `skills/learn-plugin-docs/scripts/learn-docs.mjs "<name-or-url>"` | Fetch + condense plugin docs. |
 | `skills/new-server-bootstrap/scripts/fetch-paper.mjs <mcver> [--download]` | Resolve latest Paper via Fill v3. |
 | `skills/skript-author/scripts/fetch-skripthub.mjs --addon <X> \| --search <t>` | Pull Skript syntax. |
-| `skills/audit-config/scripts/scan-server-tree.mjs <root> [--json]` | Manifest a server tree. |
+| `skills/audit-config/scripts/scan-server-tree.mjs <root> [--json\|--write-profile]` | Manifest a tree; `--write-profile` saves the server profile. |
+| `skills/audit-config/scripts/server-profile.mjs [get\|set\|clear …]` | Show / edit the server profile. |
+| `skills/audit-config/scripts/check-conflicts.mjs <root>\|--list "A,B"\|--profile` | Flag plugin conflicts + missing deps. |
 | `skills/audit-config/scripts/diff-against-defaults.mjs <cfg> <defaults>` | Show overridden keys. |
+| `skills/server-branding/scripts/format.mjs --to-legacy\|--to-mm\|--preview "<text>"` | Convert MiniMessage ↔ legacy color. |
+| `scripts/refresh-library.mjs [plugin]` | Re-pin the committed plugin library from canonical sources. |
 | `scripts/validate.mjs [--strict]` | Validate the repo structure + portability. |
 | `scripts/pack-skill.mjs <name> \| --all` | Zip a skill folder for Claude.ai. |
 | `scripts/setup-symlinks.mjs` | Recreate `.agents/skills` locally on Windows. |

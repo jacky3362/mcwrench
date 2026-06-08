@@ -6,7 +6,7 @@ Audit configs, kill lag, wire proxies and permissions, pick plugin stacks, boots
 learn **any** plugin's docs on demand — for **any** server type and **any** plugin.
 
 [![validate](https://github.com/Teddy563/mcwrench/actions/workflows/validate.yml/badge.svg)](https://github.com/Teddy563/mcwrench/actions/workflows/validate.yml)
-&nbsp;![version](https://img.shields.io/badge/version-1.0.0-blue)
+&nbsp;![version](https://img.shields.io/badge/version-1.1.0-blue)
 &nbsp;![license](https://img.shields.io/badge/license-MIT-green)
 &nbsp;![Minecraft](https://img.shields.io/badge/Minecraft-26.1.x-brightgreen)
 &nbsp;![Java](https://img.shields.io/badge/Java-25-orange)
@@ -39,14 +39,18 @@ Velocity `3.5.0-SNAPSHOT`. Knowledge files are dated and cite sources.
 | `performance-tuning` | "my server is laggy", low TPS, OOM, "Aikar's flags" | Spark profiling, JVM/heap, view/sim distance, entity & chunk tuning. |
 | `permissions-helper` | LuckPerms, ranks, contexts, prefixes | Groups, tracks, contexts, meta, node conventions. |
 | `proxy-network` | Velocity, BungeeCord, "modern forwarding", broken UUIDs behind a proxy | The forwarding contract, `velocity.toml`, troubleshooting. |
-| `gamemode-stacks` | "what plugins for a [skyblock/prison/SMP…] server" | Canonical stacks + touchpoints + pitfalls for 11 archetypes. |
+| `gamemode-stacks` | "what plugins for a [skyblock/prison/SMP…] server" | Canonical stacks + touchpoints + pitfalls for 25 archetypes. |
+| `server-branding` | "brand my server", server name, MOTD, ranks, store/Discord copy, tone | Brand kit in the right format per plugin; tone presets; MiniMessage↔legacy helper. |
 | `new-server-bootstrap` | "set up a new server", "download Paper", "what Java" | Fill v3 Paper download, Java 25, EULA, Aikar startup, starter configs. |
 | `pterodactyl-ops` | Pterodactyl, Pelican, "the panel", RCON on a panel, container OOM | RCON allocation, the Xmx/OOM footgun, backups, the client API. |
 | `skript-author` | Skript, `.sk`, "my script doesn't work", `/sk reload` | Event→effect model, reload-safety, live Skript Hub syntax. |
-| `learn-plugin-docs` | "how do I configure X", any unfamiliar plugin | Fetches + condenses the plugin's real docs into a local reference. |
+| `learn-plugin-docs` | "how do I configure X", any unfamiliar plugin | Fetches + condenses real docs; **64 popular plugins pre-loaded** in `library/`; `--pin` keeps any permanently. |
 
 The **docs-learner** routes to the cheapest channel per host — Modrinth & Hangar REST APIs, the
-GitBook `.md` trick + `llms.txt`, raw GitHub READMEs — and caches results under `skills/_cache/`.
+GitBook `.md` trick + `llms.txt`, raw GitHub READMEs — and caches results under `skills/_cache/`
+(configurable TTL, stale-while-revalidate). **64 popular plugins ship pre-fetched** in the committed
+`library/` for zero-network lookups. A **server profile** (`scan-server-tree.mjs --write-profile`)
+lets every skill tailor answers without re-asking version/host/stack.
 
 ---
 
@@ -73,7 +77,7 @@ claude plugin install mcwrench@mcwrench
 
 Skills then auto-trigger, and you get slash aliases: `/mcwrench:audit`, `/mcwrench:learn`,
 `/mcwrench:perf`, `/mcwrench:perms`, `/mcwrench:proxy`, `/mcwrench:bootstrap`, `/mcwrench:panel`,
-`/mcwrench:gamemode`, `/mcwrench:skript`.
+`/mcwrench:gamemode`, `/mcwrench:conflicts`, `/mcwrench:brand`, `/mcwrench:profile`, `/mcwrench:skript`.
 
 **Local dev (no install):**
 
@@ -114,7 +118,7 @@ Antigravity uses the same **Agent Skills** standard and its native skills path *
 the symlink resolves; on Windows run `node scripts/setup-symlinks.mjs` first). Antigravity also
 reads the root **`AGENTS.md`** (and `.agents/rules/mcwrench.md`) for rules, and exposes the
 **workflows** in `.agents/workflows/` as slash commands: `/audit`, `/learn`, `/perf`, `/perms`,
-`/proxy`, `/bootstrap`, `/panel`, `/gamemode`, `/skript`. Just describe the task to auto-trigger a skill.
+`/proxy`, `/bootstrap`, `/panel`, `/gamemode`, `/conflicts`, `/brand`, `/profile`, `/skript`. Just describe the task to auto-trigger a skill.
 
 ### 5. Gemini CLI
 
@@ -123,7 +127,7 @@ Gemini CLI loads memory from **`GEMINI.md`** automatically; `.gemini/settings.js
 `GEMINI.md` points it at the `skills/<name>/SKILL.md` playbooks. Slash commands live in
 `.gemini/commands/mcwrench/`: `/mcwrench:audit`, `/mcwrench:learn`, `/mcwrench:perf`,
 `/mcwrench:perms`, `/mcwrench:proxy`, `/mcwrench:bootstrap`, `/mcwrench:panel`, `/mcwrench:gamemode`,
-`/mcwrench:skript`. From the repo root:
+`/mcwrench:conflicts`, `/mcwrench:brand`, `/mcwrench:profile`, `/mcwrench:skript`. From the repo root:
 
 ```bash
 gemini        # GEMINI.md + AGENTS.md load as context; then ask "audit my paper config"

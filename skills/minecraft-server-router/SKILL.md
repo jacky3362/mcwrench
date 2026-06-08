@@ -32,10 +32,15 @@ the user's actual version before giving version-specific advice.
 
 ## How to engage
 
-1. **Identify the surface.** Ask for / infer: server software (Paper, Purpur, Folia,
-   Vanilla, Velocity proxy, a modded loader), Minecraft version, gamemode/archetype,
-   host (self-hosted, Pterodactyl/Pelican, other panel), and the symptom or goal.
-2. **Route to the specialist skill** (all bundled in this plugin):
+1. **Read the server profile first.** If `skills/_cache/server-profile.json` exists, read it and
+   tailor every answer to it (software, MC version, host, RAM, gamemode, proxy, online-mode,
+   plugins, chat formatter). **Do not re-ask facts already recorded there.** To create or refresh
+   it, run `scan-server-tree.mjs <root> --write-profile` (audit-config) — auto-detected MC version
+   and chat formatter are best-effort, so confirm those before version- or format-specific advice.
+2. **Identify the surface.** For anything the profile doesn't cover, ask for / infer: server
+   software (Paper, Purpur, Folia, Vanilla, Velocity proxy, a modded loader), Minecraft version,
+   gamemode/archetype, host (self-hosted, Pterodactyl/Pelican, other panel), and the symptom or goal.
+3. **Route to the specialist skill** (all bundled in this plugin):
 
    | If the user wants to… | Use skill |
    |---|---|
@@ -43,12 +48,16 @@ the user's actual version before giving version-specific advice.
    | Fix lag, TPS/MSPT drops, OOM, GC pauses, profile with Spark | `performance-tuning` |
    | Set up LuckPerms groups, tracks, contexts, prefixes | `permissions-helper` |
    | Configure Velocity/Bungee proxies, modern forwarding | `proxy-network` |
+   | Pick the plugin stack for a gamemode/archetype | `gamemode-stacks` |
+   | Brand a server: name, MOTD, ranks, store/Discord copy, scoreboard, tone | `server-branding` |
+   | Bootstrap a greenfield Paper/Velocity server | `new-server-bootstrap` |
+   | Pterodactyl/Pelican panel ops (RCON, OOM, backups) | `pterodactyl-ops` |
    | Understand or configure a specific plugin you're unsure about | `learn-plugin-docs` |
 
-3. **When you lack confident, current knowledge about a specific plugin's config keys,
+4. **When you lack confident, current knowledge about a specific plugin's config keys,
    permissions, or commands → invoke `learn-plugin-docs` first**, then answer from the
    fetched reference. Do not guess config keys.
-4. **Never invent config keys or version numbers.** If unverified, say so and fetch docs.
+5. **Never invent config keys or version numbers.** If unverified, say so and fetch docs.
 
 ## Server software cheat-sheet
 

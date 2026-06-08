@@ -43,7 +43,8 @@ export async function fetchFromUrl(url, { userAgent }) {
     throw new Error(
       `GitBook adapter could not get markdown from ${url.href} ` +
         `(tried .md, /llms-full.txt, /llms.txt). ` +
-        `Readability fallback is not wired in v0.1 — ask the user to paste the docs or give a GitHub source.`,
+        `The generic Readability fallback is tried next for unknown hosts (it needs optional deps); ` +
+        `otherwise paste the docs or give a GitHub source.`,
     );
   }
 

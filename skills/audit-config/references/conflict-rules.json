@@ -1,0 +1,88 @@
+{
+  "_comment": "Data for check-conflicts.mjs. Names are normalized (lowercase, no separators, version stripped) and matched by inclusion both ways. Conservative on purpose: only well-established overlaps/deps. Severity: critical (won't start / data loss) > high > medium > low. Verify with learn-plugin-docs before acting.",
+  "mutuallyExclusive": [
+    {
+      "id": "skyblock-engine",
+      "severity": "critical",
+      "members": ["bentobox", "superiorskyblock2", "superiorskyblock", "iridiumskyblock", "fabledskyblock", "uskyblock", "askyblock"],
+      "note": "Two skyblock engines fight over island worlds/data. Pick one."
+    },
+    {
+      "id": "claim-protection",
+      "severity": "high",
+      "members": ["griefprevention", "lands", "protectionstones", "redprotect", "kingdomsx", "factionsuuid", "saberfactions", "towny"],
+      "note": "Multiple land/claim systems overlap and confuse protection. Pick one primary claim plugin (WorldGuard regions can coexist for admin areas)."
+    },
+    {
+      "id": "custom-items-pack",
+      "severity": "high",
+      "members": ["itemsadder", "oraxen", "nexo"],
+      "note": "Two resource-pack item plugins fight over the generated pack and self-host port. Run one."
+    },
+    {
+      "id": "core-essentials",
+      "severity": "medium",
+      "members": ["essentialsx", "cmi"],
+      "note": "EssentialsX and CMI both provide homes/spawn/kits/economy; running both double-binds commands. Choose one core."
+    },
+    {
+      "id": "chat-formatter",
+      "severity": "medium",
+      "members": ["venturechat", "huskchat", "deluxechat", "chatty", "fancychat", "ultimatechat"],
+      "note": "Multiple chat formatters compete for the chat event; pick one to keep formatting/MiniMessage consistent."
+    },
+    {
+      "id": "anticheat",
+      "severity": "medium",
+      "members": ["grimac", "vulcan", "matrix", "spartan", "nocheatplus", "themis", "polar"],
+      "note": "Two anti-cheats double-process movement/combat and cause false flags + overhead. Run one."
+    },
+    {
+      "id": "holograms",
+      "severity": "low",
+      "members": ["decentholograms", "holographicdisplays", "fancyholograms"],
+      "note": "Multiple hologram plugins work but are redundant; consolidate to one."
+    },
+    {
+      "id": "rotation-map",
+      "severity": "low",
+      "members": ["dynmap", "bluemap", "squaremap"],
+      "note": "Multiple web-map renderers each render the world (CPU/disk). One is usually enough."
+    }
+  ],
+  "pairs": [
+    {
+      "id": "geyser-floodgate",
+      "severity": "low",
+      "members": ["geyser", "floodgate"],
+      "note": "Geyser + Floodgate are normally paired so Bedrock players join without a Java account."
+    },
+    {
+      "id": "via-backwards",
+      "severity": "low",
+      "members": ["viaversion", "viabackwards"],
+      "note": "ViaBackwards needs ViaVersion; ViaVersion alone supports newer clients only. Add ViaBackwards for older clients."
+    }
+  ],
+  "requires": [
+    {
+      "plugin": "vault",
+      "needs": ["essentialsx", "cmi", "xconomy", "treasury", "economyx", "coinsengine"],
+      "severity": "medium",
+      "note": "Vault is an API bridge with no economy of its own; without an economy provider /balance and shop plugins have nothing to talk to."
+    },
+    {
+      "plugin": "libsdisguises",
+      "needs": ["protocollib"],
+      "severity": "high",
+      "note": "LibsDisguises requires ProtocolLib."
+    },
+    {
+      "plugin": "deluxemenus",
+      "needs": ["placeholderapi"],
+      "severity": "low",
+      "note": "DeluxeMenus uses PlaceholderAPI for %placeholders% in menus (optional but expected)."
+    }
+  ],
+  "foliaAdvisory": "Folia detected: every plugin must declare folia-supported: true or it will fail to load. Verify each against its docs (learn-plugin-docs); most legacy plugins are not Folia-ready in 2026."
+}

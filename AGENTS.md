@@ -11,21 +11,26 @@ truth — both Codex and Antigravity follow symlinked skill folders, and `.agent
 Antigravity's native skills path). Each folder has a `SKILL.md` with `name` + `description`.
 Invoke a skill explicitly (Codex `$skill-name`, e.g. `$audit-config`) or let the agent auto-select
 by description. **Antigravity** also exposes the `.agents/workflows/` files as slash commands
-(`/audit`, `/learn`, `/perf`, `/perms`, `/proxy`, `/bootstrap`, `/panel`, `/gamemode`, `/skript`)
-and reads `.agents/rules/mcwrench.md`.
+(`/audit`, `/learn`, `/perf`, `/perms`, `/proxy`, `/bootstrap`, `/panel`, `/gamemode`, `/conflicts`,
+`/brand`, `/profile`, `/skript`) and reads `.agents/rules/mcwrench.md`.
 
 | Skill | Use for |
 |---|---|
 | `minecraft-server-router` | Always-on hub for ANY Minecraft server-admin topic; routes to a specialist. |
-| `audit-config` | Lint a config tree for footguns, performance, and security issues. |
+| `audit-config` | Lint a config tree for footguns, performance, and security; `--write-profile` + `check-conflicts.mjs`. |
 | `performance-tuning` | Lag / TPS / MSPT / OOM; Spark profiling; Aikar's flags; view/sim distance; entity & chunk tuning. |
 | `permissions-helper` | LuckPerms groups, tracks, contexts, meta; Vault; node conventions. |
 | `proxy-network` | Velocity/Bungee modern forwarding and the forwarding.secret handshake. |
-| `gamemode-stacks` | Canonical plugin stacks for 11 archetypes (SMP, skyblock, prison, factions, towny, minigames, RPG/MMO, anarchy, creative, KitPvP, lifesteal). |
+| `gamemode-stacks` | Canonical plugin stacks for 25 archetypes (SMP, skyblock, prison, factions, towny, minigames, RPG/MMO, anarchy, creative, KitPvP, lifesteal). |
+| `server-branding` | Brand kit from a name + vibe: identity, MOTD (right format per plugin), ranks, store/Discord copy, tone presets, MiniMessage↔legacy helper. |
 | `new-server-bootstrap` | Greenfield Paper/Velocity setup; Fill v3 Paper downloader; Java-25 + Aikar startup; starter configs. |
 | `pterodactyl-ops` | Pterodactyl/Pelican panel: RCON, Xmx/AlwaysPreTouch OOM, non-atomic backups, client API. |
 | `skript-author` | Write/debug Skript; fetch live syntax from Skript Hub. |
-| `learn-plugin-docs` | Fetch + condense ANY plugin's docs into `skills/_cache/<slug>/REFERENCE.md`. |
+| `learn-plugin-docs` | Fetch + condense ANY plugin's docs; 64 popular plugins pre-loaded in `library/`; `--pin` stores permanently. |
+
+**Server profile:** run `node skills/audit-config/scripts/scan-server-tree.mjs <root> --write-profile`
+to write `skills/_cache/server-profile.json` (software, version, host, RAM, gamemode, proxy,
+online-mode, plugins, worlds, chat formatter). **Read it first and don't re-ask known facts.**
 
 ## Operating rules (same as CLAUDE.md)
 

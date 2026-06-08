@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "mcwrench",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "General-purpose, gamemode-agnostic Minecraft server configuration & operations assistant. Audits server.properties, paper-global.yml, paper-world-defaults.yml, spigot.yml, bukkit.yml, purpur.yml, velocity.toml; diagnoses lag/TPS/MSPT/OOM; tunes view-distance, simulation-distance, entity-activation-range, mob spawn limits, chunk loading and Aikar's flags; sets up Velocity/BungeeCord modern forwarding; helps with LuckPerms permissions, contexts and tracks; and learns ANY plugin's docs on demand (Modrinth, Hangar, GitBook, GitHub, Skript Hub). Works for SMP, skyblock, prison, factions, towny, minigames, RPG/MMO, anarchy, creative, KitPvP and lifesteal on Paper, Purpur, Folia, Vanilla, Velocity and Pterodactyl/Pelican.",
   "author": {
     "name": "Teddy563",

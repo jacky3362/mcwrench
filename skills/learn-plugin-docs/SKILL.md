@@ -31,8 +31,12 @@ nodes, commands, or placeholders. Fetch first, answer second. Never invent confi
 Given an argument like `LuckPerms`, `MythicMobs`, `https://modrinth.com/plugin/dynmap`, or a
 Hangar slug:
 
-1. **Check the cache first.** If `skills/_cache/<slug>/REFERENCE.md` exists and is recent, read
-   it instead of re-fetching.
+1. **Check the bundled library first, then the cache.** ~55 popular plugins are pre-fetched into
+   `skills/learn-plugin-docs/library/` (committed, zero-network) and resolved by name/alias via
+   `library/registry.json`. `learn-docs.mjs` does this automatically — resolution order is
+   **library → `_cache/` (7-day) → registry canonical URL → Modrinth/Hangar search**. Pass
+   `--refresh` to bypass the library/cache and re-fetch. If `skills/_cache/<slug>/REFERENCE.md`
+   already exists and is recent, it is reused.
 2. **Resolve the target.** If `$ARGUMENTS` is a URL, infer the host. If it's a name, the script
    searches Modrinth, then Hangar.
 3. **Run the fetcher:**

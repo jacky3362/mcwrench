@@ -4,6 +4,48 @@ All notable changes to **mcwrench** are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] — 2026-06-08
+
+Theme: **durable docs, branding, and double the gamemodes.** Popular plugins load instantly with
+zero network, an 11th skill builds brand kits, and gamemode coverage more than doubles.
+
+### Added
+- **Committed plugin library** (`skills/learn-plugin-docs/library/`): **64 popular plugins
+  pre-fetched** into condensed references (real sources, `source_url` + `fetched_at`) so common
+  lookups need **zero network**. `registry.json` maps names + aliases (`lp`, `papi`, `ia`, `fawe`,
+  `motd`, `buycraft`, …) to the canonical docs URL + library file (83 names: 64 pre-fetched +
+  19 url-only for paid / no-public-docs plugins).
+- **Library-first resolution** in `learn-docs.mjs`: library → `_cache/` → registry URL →
+  Modrinth/Hangar search.
+- **`--pin`** (permanently store docs into the library, surviving the cache TTL; for a registry name
+  it fetches the canonical URL, fixing by-name mis-resolution) and **`--refresh`** flags.
+- **Cache durability:** configurable TTL (`MCWRENCH_CACHE_TTL` days, default 7); **stale-while-
+  revalidate** (serve the cache if a refetch fails); a `meta.json` sidecar with HTTP validators for
+  conditional revalidation (304 → reuse); `scripts/refresh-library.mjs` + a `refresh-docs` CI that
+  re-pins the library and opens a PR with the diffs.
+- **`server-branding` skill (11th skill)** — builds a brand kit (identity, MOTD, rank ladder,
+  store/Discord copy, in-game text) from a name + vibe, emitting each piece in the **format the
+  target plugin actually parses** (MiniMessage vs legacy `&#RRGGBB`) via a verified format-target
+  matrix + MiniMessage cheatsheet + six tone presets. `scripts/format.mjs` converts MiniMessage
+  gradients ↔ legacy hex. Commands `/mcwrench:brand` across all surfaces.
+- **Server-profile memory** — `scan-server-tree.mjs --write-profile` writes
+  `skills/_cache/server-profile.json` (software, MC version, host, RAM, gamemode, proxy, online-mode,
+  plugins, worlds, chat formatter); `server-profile.mjs` shows/sets/clears it; the router reads it
+  first so answers stop re-asking known facts. Command `/mcwrench:profile`.
+- **Plugin conflict checker** — `check-conflicts.mjs` + `conflict-rules.json` flag mutually
+  exclusive plugins (two skyblock engines, two claim systems, ItemsAdder + Oraxen), missing deps
+  (Vault without an economy, LibsDisguises without ProtocolLib), and proxy/Folia mismatches.
+  Surfaced as its own command `/mcwrench:conflicts` (and inside `/mcwrench:audit`).
+- **14 new gamemode references** → **25 archetypes**: OneBlock, GenPvP, BoxPvP, SkyPvP, The Pit,
+  OP Prison, OP Skyblock, OP Factions, HCF, Practice PvP, BedWars, SkyWars, Survival Games, Earth SMP.
+
+### Fixed
+- By-name mis-resolution for paid / non-Modrinth plugins (resolved via the registry); corrected
+  PlotSquared, CombatLogX, HuskSync, Triton, LibsDisguises.
+- Stale "stub / v0.1" wording in `learn-docs.mjs`, `source-routing.md`, and `gitbook.mjs`.
+
+[1.1.0]: https://github.com/Teddy563/mcwrench/releases/tag/v1.1.0
+
 ## [1.0.0] — 2026-06-07
 
 First public release. A general-purpose, gamemode-agnostic Minecraft **server config &

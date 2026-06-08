@@ -44,6 +44,10 @@ Scan a Minecraft server's config files and produce a **prioritised, actionable**
    the `performance-tuning` skill but flag obvious wins here.
 6. **YAML hygiene:** detect literal tab characters (YAML forbids tabs — a common silent
    breakage), duplicate keys, and values that should be quoted.
+7. **Plugin conflict pass:** run `check-conflicts.mjs` to flag mutually exclusive plugins (two
+   skyblock engines, two claim systems, ItemsAdder + Oraxen), missing deps (Vault without an
+   economy, LibsDisguises without ProtocolLib), and proxy/Folia mismatches. Verify any hit with
+   `learn-plugin-docs` before recommending a removal.
 
 ## Reporting format
 
@@ -75,4 +79,14 @@ skill before judging them — do not invent keys.
   node "${CLAUDE_PLUGIN_ROOT}/skills/audit-config/scripts/diff-against-defaults.mjs" \
        <world>/paper-world.yml paper-world-defaults.yml
   ```
-Both are read-only and run on stock Node ≥18. Use them to orient, then read the flagged files.
+- **Check plugin conflicts / missing deps** (uses `references/conflict-rules.json` + the profile):
+  ```bash
+  node "${CLAUDE_PLUGIN_ROOT}/skills/audit-config/scripts/check-conflicts.mjs" <server-root>
+  #   or --list "LuckPerms,EssentialsX,Vault"   or --profile   (add --json for machine output)
+  ```
+- **Write the server profile** so later answers stop re-asking version/host/stack:
+  ```bash
+  node "${CLAUDE_PLUGIN_ROOT}/skills/audit-config/scripts/scan-server-tree.mjs" <server-root> --write-profile
+  ```
+All are read-only on the scanned tree (only `--write-profile` writes, into mcwrench's `_cache/`) and
+run on stock Node ≥18. Use them to orient, then read the flagged files.

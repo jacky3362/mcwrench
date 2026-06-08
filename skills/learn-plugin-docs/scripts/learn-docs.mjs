@@ -8,14 +8,15 @@
 // Output: skills/_cache/<slug>/REFERENCE.md  (condensed)
 //         skills/_cache/<slug>/RAW.md        (full)
 //
-// Wired adapters: Modrinth, Hangar (slug-only API), GitBook (.md -> llms-full.txt), GitHub README.
-// Stubbed adapters (print a TODO + manual fallback): Oraxen, SpigotMC, Skript Hub, PaperMC, Readability.
-// Runs on stock Node >= 18 (global fetch). Heavy deps are only used by the Readability stub and
-// are lazy-imported, so nothing needs `npm install` for the wired paths.
+// Adapters (all wired): Modrinth, Hangar (slug-only API), GitHub README, Oraxen, SpigotMC
+// (BBCode->md), Skript Hub, PaperMC (tree-searches PaperMC/docs), GitBook (.md -> llms-full.txt).
+// The generic Readability fallback for unknown hosts needs optional deps (jsdom/@mozilla/readability/
+// turndown) and is lazy-imported, so nothing needs `npm install` for the common paths.
 
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve, join } from 'node:path';
 import { mkdir, writeFile, stat, readFile } from 'node:fs/promises';
+import { existsSync, readFileSync } from 'node:fs';
 
 import * as modrinth from './adapters/modrinth.mjs';
 import * as hangar from './adapters/hangar.mjs';
@@ -37,7 +38,71 @@ const PLUGIN_ROOT = process.env.CLAUDE_PLUGIN_ROOT
   ? resolve(process.env.CLAUDE_PLUGIN_ROOT)
   : resolve(__dirname, '..', '..', '..');
 const CACHE_DIR = join(PLUGIN_ROOT, 'skills', '_cache');
-const CACHE_TTL_MS = 1000 * 60 * 60 * 24 * 7; // 7 days
+// Cache TTL is configurable via MCWRENCH_CACHE_TTL (days); default 7. The committed library/
+// is permanent and never expires — this only governs the ad-hoc _cache/ path.
+const TTL_DAYS = Number(process.env.MCWRENCH_CACHE_TTL) > 0 ? Number(process.env.MCWRENCH_CACHE_TTL) : 7;
+const CACHE_TTL_MS = 1000 * 60 * 60 * 24 * TTL_DAYS;
+const LIBRARY_DIR = join(PLUGIN_ROOT, 'skills', 'learn-plugin-docs', 'library');
+
+// Cache metadata sidecar (skills/_cache/<slug>/meta.json) holds the source URL + HTTP validators
+// so a stale entry can be revalidated with a conditional request instead of a full re-download.
+async function readMeta(dir) {
+  try { return JSON.parse(await readFile(join(dir, 'meta.json'), 'utf8')); } catch { return null; }
+}
+async function writeMeta(dir, meta) {
+  try { await writeFile(join(dir, 'meta.json'), JSON.stringify(meta, null, 2) + '\n', 'utf8'); } catch {}
+}
+// Conditional GET: ask the source if it changed since we cached it. 304 => reuse the cache.
+async function notModified(meta) {
+  if (!meta || !meta.sourceUrl || (!meta.etag && !meta.lastModified)) return false;
+  const headers = { 'User-Agent': USER_AGENT };
+  if (meta.etag) headers['If-None-Match'] = meta.etag;
+  if (meta.lastModified) headers['If-Modified-Since'] = meta.lastModified;
+  try {
+    const res = await fetch(meta.sourceUrl, { headers, signal: AbortSignal.timeout(8000) });
+    return res.status === 304;
+  } catch {
+    return false;
+  }
+}
+
+// Popular plugins are pre-fetched into library/ (committed) and never need a network call.
+function loadRegistry() {
+  try {
+    return JSON.parse(readFileSync(join(LIBRARY_DIR, 'registry.json'), 'utf8')).plugins || {};
+  } catch {
+    return {};
+  }
+}
+function registryLookup(name) {
+  const reg = loadRegistry();
+  const k = String(name || '').toLowerCase().trim();
+  if (reg[k]) return { slug: k, ...reg[k] };
+  for (const [slug, e] of Object.entries(reg)) {
+    if ((e.aliases || []).some((a) => String(a).toLowerCase() === k)) return { slug, ...e };
+  }
+  return null;
+}
+// Permanently store a fetched reference into library/ (survives the cache TTL) + upsert registry.
+async function pinToLibrary(slug, reference, sourceUrl) {
+  await mkdir(LIBRARY_DIR, { recursive: true });
+  await writeFile(join(LIBRARY_DIR, `${slug}.md`), reference, 'utf8');
+  const regPath = join(LIBRARY_DIR, 'registry.json');
+  let data = { plugins: {} };
+  try {
+    data = JSON.parse(readFileSync(regPath, 'utf8'));
+    if (!data.plugins) data.plugins = {};
+  } catch {
+    /* new registry */
+  }
+  const existing = data.plugins[slug] || {};
+  data.plugins[slug] = {
+    aliases: existing.aliases || [],
+    file: `${slug}.md`,
+    url: sourceUrl || existing.url || '',
+  };
+  await writeFile(regPath, JSON.stringify(data, null, 2) + '\n', 'utf8');
+}
 
 function slugify(s) {
   return String(s)
@@ -130,15 +195,52 @@ async function resolveAndFetch(target) {
 }
 
 async function main() {
-  const arg = process.argv.slice(2).join(' ');
-  const target = parseTarget(arg);
+  const argv = process.argv.slice(2);
+  const refresh = argv.includes('--refresh');
+  const pin = argv.includes('--pin'); // permanently store into library/ (survives the cache TTL)
+  const arg = argv.filter((a) => a !== '--refresh' && a !== '--pin').join(' ');
+  let target = parseTarget(arg);
 
   if (target.kind === 'empty') {
-    console.error('Usage: node learn-docs.mjs "<plugin-name-or-url>"');
+    console.error('Usage: node learn-docs.mjs "<plugin-name-or-url>" [--refresh] [--pin]');
     process.exit(2);
   }
 
   console.error(`[learn-docs] target: ${target.raw} (${target.kind})`);
+
+  // LIBRARY-FIRST: committed popular-plugin docs are zero-network. --refresh/--pin re-fetch.
+  if (!refresh && !pin) {
+    let libSlug = null;
+    if (target.kind === 'name') {
+      const hit = registryLookup(target.name);
+      if (hit) {
+        libSlug = hit.slug;
+        // not pre-stored but we know the canonical docs URL -> fetch from there
+        if (!existsSync(join(LIBRARY_DIR, `${hit.slug}.md`)) && hit.url) target = parseTarget(hit.url);
+      }
+    }
+    if (!libSlug) {
+      libSlug = slugify(target.name || target.repo || (target.url && target.url.pathname) || target.raw);
+    }
+    const libFile = join(LIBRARY_DIR, `${libSlug}.md`);
+    if (existsSync(libFile)) {
+      console.error(`[learn-docs] library hit (no fetch): ${libFile}`);
+      console.log(readFileSync(libFile, 'utf8'));
+      return;
+    }
+  }
+
+  // For --refresh/--pin on a known name, fetch from the registry's canonical URL (not a bare
+  // name search) and keep the registry key as the library filename. This prevents the by-name
+  // mis-resolution that can pick the wrong Modrinth/Hangar project, and makes CI re-pins safe.
+  let registrySlug = null;
+  if (target.kind === 'name') {
+    const hit = registryLookup(target.name);
+    if (hit) {
+      registrySlug = hit.slug;
+      if (hit.url) target = parseTarget(hit.url);
+    }
+  }
 
   const provisionalSlug = slugify(
     target.name || target.repo || (target.url && target.url.pathname) || target.raw,
@@ -146,16 +248,36 @@ async function main() {
   const outDir = join(CACHE_DIR, provisionalSlug);
   const refPath = join(outDir, 'REFERENCE.md');
 
-  if (await isFresh(refPath)) {
+  if (!refresh && !pin && await isFresh(refPath)) {
     console.error(`[learn-docs] cache hit (fresh): ${refPath}`);
     console.log(await readFile(refPath, 'utf8'));
     return;
+  }
+
+  // Stale but cached: revalidate with a conditional request before re-downloading.
+  if (!refresh && !pin && existsSync(refPath)) {
+    const meta = await readMeta(outDir);
+    if (await notModified(meta)) {
+      const cached = await readFile(refPath, 'utf8');
+      await writeFile(refPath, cached, 'utf8'); // bump mtime: fresh for another TTL window
+      await writeMeta(outDir, { ...meta, fetchedAt: new Date().toISOString() });
+      console.error(`[learn-docs] 304 not modified — reused cache (TTL ${TTL_DAYS}d): ${refPath}`);
+      console.log(cached);
+      return;
+    }
   }
 
   let result;
   try {
     result = await resolveAndFetch(target);
   } catch (e) {
+    // stale-while-revalidate: if the refetch fails (host/network down) but we have a cached copy,
+    // serve it rather than erroring — durable beyond the TTL when the source is unreachable.
+    if (existsSync(refPath)) {
+      console.error(`[learn-docs] refetch failed (${e.message}); serving stale cache: ${refPath}`);
+      console.log(await readFile(refPath, 'utf8'));
+      return;
+    }
     console.error(`[learn-docs] FAILED: ${e.message}`);
     process.exit(1);
   }
@@ -179,8 +301,24 @@ async function main() {
   const finalRefPath = join(finalDir, 'REFERENCE.md');
   await writeFile(finalRefPath, reference, 'utf8');
 
+  // Persist validators for next-time conditional revalidation (no-op if the adapter exposed none).
+  await writeMeta(finalDir, {
+    sourceUrl: result.sourceUrl || null,
+    etag: result.meta?.etag || result.meta?.responseHeaders?.etag || null,
+    lastModified: result.meta?.lastModified || result.meta?.responseHeaders?.['last-modified'] || null,
+    adapter: result.meta?.adapter || null,
+    fetchedAt,
+  });
+
   console.error(`[learn-docs] wrote ${finalRefPath}`);
   console.error(`[learn-docs] wrote ${rawPath}`);
+
+  if (pin) {
+    const pinName = registrySlug || slug;
+    await pinToLibrary(pinName, reference, result.sourceUrl);
+    console.error(`[learn-docs] pinned permanently to library: ${join(LIBRARY_DIR, `${pinName}.md`)}`);
+  }
+
   console.log(reference);
 }
 

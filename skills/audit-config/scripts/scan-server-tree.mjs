@@ -7,14 +7,25 @@
 // Usage:
 //   node scan-server-tree.mjs [server-root]            # human-readable summary (default: .)
 //   node scan-server-tree.mjs [server-root] --json     # machine-readable JSON
+//   node scan-server-tree.mjs [server-root] --write-profile   # upsert skills/_cache/server-profile.json
 //
-// Read-only. Runs on stock Node >= 18.
+// Read-only on the scanned tree (only --write-profile writes, into mcwrench's own _cache).
+// Runs on stock Node >= 18.
 
-import { readdirSync, statSync, existsSync, readFileSync } from 'node:fs';
-import { join, basename } from 'node:path';
+import { readdirSync, statSync, existsSync, readFileSync, mkdirSync, writeFileSync } from 'node:fs';
+import { join, basename, dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const ROOT = process.argv[2] && !process.argv[2].startsWith('--') ? process.argv[2] : '.';
 const AS_JSON = process.argv.includes('--json');
+const WRITE_PROFILE = process.argv.includes('--write-profile');
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+// scripts/ -> audit-config/ -> skills/ -> <pluginRoot>
+const PLUGIN_ROOT = process.env.CLAUDE_PLUGIN_ROOT
+  ? resolve(process.env.CLAUDE_PLUGIN_ROOT)
+  : resolve(__dirname, '..', '..', '..');
+const PROFILE_PATH = join(PLUGIN_ROOT, 'skills', '_cache', 'server-profile.json');
 
 const CONFIG_FILES = [
   'server.properties', 'bukkit.yml', 'spigot.yml', 'paper-global.yml',
@@ -109,7 +120,74 @@ const manifest = {
   warnings: tabWarnings(),
 };
 
-if (AS_JSON) {
+// --- server-profile derivation (for --write-profile) ---------------------------------------
+function cleanPluginName(n) {
+  // strip a trailing version: LuckPerms-Bukkit-5.4.102 -> LuckPerms ; EssentialsX-2.21.0 -> EssentialsX
+  return String(n).replace(/[-_ ]+v?\d+(?:\.\d+)*.*$/i, '').replace(/[-_]+(bukkit|paper|spigot|velocity|bungee)$/i, '').trim() || String(n);
+}
+function guessArchetype(plugins) {
+  const j = plugins.join(' ').toLowerCase();
+  if (/bentobox|superiorskyblock|iridiumskyblock|oneblock/.test(j)) return /oneblock/.test(j) ? 'oneblock' : 'skyblock';
+  if (/lifesteal/.test(j)) return 'lifesteal';
+  if (/factionsuuid|\bfactions\b|saberfactions/.test(j)) return 'factions';
+  if (/\btowny\b/.test(j)) return 'towny';
+  if (/mineresetlite|\bprison\b|jetsprisonmines/.test(j)) return 'prison';
+  if (/mythicmobs/.test(j) && /mmocore|mmoitems|modelengine/.test(j)) return 'rpg';
+  if (/bedwars|skywars|survivalgames|murdermystery/.test(j)) return 'minigames';
+  return null;
+}
+function guessChatFormatter(plugins) {
+  const j = plugins.join(' ').toLowerCase();
+  if (/fancychat/.test(j)) return 'fancychat';            // MiniMessage-aware
+  if (/huskchat/.test(j)) return 'huskchat';              // MiniMessage-aware
+  if (/venturechat/.test(j)) return 'venturechat';
+  if (/deluxechat/.test(j)) return 'deluxechat';
+  if (/\bchatty\b/.test(j)) return 'chatty';
+  if (/essentials/.test(j)) return 'essentialsx';
+  return null;
+}
+function buildProfile(prev) {
+  const plugins = manifest.plugins.map(cleanPluginName);
+  const sw = manifest.software.map((s) => s.replace(/\s*\(.*\)$/, ''));
+  const isProxy = /Velocity|Waterfall|BungeeCord/i;
+  const software = sw.find((s) => !isProxy.test(s)) || sw[0] || null;
+  let proxy = null;
+  if (sw.some((s) => /Velocity/i.test(s)) || manifest.keySettings['paper.proxies.velocity.enabled'] === 'true') proxy = 'velocity';
+  else if (sw.some((s) => /BungeeCord|Waterfall/i.test(s)) || manifest.keySettings['spigot.bungeecord'] === 'true') proxy = 'bungee';
+  // MC version: pull a version-looking token off the server jar name
+  let mcVersion = null;
+  for (const jar of manifest.rootJars) {
+    const m = /(?:paper|purpur|folia|pufferfish|spigot|velocity)[-_]?v?(\d+\.\d+(?:\.\d+)?)/i.exec(jar);
+    if (m) { mcVersion = m[1]; break; }
+  }
+  const om = manifest.keySettings['online-mode'];
+  const onlineMode = om === 'true' ? true : om === 'false' ? false : (prev.onlineMode ?? null);
+  return {
+    software: software || prev.software || null,
+    mcVersion: mcVersion || prev.mcVersion || null,
+    java: prev.java ?? null,
+    host: prev.host ?? null,
+    ramMB: prev.ramMB ?? null,
+    gamemode: guessArchetype(plugins) || prev.gamemode || null,
+    proxy: proxy || prev.proxy || null,
+    onlineMode,
+    plugins: plugins.length ? plugins : (prev.plugins || []),
+    worlds: manifest.worlds.length ? manifest.worlds : (prev.worlds || []),
+    chatFormatter: guessChatFormatter(plugins) || prev.chatFormatter || null,
+    notes: prev.notes || '',
+    updatedAt: new Date().toISOString(),
+  };
+}
+
+if (WRITE_PROFILE) {
+  let prev = {};
+  try { prev = JSON.parse(readFileSync(PROFILE_PATH, 'utf8')); } catch {}
+  const profile = buildProfile(prev);
+  mkdirSync(dirname(PROFILE_PATH), { recursive: true });
+  writeFileSync(PROFILE_PATH, JSON.stringify(profile, null, 2) + '\n', 'utf8');
+  console.error(`[scan] wrote profile: ${PROFILE_PATH}`);
+  console.log(JSON.stringify(profile, null, 2));
+} else if (AS_JSON) {
   console.log(JSON.stringify(manifest, null, 2));
 } else {
   const L = [];

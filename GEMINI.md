@@ -17,15 +17,21 @@ any plugin, on Paper, Purpur, Folia, Vanilla, Velocity, and Pterodactyl/Pelican.
 | `performance-tuning` | Lag / TPS / MSPT / OOM / GC; Spark; Aikar's flags; view/sim distance; entity & chunk tuning. |
 | `permissions-helper` | LuckPerms groups, tracks, contexts, meta; Vault; node conventions. |
 | `proxy-network` | Velocity/Bungee modern forwarding and the forwarding.secret handshake. |
-| `gamemode-stacks` | Plugin stacks for 11 archetypes (SMP, skyblock, prison, factions, towny, minigames, RPG/MMO, anarchy, creative, KitPvP, lifesteal). |
+| `gamemode-stacks` | Plugin stacks for 25 archetypes (SMP, skyblock, prison, factions, towny, minigames, RPG/MMO, anarchy, creative, KitPvP, lifesteal). |
+| `server-branding` | Brand kit from a name + vibe: identity, MOTD (right format per plugin), ranks, store/Discord copy, tone presets, MiniMessage↔legacy (`node skills/server-branding/scripts/format.mjs`). |
 | `new-server-bootstrap` | Greenfield Paper/Velocity: `node skills/new-server-bootstrap/scripts/fetch-paper.mjs`; Java 25 + Aikar startup; starter configs. |
 | `pterodactyl-ops` | Pterodactyl/Pelican panel: RCON, Xmx/AlwaysPreTouch OOM, non-atomic backups, client API. |
 | `skript-author` | Write/debug Skript: `node skills/skript-author/scripts/fetch-skripthub.mjs --addon <Addon>`. |
-| `learn-plugin-docs` | Fetch + condense ANY plugin's docs: `node skills/learn-plugin-docs/scripts/learn-docs.mjs "<name-or-url>"`. |
+| `learn-plugin-docs` | Fetch + condense ANY plugin's docs: `node skills/learn-plugin-docs/scripts/learn-docs.mjs "<name-or-url>"`; 64 pre-loaded in `library/`. |
+
+**Server profile:** `node skills/audit-config/scripts/scan-server-tree.mjs <root> --write-profile`
+writes `skills/_cache/server-profile.json` (software, version, host, RAM, gamemode, proxy,
+online-mode, plugins, worlds, chat formatter). Read it first; don't re-ask known facts.
+`node skills/audit-config/scripts/check-conflicts.mjs <root>` flags plugin conflicts / missing deps.
 
 Slash commands (in `.gemini/commands/mcwrench/`): `/mcwrench:audit`, `/mcwrench:learn`,
 `/mcwrench:perf`, `/mcwrench:perms`, `/mcwrench:proxy`, `/mcwrench:bootstrap`, `/mcwrench:panel`,
-`/mcwrench:gamemode`, `/mcwrench:skript`.
+`/mcwrench:gamemode`, `/mcwrench:conflicts`, `/mcwrench:brand`, `/mcwrench:profile`, `/mcwrench:skript`.
 
 ## Operating rules
 

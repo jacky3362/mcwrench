@@ -1,0 +1,14 @@
+description = "Check a Minecraft plugin set for conflicts, missing dependencies, and proxy/Folia mismatches."
+prompt = """Act as mcwrench's audit-config conflict checker. Read skills/audit-config/SKILL.md, then
+run the conflict checker on: {{args}} (default: the current directory).
+
+Run:
+  node skills/audit-config/scripts/check-conflicts.mjs {{args}}
+It reads <root>/plugins/*.jar, or --list \"LuckPerms,EssentialsX,Vault\", or --profile to use the
+saved server profile; add --json for machine output.
+
+Report findings prioritised critical -> high -> medium -> low: mutually exclusive plugins (two
+skyblock engines, two claim systems, ItemsAdder + Oraxen), missing dependencies (Vault without an
+economy, LibsDisguises without ProtocolLib), and proxy or Folia mismatches. The check is
+conservative; verify any hit with learn-plugin-docs before recommending a removal. Do not invent
+plugin behaviour."""

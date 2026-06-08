@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>mcwrench docs, getting started</title>
+<meta name="description" content="Install mcwrench in your AI runtime, make your first natural-language ask, and save a server profile so answers stop re-asking the basics.">
+<link rel="canonical" href="https://mcwrench.teddy.bar/docs/getting-started/">
+<meta property="og:title" content="mcwrench docs, getting started">
+<meta property="og:image" content="https://mcwrench.teddy.bar/assets/banner.jpg">
+<meta name="theme-color" content="#0f1115">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔧</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    corePlugins: { boxShadow: false },
+    theme: { extend: {
+      colors: { base:'#14161b', panel:'#1b1e25', deep:'#0f1115', line:'#2a2e38', gold:{light:'#f4c95d',DEFAULT:'#e0992e',dark:'#b9741a'}, rock:{light:'#d7dade',DEFAULT:'#9aa0a8',dark:'#6b7079'}, crit:'#e85c5c', warn:'#e0992e' },
+      fontFamily: { sans:['Inter','system-ui','sans-serif'], mono:['"JetBrains Mono"','ui-monospace','monospace'], pixel:['MinecraftCraftron','Monocraft','system-ui','sans-serif'], label:['MinecraftCraftron','Monocraft','monospace'] },
+      borderRadius:{ none:'0',DEFAULT:'0',sm:'2px',md:'2px',lg:'2px',xl:'2px' },
+    } }
+  }
+</script>
+<style>
+  @font-face { font-family:'Monocraft'; src:url('https://cdn.jsdelivr.net/gh/IdreesInc/Monocraft@main/dist/Monocraft-ttf/Monocraft.ttf') format('truetype'); font-weight:400 700; font-display:swap; }
+  @font-face { font-family:'MinecraftCraftron'; src:url('../../fonts/Minecraft.ttf') format('truetype'); font-weight:400 700; font-display:swap; }
+  .eyebrow { font-family:'MinecraftCraftron','Monocraft',monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase; }
+  .btn { display:inline-flex; align-items:center; justify-content:center; gap:.5rem; border:3px solid; border-radius:0; font-weight:700; line-height:1; transition:transform .04s, background-color .12s; }
+  .btn:active { transform:translateY(2px); }
+  .btn-gold { background:#e0992e; color:#15110a; border-color:#8a5612; box-shadow: inset 0 3px 0 rgba(255,255,255,.30), inset 0 -3px 0 rgba(0,0,0,.25); }
+  .btn-gold:hover { background:#cf8a26; }
+  .btn-ghost { background:transparent; color:#d7dade; border-color:#3a3f4b; }
+  .btn-ghost:hover { background:#1b1e25; border-color:#525868; }
+  .toc a.active { color:#f4c95d; border-color:#e0992e; }
+  .docnav a.current { color:#f4c95d; border-color:#e0992e; background:#1b1e25; }
+  .doc h2 { font-family:'MinecraftCraftron','Monocraft',system-ui,sans-serif; color:#fff; }
+  .doc h3 { color:#fff; }
+  .doc :where(p,li) { color:#9aa0a8; }
+  .doc code { font-family:'JetBrains Mono',monospace; font-size:.82em; white-space:nowrap; border:1px solid #2a2e38; background:#0f1115; color:#f4c95d; padding:.08em .4em; border-radius:2px; vertical-align:baseline; }
+  ::selection { background:#f4c95d; color:#15110a; }
+</style>
+</head>
+<body class="font-sans text-rock-light bg-base antialiased">
+
+<header class="sticky top-0 z-40 border-b-[3px] border-line bg-deep/95 backdrop-blur-sm">
+  <nav class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-5">
+    <a href="../../" class="flex items-center gap-2.5">
+      <img src="../../assets/mcwrench.png" alt="mcwrench" class="h-6 w-auto">
+      <span class="border-2 border-line px-2 py-0.5 text-xs font-semibold text-rock">docs</span>
+    </a>
+    <div class="flex items-center gap-4 text-sm font-semibold text-rock">
+      <a href="../../" class="hidden hover:text-gold-light sm:block">Home</a>
+      <a href="../../changelog/" class="hidden hover:text-gold-light sm:block">Changelog</a>
+      <a href="https://github.com/Teddy563/mcwrench" class="btn btn-ghost px-3.5 py-2">GitHub</a>
+    </div>
+  </nav>
+</header>
+
+<div class="mx-auto max-w-6xl gap-10 px-4 py-12 sm:px-5 lg:flex">
+
+  <aside class="hidden w-56 shrink-0 lg:block">
+    <div class="sticky top-24 space-y-8">
+      <div class="docnav">
+        <p class="eyebrow text-rock">// docs</p>
+        <nav class="mt-4 flex flex-col gap-1 border-l-[3px] border-line text-sm">
+        <a class="-ml-[3px] border-l-[3px] px-3 py-1 border-transparent text-rock hover:text-white" href="../">Overview</a>
+        <a class="-ml-[3px] border-l-[3px] px-3 py-1 current border-gold text-gold-light" href="../getting-started/">Getting started</a>
+        <a class="-ml-[3px] border-l-[3px] px-3 py-1 border-transparent text-rock hover:text-white" href="../commands/">Commands</a>
+        <a class="-ml-[3px] border-l-[3px] px-3 py-1 border-transparent text-rock hover:text-white" href="../skills/">Skills & engine</a>
+        <a class="-ml-[3px] border-l-[3px] px-3 py-1 border-transparent text-rock hover:text-white" href="../branding/">Branding</a>
+        </nav>
+      </div>
+      <div class="toc">
+        <p class="eyebrow text-rock">// on this page</p>
+        <nav class="mt-4 flex flex-col gap-1 border-l-[3px] border-line text-sm">
+        <a class="-ml-[3px] border-l-[3px] border-transparent px-3 py-1 text-rock hover:text-white" href="#install">Install per runtime</a>
+        <a class="-ml-[3px] border-l-[3px] border-transparent px-3 py-1 text-rock hover:text-white" href="#first-run">Your first ask</a>
+        <a class="-ml-[3px] border-l-[3px] border-transparent px-3 py-1 text-rock hover:text-white" href="#profile">Save a server profile</a>
+        <a class="-ml-[3px] border-l-[3px] border-transparent px-3 py-1 text-rock hover:text-white" href="#tips">Tips for sharper answers</a>
+        </nav>
+      </div>
+    </div>
+  </aside>
+
+  <main class="doc min-w-0 flex-1 space-y-16">
+    <nav class="docnav mb-8 flex flex-wrap gap-2 lg:hidden"><a class="border-2 border-line px-3 py-1 text-xs font-semibold text-rock hover:text-gold-light" href="../">Overview</a><a class="current border-2 border-line px-3 py-1 text-xs font-semibold text-rock hover:text-gold-light" href="../getting-started/">Getting started</a><a class="border-2 border-line px-3 py-1 text-xs font-semibold text-rock hover:text-gold-light" href="../commands/">Commands</a><a class="border-2 border-line px-3 py-1 text-xs font-semibold text-rock hover:text-gold-light" href="../skills/">Skills & engine</a><a class="border-2 border-line px-3 py-1 text-xs font-semibold text-rock hover:text-gold-light" href="../branding/">Branding</a></nav>
+    <header>
+      <p class="eyebrow text-gold">// documentation</p>
+      <h1 class="mt-3 font-pixel text-4xl font-bold text-white sm:text-5xl">Getting started</h1>
+      <p class="mt-4 max-w-2xl text-lg text-rock">Install mcwrench in your AI runtime, make your first natural-language ask, and save a server profile so answers stop re-asking the basics.</p>
+    </header>
+
+    <section id="install" class="scroll-mt-24"><h2 class="text-2xl font-bold sm:text-3xl">Install per runtime</h2><p class="mt-3">mcwrench ships as a Claude Code plugin and as portable Agent Skills. Skills are filesystem-based and do not sync across runtimes, so install it in each surface you use. Pick your runtime below.</p><div class="mt-6 grid gap-4 sm:grid-cols-2"><div class="border-[3px] border-line bg-panel p-5"><h3 class="font-mono font-bold text-gold-light">Claude Code</h3><p class="mt-2 text-sm">Add the marketplace, then install the plugin from inside a <code>claude</code> session. Skills auto-trigger and you get the <code>/mcwrench:*</code> slash aliases.</p><div class="code mt-3" data-code="/plugin marketplace add Teddy563/mcwrench&#10;/plugin install mcwrench@mcwrench"></div></div><div class="border-[3px] border-line bg-panel p-5"><h3 class="font-mono font-bold text-gold-light">Gemini CLI</h3><p class="mt-2 text-sm">Clone the repo and launch <code>gemini</code> from its root. <code>GEMINI.md</code> and <code>AGENTS.md</code> load as context and point Gemini at the skill playbooks.</p><div class="code mt-3" data-code="git clone https://github.com/Teddy563/mcwrench&#10;cd mcwrench&#10;gemini"></div></div><div class="border-[3px] border-line bg-panel p-5"><h3 class="font-mono font-bold text-gold-light">Codex / Antigravity</h3><p class="mt-2 text-sm">Clone and open the repo. Both discover skills from <code>.agents/skills/</code> (a symlink to <code>skills/</code>) and read guidance from <code>AGENTS.md</code>, so the skills auto-load.</p><div class="code mt-3" data-code="git clone https://github.com/Teddy563/mcwrench&#10;cd mcwrench&#10;# Windows only, if the symlink does not resolve:&#10;node scripts/setup-symlinks.mjs"></div></div><div class="border-[3px] border-line bg-panel p-5"><h3 class="font-mono font-bold text-gold-light">Claude.ai</h3><p class="mt-2 text-sm">Pack the skills, then in Claude.ai go to Customize, then Skills, then Create skill, then Upload the zip. Requires code execution enabled.</p><div class="code mt-3" data-code="node scripts/pack-skill.mjs --all&#10;# writes dist/&lt;skill&gt;.skill.zip"></div></div></div><div class="mt-5 border-l-[3px] border-gold bg-gold/[.06] p-4 text-sm"><b class="text-white">Note.</b> On Codex and Antigravity the symlink resolves automatically on Linux and macOS. On Windows, run <code>node scripts/setup-symlinks.mjs</code> after cloning if it does not resolve locally.</div></section><section id="first-run" class="scroll-mt-24"><h2 class="text-2xl font-bold sm:text-3xl">Your first ask</h2><p class="mt-3">You do not have to name a skill or learn a command. The always-on <code>minecraft-server-router</code> engages on any server-admin topic and hands off to the right specialist (audit, performance, permissions, and the rest). Just describe the problem in plain words and the matching skill triggers.</p><h3 class="mt-6 font-bold text-white">Example asks</h3><div class="code mt-3" data-code="my SMP is laggy, low TPS in the evenings&#10;audit my paper server config&#10;set up Velocity modern forwarding"></div><p class="mt-3 text-sm">On Claude Code, Gemini CLI, and Antigravity you can also use the slash forms. On Claude.ai and Codex there are no custom slash commands, so plain phrasing is the way in. The skill descriptions are written to catch it.</p></section><section id="profile" class="scroll-mt-24"><h2 class="text-2xl font-bold sm:text-3xl">Save a server profile</h2><p class="mt-3">Point the scanner at your server root with <code>--write-profile</code> and it writes <code>skills/_cache/server-profile.json</code>. Every skill reads this first, so later answers stop re-asking your version, host, and stack. The scan is read-only on your server tree; only the profile file inside mcwrench's own cache is written.</p><div class="code mt-3" data-code="node skills/audit-config/scripts/scan-server-tree.mjs ./myserver --write-profile"></div><h3 class="mt-6 font-bold text-white">What it captures</h3><ul class="mt-5 space-y-3 list-none"><li class="flex gap-3"><span class="text-gold">▸</span><span><code>software</code> and <code>mcVersion</code>, detected from the server jar and config files.</span></li><li class="flex gap-3"><span class="text-gold">▸</span><span><code>gamemode</code>, <code>proxy</code>, and <code>onlineMode</code>, inferred from the plugin set and key settings.</span></li><li class="flex gap-3"><span class="text-gold">▸</span><span><code>plugins</code>, <code>worlds</code>, and <code>chatFormatter</code>, read from the tree.</span></li><li class="flex gap-3"><span class="text-gold">▸</span><span><code>java</code>, <code>host</code>, and <code>ramMB</code>, which are not auto-detected and start empty. Set them manually.</span></li></ul><div class="mt-5 border-l-[3px] border-gold bg-gold/[.06] p-4 text-sm"><b class="text-white">Note.</b> The auto-detected <code>mcVersion</code> is best-effort, parsed off the server jar name, so confirm it before relying on version-specific advice. The <code>java</code>, <code>host</code>, and <code>ramMB</code> values are always set by hand.</div><h3 class="mt-6 font-bold text-white">Read and edit the profile</h3><p class="mt-3 text-sm">Use <code>server-profile.mjs</code> to show, read, set, or clear the saved values. Running it with no command prints the current profile.</p><div class="code mt-3" data-code="node skills/audit-config/scripts/server-profile.mjs&#10;node skills/audit-config/scripts/server-profile.mjs get mcVersion&#10;node skills/audit-config/scripts/server-profile.mjs set java 25&#10;node skills/audit-config/scripts/server-profile.mjs set host Pterodactyl&#10;node skills/audit-config/scripts/server-profile.mjs set ramMB 8192&#10;node skills/audit-config/scripts/server-profile.mjs clear"></div></section><section id="tips" class="scroll-mt-24"><h2 class="text-2xl font-bold sm:text-3xl">Tips for sharper answers</h2><ul class="mt-5 space-y-3 list-none"><li class="flex gap-3"><span class="text-gold">▸</span><span>Name your version, software, and host. "Paper 26.1.2 on Pterodactyl, 8 GB" gets a sharper answer than "my server".</span></li><li class="flex gap-3"><span class="text-gold">▸</span><span>Share a Spark report URL for lag questions. It is the evidence the performance advice is built on.</span></li><li class="flex gap-3"><span class="text-gold">▸</span><span>Ask about an unfamiliar plugin anyway. mcwrench fetches and condenses its real docs before answering, so it does not guess at config keys.</span></li><li class="flex gap-3"><span class="text-gold">▸</span><span>It will refuse known footguns, like mixing G1 and ZGC flags, running two claims plugins, or two skyblock engines. Those are not preferences.</span></li></ul></section>
+
+    <div class="mt-16 flex flex-wrap items-center justify-between gap-3 border-t-[3px] border-line pt-8"><a href="../" class="btn btn-ghost px-5 py-2.5 text-sm">← Overview</a><a href="../commands/" class="btn btn-gold px-5 py-2.5 text-sm">Commands →</a></div>
+  </main>
+</div>
+
+<footer class="border-t-[3px] border-line bg-deep">
+  <p class="mx-auto max-w-6xl px-5 py-8 text-center text-xs text-rock-dark">mcwrench, MIT. Not affiliated with Mojang or Microsoft. "Minecraft" is a trademark of Mojang Synergies AB.</p>
+</footer>
+<script>
+  document.querySelectorAll('.code').forEach((el) => {
+    const code = el.getAttribute('data-code').replaceAll('&#10;', '\n');
+    el.innerHTML = '';
+    const wrap = document.createElement('div'); wrap.className='relative border-[3px] border-line bg-black/40 font-mono text-[12.5px] text-rock-light';
+    const pre = document.createElement('pre'); pre.className='overflow-x-auto p-4 pr-16'; pre.textContent=code;
+    const btn = document.createElement('button'); btn.className='btn absolute right-2 top-2 border-2 border-line bg-white/5 px-2 py-1 text-xs text-rock-light hover:bg-white/10'; btn.textContent='copy';
+    btn.addEventListener('click', async ()=>{ try{ await navigator.clipboard.writeText(code); btn.textContent='copied'; }catch{ btn.textContent='select'; } setTimeout(()=>btn.textContent='copy',1500); });
+    wrap.append(pre, btn); el.append(wrap);
+  });
+  const tocLinks=[...document.querySelectorAll('.toc a')]; const tmap=new Map(tocLinks.map((l)=>[l.getAttribute('href').slice(1),l]));
+  const o=new IntersectionObserver((es)=>{es.forEach((e)=>{ if(e.isIntersecting){ tocLinks.forEach((l)=>l.classList.remove('active')); const l=tmap.get(e.target.id); if(l) l.classList.add('active'); } });},{rootMargin:'-30% 0px -60% 0px'});
+  ["install","first-run","profile","tips"].forEach((id)=>{const s=document.getElementById(id); if(s) o.observe(s);});
+</script>
+</body>
+</html>

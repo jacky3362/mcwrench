@@ -17,5 +17,9 @@ Operating rules:
 5. **Confirm before destructive/irreversible ops** (deleting worlds, exposing RCON, flipping
    `online-mode` behind a proxy).
 
+If `skills/_cache/server-profile.json` exists, read it first and tailor answers; don't re-ask the
+software, version, host, RAM, gamemode, proxy, online-mode, plugins, or chat formatter it records.
+
 Full guidance is in `AGENTS.md`. Slash commands are in `.agents/workflows/` (`/audit`, `/learn`,
-`/perf`, `/perms`, `/proxy`).
+`/perf`, `/perms`, `/proxy`, `/bootstrap`, `/panel`, `/gamemode`, `/conflicts`, `/brand`, `/profile`,
+`/skript`).

@@ -1,4 +1,4 @@
-# mcwrench v1.0.0 — release notes
+# mcwrench v1.1.0 — release notes
 
 **mcwrench** turns Claude (or Codex / Antigravity / Gemini) into an expert Minecraft **server
 administrator** — for any server type and any plugin, on Paper, Purpur, Folia, Vanilla, Velocity,
@@ -6,10 +6,25 @@ and Pterodactyl/Pelican. It audits configs, diagnoses lag, tunes performance, se
 permissions, picks gamemode plugin stacks, bootstraps new servers, and **learns any plugin's docs
 on demand**.
 
+## New in 1.1.0 — durable docs, branding, double the gamemodes
+
+- **64 popular plugins pre-loaded** into a committed library (zero-network lookups, by name or
+  alias) + a name→docs registry; `--pin` stores any project's docs permanently, `--refresh`
+  re-fetches.
+- **Cache durability**: configurable TTL (`MCWRENCH_CACHE_TTL`), stale-while-revalidate, conditional
+  revalidation, and a `refresh-docs` CI that re-pins the library via PR.
+- **New `server-branding` skill (11th)** — builds a brand kit (identity, MOTD, ranks, store/Discord
+  copy) in the right format per plugin (MiniMessage vs legacy hex), with tone presets and a
+  MiniMessage↔legacy helper.
+- **Server-profile memory** + **plugin conflict checker** — every answer tailors to your server, and
+  conflicting plugins / missing deps get flagged (new `/mcwrench:conflicts` command, **12 commands** total).
+- **25 gamemode stacks** (up from 11): OneBlock, GenPvP, BoxPvP, SkyPvP, Pit, OP variants, HCF,
+  practice, BedWars, SkyWars, Survival Games, Earth SMP, plus the original 11.
+
 ## Highlights
 
-- **10 skills**, including the always-on `minecraft-server-router` and specialists for auditing,
-  performance, permissions, proxies, gamemode stacks (11 archetypes), new-server bootstrap,
+- **11 skills**, including the always-on `minecraft-server-router` and specialists for auditing,
+  performance, permissions, proxies, gamemode stacks (25 archetypes), branding, new-server bootstrap,
   Pterodactyl/Pelican ops, and Skript.
 - **Docs-learner** that routes to the cheapest channel per host (Modrinth, Hangar, GitHub, Oraxen,
   SpigotMC, Skript Hub, PaperMC) and caches a condensed reference — every adapter live-tested.

@@ -1,0 +1,500 @@
+{
+  "_comment": "Popular-plugin registry. 'file' = a pre-fetched, committed reference under library/ (NO network needed). 'url' = canonical docs to fetch when there is no library file. Names + aliases resolve a plugin name to the right docs, fixing by-name mis-resolution. Refresh with: learn-docs <name> --refresh.",
+  "plugins": {
+    "luckperms": {
+      "aliases": [
+        "lp",
+        "luck perms"
+      ],
+      "file": "luckperms.md",
+      "url": "https://luckperms.net/wiki"
+    },
+    "essentialsx": {
+      "aliases": [
+        "essentials",
+        "ess"
+      ],
+      "file": "essentialsx.md",
+      "url": "https://essentialsx.net/wiki/"
+    },
+    "vault": {
+      "aliases": [
+        "vaultunlocked"
+      ],
+      "file": "vault.md",
+      "url": "https://github.com/MilkBowl/Vault"
+    },
+    "placeholderapi": {
+      "aliases": [
+        "papi"
+      ],
+      "file": "placeholderapi.md",
+      "url": "https://wiki.placeholderapi.com/"
+    },
+    "viaversion": {
+      "aliases": [
+        "via"
+      ],
+      "file": "viaversion.md",
+      "url": "https://hangar.papermc.io/ViaVersion/ViaVersion"
+    },
+    "viabackwards": {
+      "aliases": [],
+      "file": "viabackwards.md",
+      "url": "https://hangar.papermc.io/ViaVersion/ViaBackwards"
+    },
+    "coreprotect": {
+      "aliases": [
+        "cp"
+      ],
+      "file": "coreprotect.md",
+      "url": "https://docs.coreprotect.net/"
+    },
+    "worldedit": {
+      "aliases": [
+        "we",
+        "fawe"
+      ],
+      "file": "worldedit.md",
+      "url": "https://worldedit.enginehub.org/"
+    },
+    "worldguard": {
+      "aliases": [
+        "wg"
+      ],
+      "file": "worldguard.md",
+      "url": "https://worldguard.enginehub.org/"
+    },
+    "geyser": {
+      "aliases": [
+        "geysermc"
+      ],
+      "file": "geyser.md",
+      "url": "https://geysermc.org/wiki/"
+    },
+    "floodgate": {
+      "aliases": [],
+      "file": "floodgate.md",
+      "url": "https://geysermc.org/wiki/floodgate/"
+    },
+    "itemsadder": {
+      "aliases": [
+        "ia"
+      ],
+      "file": "itemsadder.md",
+      "url": "https://itemsadder.devs.beer/"
+    },
+    "oraxen": {
+      "aliases": [],
+      "file": "oraxen.md",
+      "url": "https://docs.oraxen.com/"
+    },
+    "citizens": {
+      "aliases": [
+        "citizens2",
+        "npcs"
+      ],
+      "file": "citizens.md",
+      "url": "https://wiki.citizensnpcs.co/"
+    },
+    "discordsrv": {
+      "aliases": [
+        "dsrv"
+      ],
+      "file": "discordsrv.md",
+      "url": "https://docs.discordsrv.com/"
+    },
+    "griefprevention": {
+      "aliases": [
+        "gp"
+      ],
+      "file": "griefprevention.md",
+      "url": "https://github.com/GriefPrevention/GriefPrevention"
+    },
+    "skript": {
+      "aliases": [
+        "sk"
+      ],
+      "file": "skript.md",
+      "url": "https://docs.skriptlang.org/"
+    },
+    "mythicmobs": {
+      "aliases": [
+        "mythic"
+      ],
+      "file": "mythicmobs.md",
+      "url": "https://git.mythiccraft.io/mythiccraft/MythicMobs/-/wikis/home"
+    },
+    "towny": {
+      "aliases": [
+        "townyadvanced"
+      ],
+      "file": "towny.md",
+      "url": "https://github.com/TownyAdvanced/Towny"
+    },
+    "mcmmo": {
+      "aliases": [],
+      "file": "mcmmo.md",
+      "url": "https://mcmmo.org/wiki/"
+    },
+    "decentholograms": {
+      "aliases": [
+        "dh"
+      ],
+      "file": "decentholograms.md",
+      "url": "https://wiki.decentholograms.eu/"
+    },
+    "deluxemenus": {
+      "aliases": [
+        "dm"
+      ],
+      "file": "deluxemenus.md",
+      "url": "https://wiki.helpch.at/clips-plugins/deluxemenus"
+    },
+    "grimac": {
+      "aliases": [
+        "grim"
+      ],
+      "file": "grimac.md",
+      "url": "https://github.com/GrimAnticheat/Grim"
+    },
+    "dynmap": {
+      "aliases": [],
+      "file": "dynmap.md",
+      "url": "https://github.com/webbukkit/dynmap"
+    },
+    "bluemap": {
+      "aliases": [],
+      "file": "bluemap.md",
+      "url": "https://bluemap.bluecolored.de/"
+    },
+    "chunky": {
+      "aliases": [],
+      "file": "chunky.md",
+      "url": "https://github.com/pop4959/Chunky"
+    },
+    "spark": {
+      "aliases": [],
+      "file": "spark.md",
+      "url": "https://spark.lucko.me/docs"
+    },
+    "tab": {
+      "aliases": [],
+      "file": "tab.md",
+      "url": "https://github.com/NEZNAMY/TAB/wiki"
+    },
+    "protocollib": {
+      "aliases": [],
+      "file": "protocollib.md",
+      "url": "https://github.com/dmulloy2/ProtocolLib"
+    },
+    "multiverse-core": {
+      "aliases": [
+        "multiverse",
+        "mv"
+      ],
+      "file": "multiverse-core.md",
+      "url": "https://hangar.papermc.io/Multiverse/Multiverse-Core"
+    },
+    "minimotd": {
+      "aliases": [
+        "motd"
+      ],
+      "file": "minimotd.md",
+      "url": "https://modrinth.com/mod/minimotd"
+    },
+    "velocitab": {
+      "aliases": [],
+      "file": "velocitab.md",
+      "url": "https://modrinth.com/mod/velocitab"
+    },
+    "huskchat": {
+      "aliases": [],
+      "file": "huskchat.md",
+      "url": "https://modrinth.com/mod/huskchat"
+    },
+    "huskhomes": {
+      "aliases": [],
+      "file": "huskhomes.md",
+      "url": "https://modrinth.com/mod/huskhomes"
+    },
+    "serverutils": {
+      "aliases": [],
+      "file": "serverutils.md",
+      "url": "https://modrinth.com/mod/serverutils"
+    },
+    "miniplaceholders": {
+      "aliases": [],
+      "file": "miniplaceholders.md",
+      "url": "https://modrinth.com/mod/miniplaceholders"
+    },
+    "packetevents": {
+      "aliases": [],
+      "file": "packetevents.md",
+      "url": "https://modrinth.com/mod/packetevents"
+    },
+    "signedvelocity": {
+      "aliases": [],
+      "file": "signedvelocity.md",
+      "url": "https://modrinth.com/mod/signedvelocity"
+    },
+    "squaremap": {
+      "aliases": [],
+      "file": "squaremap.md",
+      "url": "https://modrinth.com/mod/squaremap"
+    },
+    "serverlistplus": {
+      "aliases": [],
+      "file": "serverlistplus.md",
+      "url": "https://raw.githubusercontent.com/Minecrell/ServerListPlus/HEAD/README.md"
+    },
+    "bungeeguard": {
+      "aliases": [],
+      "file": "bungeeguard.md",
+      "url": "https://raw.githubusercontent.com/lucko/BungeeGuard/HEAD/README.md"
+    },
+    "nanolimbo": {
+      "aliases": [],
+      "file": "nanolimbo.md",
+      "url": "https://raw.githubusercontent.com/Nan1t/NanoLimbo/HEAD/README.md"
+    },
+    "quickshop-hikari": {
+      "aliases": [
+        "quickshop",
+        "qs"
+      ],
+      "file": "quickshop-hikari.md",
+      "url": "https://modrinth.com/mod/quickshop-hikari"
+    },
+    "betonquest": {
+      "aliases": [],
+      "file": "betonquest.md",
+      "url": "https://modrinth.com/mod/betonquest"
+    },
+    "fancynpcs": {
+      "aliases": [],
+      "file": "fancynpcs.md",
+      "url": "https://modrinth.com/mod/fancynpcs"
+    },
+    "fancyholograms": {
+      "aliases": [],
+      "file": "fancyholograms.md",
+      "url": "https://modrinth.com/mod/fancyholograms"
+    },
+    "jobs": {
+      "aliases": [],
+      "file": "jobs.md",
+      "url": "https://raw.githubusercontent.com/Zrips/Jobs/HEAD/README.md"
+    },
+    "authmereloaded": {
+      "aliases": [],
+      "file": "authmereloaded.md",
+      "url": "https://raw.githubusercontent.com/AuthMe/AuthMeReloaded/HEAD/README.md"
+    },
+    "viarewind": {
+      "aliases": [],
+      "file": "viarewind.md",
+      "url": "https://hangar.papermc.io/ViaVersion/ViaRewind"
+    },
+    "maintenance": {
+      "aliases": [
+        "maint"
+      ],
+      "file": "maintenance.md",
+      "url": "https://raw.githubusercontent.com/kennytv/Maintenance/HEAD/README.md"
+    },
+    "combatlogx": {
+      "aliases": [
+        "clx",
+        "combatlog"
+      ],
+      "file": "combatlogx.md",
+      "url": "https://raw.githubusercontent.com/SirBlobman/CombatLogX/HEAD/README.MD"
+    },
+    "plan": {
+      "aliases": [],
+      "file": "plan.md",
+      "url": "https://raw.githubusercontent.com/plan-player-analytics/Plan/HEAD/README.md"
+    },
+    "cmi": {
+      "aliases": [
+        "cmilib"
+      ],
+      "url": "https://cmi.worldnetworks.net/"
+    },
+    "lands": {
+      "aliases": [],
+      "url": "https://www.gcnt.net/docs/lands"
+    },
+    "modelengine": {
+      "aliases": [
+        "meg"
+      ],
+      "url": "https://git.lumine.io/mythiccraft/model-engine-4/-/wikis/home"
+    },
+    "mmoitems": {
+      "aliases": [],
+      "url": "https://gitlab.com/phoenix-dvpmt/mmoitems/-/wikis/home"
+    },
+    "mmocore": {
+      "aliases": [],
+      "url": "https://gitlab.com/phoenix-dvpmt/mmocore/-/wikis/home"
+    },
+    "shopguiplus": {
+      "aliases": [
+        "shopgui+"
+      ],
+      "url": "https://docs.shopguiplus.com/"
+    },
+    "vulcan": {
+      "aliases": [],
+      "url": "https://docs.playoxcraft.com/"
+    },
+    "litebans": {
+      "aliases": [],
+      "url": "https://litebans.com/docs/"
+    },
+    "advancedban": {
+      "aliases": [
+        "abans"
+      ],
+      "url": "https://github.com/DevLeoko/AdvancedBan/wiki"
+    },
+    "plotsquared": {
+      "aliases": [
+        "plots",
+        "ps",
+        "p2"
+      ],
+      "file": "plotsquared.md",
+      "url": "https://raw.githubusercontent.com/IntellectualSites/PlotSquared/HEAD/README.md"
+    },
+    "husksync": {
+      "aliases": [],
+      "url": "https://william278.net/docs/husksync"
+    },
+    "fastasyncworldedit": {
+      "aliases": [
+        "fawe"
+      ],
+      "file": "fastasyncworldedit.md",
+      "url": "https://modrinth.com/mod/fastasyncworldedit"
+    },
+    "auraskills": {
+      "aliases": [
+        "aureliumskills",
+        "skills"
+      ],
+      "file": "auraskills.md",
+      "url": "https://modrinth.com/mod/auraskills"
+    },
+    "znpcsplus": {
+      "aliases": [
+        "znpcs"
+      ],
+      "file": "znpcsplus.md",
+      "url": "https://modrinth.com/mod/znpcsplus"
+    },
+    "gsit": {
+      "aliases": [],
+      "file": "gsit.md",
+      "url": "https://modrinth.com/mod/gsit"
+    },
+    "openinv": {
+      "aliases": [],
+      "file": "openinv.md",
+      "url": "https://modrinth.com/mod/openinv"
+    },
+    "tebex": {
+      "aliases": [
+        "buycraft"
+      ],
+      "file": "tebex.md",
+      "url": "https://modrinth.com/mod/tebex"
+    },
+    "breweryx": {
+      "aliases": [],
+      "file": "breweryx.md",
+      "url": "https://modrinth.com/mod/breweryx"
+    },
+    "protectionstones": {
+      "aliases": [
+        "ps-claim"
+      ],
+      "file": "protectionstones.md",
+      "url": "https://modrinth.com/mod/protectionstones"
+    },
+    "drivebackupv2": {
+      "aliases": [
+        "drivebackup",
+        "backup"
+      ],
+      "file": "drivebackupv2.md",
+      "url": "https://modrinth.com/mod/drivebackupv2"
+    },
+    "iris": {
+      "aliases": [
+        "iris-gen"
+      ],
+      "url": "https://github.com/VolmitSoftware/Iris"
+    },
+    "ecoenchants": {
+      "aliases": [
+        "eco"
+      ],
+      "url": "https://github.com/Auxilor/EcoEnchants"
+    },
+    "nuvotifier": {
+      "aliases": [
+        "votifier"
+      ],
+      "url": "https://github.com/NuVotifier/NuVotifier"
+    },
+    "shopkeepers": {
+      "aliases": [],
+      "url": "https://github.com/Shopkeepers/Shopkeepers"
+    },
+    "sentinel": {
+      "aliases": [],
+      "url": "https://github.com/mcmonkeyprojects/Sentinel"
+    },
+    "chestshop": {
+      "aliases": [
+        "cs"
+      ],
+      "url": "https://hangar.papermc.io/ChestShop/ChestShop"
+    },
+    "economyshopgui": {
+      "aliases": [
+        "esgui"
+      ],
+      "url": "https://wiki.gpplugins.com/economyshopgui"
+    },
+    "headdatabase": {
+      "aliases": [
+        "hdb"
+      ],
+      "url": "https://github.com/Arcaniax-Development/HeadDatabase-API"
+    },
+    "insights": {
+      "aliases": [],
+      "url": "https://modrinth.com/plugin/insights"
+    },
+    "triton": {
+      "aliases": [
+        "localization",
+        "i18n"
+      ],
+      "file": "triton.md",
+      "url": "https://raw.githubusercontent.com/TritonMC/Triton/HEAD/README.md"
+    },
+    "libsdisguises": {
+      "aliases": [
+        "disguises",
+        "ld"
+      ],
+      "file": "libsdisguises.md",
+      "url": "https://raw.githubusercontent.com/libraryaddict/LibsDisguises/HEAD/README.md"
+    }
+  }
+}

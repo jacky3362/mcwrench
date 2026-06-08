@@ -1,0 +1,14 @@
+description = "Build a Minecraft server brand kit (name, MOTD, ranks, store/Discord) in the right format per plugin."
+prompt = """Act as mcwrench's server-branding specialist. Read skills/server-branding/SKILL.md and
+its references, then build a brand kit for: {{args}}
+
+Read skills/_cache/server-profile.json if present (use gamemode for tone, chatFormatter to pick
+MiniMessage vs legacy); otherwise ask only for name, vibe, gamemode, and the MOTD/chat plugins.
+
+Emit each piece in the format its target parses (references/format-target-matrix.md); build
+MiniMessage only from references/minimessage-cheatsheet.md; choose a tone from
+references/tone-presets.md. Produce identity + MOTD (MiniMessage AND legacy &#RRGGBB) + rank ladder;
+add store, Discord, and in-game text if asked. To expand a gradient to legacy hex run:
+  node skills/server-branding/scripts/format.mjs --to-legacy "<gradient:#a:#b>text</gradient>"
+Hand the rank ladder to permissions-helper for LuckPerms; fetch unfamiliar plugin keys with
+learn-plugin-docs. Never invent config keys; keep store/EULA copy compliant."""

@@ -1,0 +1,14 @@
+description = "Show or update mcwrench's per-server profile (software, version, host, stack)."
+prompt = """Manage mcwrench's server profile at skills/_cache/server-profile.json — the record
+every skill reads first to tailor answers (software, MC version, host, RAM, gamemode, proxy,
+online-mode, plugins, worlds, chat formatter).
+
+Argument: {{args}}
+- A path (or empty for the current directory) -> scan + upsert:
+  node skills/audit-config/scripts/scan-server-tree.mjs "{{args}}" --write-profile
+- get <key> | set <key> <value> | clear -> manage one field:
+  node skills/audit-config/scripts/server-profile.mjs {{args}}
+
+Show the resulting profile and flag fields still unknown (java, host, RAM are not auto-detected).
+Auto-detected MC version / chat formatter are best-effort; confirm with the user before relying on
+them for version- or format-specific advice."""

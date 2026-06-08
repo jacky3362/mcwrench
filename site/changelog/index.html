@@ -33,9 +33,21 @@
   .btn { display:inline-flex; align-items:center; justify-content:center; gap:.5rem; border:3px solid; border-radius:0; font-weight:700; line-height:1; transition:transform .04s, background-color .12s; }
   .btn:active { transform:translateY(2px); }
   .btn-gold { background:#e0992e; color:#15110a; border-color:#8a5612; box-shadow: inset 0 3px 0 rgba(255,255,255,.30), inset 0 -3px 0 rgba(0,0,0,.25); }
+  .btn-gold:hover { background:#cf8a26; }
   .btn-ghost { background:transparent; color:#d7dade; border-color:#3a3f4b; }
   .btn-ghost:hover { background:#1b1e25; border-color:#525868; }
-  code { font-family:'JetBrains Mono',monospace; font-size:.85em; border:1px solid #2a2e38; background:#0f1115; color:#d7dade; padding:0 .25rem; }
+  .pixelgrid { background-image: linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px), linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px); background-size:24px 24px; }
+  .blocks { background-image: repeating-linear-gradient(90deg,#b9741a 0 16px,#e0992e 16px 32px,#f4c95d 32px 48px); }
+  /* inline flags/keys: never break mid-token, sit on the baseline, read gold */
+  code { font-family:'JetBrains Mono',monospace; font-size:.82em; white-space:nowrap; border:1px solid #2a2e38; background:#0f1115; color:#f4c95d; padding:.08em .4em; border-radius:2px; vertical-align:baseline; }
+  /* category tags under a release header */
+  .tagchip { display:inline-block; font-family:'MinecraftCraftron','Monocraft',monospace; font-size:10px; letter-spacing:.1em; text-transform:uppercase; border:2px solid #3a3f4b; background:#0f1115; color:#9aa0a8; padding:.22rem .55rem; transition:border-color .12s, color .12s; }
+  .tagchip:hover { border-color:#e0992e; color:#f4c95d; }
+  /* each release carries its own left rail; the node straddles that rail so it always lines up */
+  .release { position:relative; border-left-width:3px; border-color:#2a2e38; }
+  .release::before { content:""; position:absolute; left:-9px; top:5px; width:15px; height:15px; background:#14161b; border:3px solid #3a3f4b; }
+  .release.latest { border-color:#8a5612; }
+  .release.latest::before { background:#e0992e; border-color:#8a5612; box-shadow:0 0 0 4px rgba(224,153,46,.12); }
   ::selection { background:#f4c95d; color:#15110a; }
 </style>
 </head>
@@ -60,42 +72,87 @@
   <h1 class="mt-3 font-pixel text-4xl font-bold text-white sm:text-5xl">Changelog</h1>
   <p class="mt-4 text-rock">Versioned with <a class="text-gold-light underline underline-offset-2" href="https://semver.org">SemVer</a>. The canonical log lives in
     <a class="text-gold-light underline underline-offset-2" href="https://github.com/Teddy563/mcwrench/blob/main/CHANGELOG.md">CHANGELOG.md</a>.</p>
+  <div class="blocks mt-6 h-1.5 w-28"></div>
 
-  <!-- 1.0.0 -->
-  <article class="mt-12 border-l-[3px] border-gold pl-6">
-    <div class="flex flex-wrap items-center gap-3">
-      <h2 class="font-pixel text-2xl font-bold text-white">v1.0.0</h2>
-      <span class="border-2 border-gold px-2 py-0.5 text-xs font-bold text-gold-light">latest</span>
-      <span class="text-sm text-rock">2026-06-07</span>
-    </div>
-    <p class="mt-4 text-rock">First public release. A gamemode-agnostic Minecraft server config and operations assistant, packaged for Claude Code, Claude.ai, OpenAI Codex, Google Antigravity, and Gemini CLI from one source of truth.</p>
+  <!-- timeline -->
+  <div class="mt-12 space-y-12">
 
-    <h3 class="eyebrow mt-7 text-gold">Skills (10)</h3>
-    <ul class="mt-3 space-y-2 text-sm text-rock">
-      <li class="flex gap-2"><span class="text-gold">+</span> minecraft-server-router, the always-on hub</li>
-      <li class="flex gap-2"><span class="text-gold">+</span> audit-config, with scan-server-tree and diff-against-defaults helpers</li>
-      <li class="flex gap-2"><span class="text-gold">+</span> performance-tuning (Spark, Aikar vs Java-25 ZGC, view and sim distance)</li>
-      <li class="flex gap-2"><span class="text-gold">+</span> permissions-helper, proxy-network, skript-author</li>
-      <li class="flex gap-2"><span class="text-gold">+</span> gamemode-stacks, 11 archetypes</li>
-      <li class="flex gap-2"><span class="text-gold">+</span> new-server-bootstrap, with a Fill v3 Paper downloader</li>
-      <li class="flex gap-2"><span class="text-gold">+</span> pterodactyl-ops (Pterodactyl and Pelican)</li>
-      <li class="flex gap-2"><span class="text-gold">+</span> learn-plugin-docs, the on-demand docs engine</li>
-    </ul>
+    <!-- 1.1.0 latest -->
+    <article class="release latest pl-7 sm:pl-9">
+      <div class="border-b-2 border-line pb-6">
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
+          <h2 class="font-pixel text-3xl font-bold text-white">v1.1.0</h2>
+          <span class="border-2 border-gold px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-gold-light">latest</span>
+          <span class="ml-auto font-mono text-sm text-rock">2026-06-08</span>
+        </div>
+        <p class="mt-3 text-lg text-rock-light">Durable docs, branding, and double the gamemodes.</p>
+        <div class="mt-4 flex flex-wrap gap-2">
+          <span class="tagchip">Plugin library</span>
+          <span class="tagchip">Branding</span>
+          <span class="tagchip">Server profile</span>
+          <span class="tagchip">Conflict checker</span>
+          <span class="tagchip">+14 gamemodes</span>
+        </div>
+      </div>
 
-    <h3 class="eyebrow mt-7 text-gold">Docs learner</h3>
-    <p class="mt-3 text-sm text-rock">Every adapter wired and live-tested: Modrinth, Hangar (slug-only API), GitHub README, Oraxen, SpigotMC (BBCode to markdown), Skript Hub, PaperMC (tree-searches the source repo). GitBook and a generic Readability fallback are best-effort.</p>
+      <h3 class="eyebrow mt-6 text-gold">Added</h3>
+      <ul class="mt-3 space-y-3 text-sm">
+        <li class="flex gap-3"><span class="select-none text-gold">+</span><span><b class="text-white">Plugin library.</b> 64 popular plugins pre-fetched into the repo for zero-network lookups, with a name and alias registry. Resolution order: library, then cache, then the registry URL, then a Modrinth or Hangar search.</span></li>
+        <li class="flex gap-3"><span class="select-none text-gold">+</span><span><b class="text-white">Pin, refresh, and durable cache.</b> <code>--pin</code> stores any plugin's docs permanently and <code>--refresh</code> re-fetches; the cache TTL is configurable (<code>MCWRENCH_CACHE_TTL</code>) and stale-while-revalidate keeps docs working during an outage. A weekly CI re-pins the library by pull request.</span></li>
+        <li class="flex gap-3"><span class="select-none text-gold">+</span><span><b class="text-white">server-branding skill, the 11th.</b> Builds a brand kit, MOTD, rank ladder, and store or Discord copy in the format each plugin actually parses (MiniMessage or legacy hex), with six tone presets and a MiniMessage to legacy color helper.</span></li>
+        <li class="flex gap-3"><span class="select-none text-gold">+</span><span><b class="text-white">Server-profile memory and a conflict checker.</b> A saved profile means answers stop re-asking your version, host, and stack, and <code>check-conflicts.mjs</code> flags clashing plugins and missing dependencies.</span></li>
+        <li class="flex gap-3"><span class="select-none text-gold">+</span><span><b class="text-white">25 gamemode stacks, up from 11.</b> OneBlock, GenPvP, BoxPvP, SkyPvP, the Pit, OP Prison, OP Skyblock, OP Factions, HCF, practice, BedWars, SkyWars, Survival Games, and Earth SMP.</span></li>
+      </ul>
 
-    <h3 class="eyebrow mt-7 text-gold">Cross-tool packaging</h3>
-    <p class="mt-3 text-sm text-rock">One source of truth in <code>skills/</code>, with no duplicated SKILL.md. Claude Code plugin and marketplace; <code>.agents/skills</code> symlink, <code>AGENTS.md</code>, and workflows for Codex and Antigravity; <code>GEMINI.md</code> and TOML commands for Gemini CLI; a zip packer for Claude.ai.</p>
+      <h3 class="eyebrow mt-7 text-rock">Fixed</h3>
+      <ul class="mt-3 space-y-3 text-sm">
+        <li class="flex gap-3"><span class="select-none text-rock-dark">~</span><span>By-name resolution for paid plugins now uses the registry's canonical URL, correcting PlotSquared, CombatLogX, HuskSync, Triton, and LibsDisguises.</span></li>
+        <li class="flex gap-3"><span class="select-none text-rock-dark">~</span><span>Cleared stale stub wording in the docs-learner and its adapters.</span></li>
+      </ul>
 
-    <h3 class="eyebrow mt-7 text-gold">Notes</h3>
-    <p class="mt-3 text-sm text-rock">Knowledge dated 2026-06-07: Minecraft 26.1.x, Paper requires Java 25, Velocity 3.5.0-SNAPSHOT, Paper downloads via Fill v3, Pelican is Pterodactyl-compatible (beta). The Aikar's-flags Java-25 caveat is attributed to community and hosting sources, not PaperMC.</p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="https://github.com/Teddy563/mcwrench/releases/tag/v1.1.0" class="btn btn-gold px-5 py-2.5 text-sm">Release v1.1.0</a>
+        <a href="https://github.com/Teddy563/mcwrench/blob/main/CHANGELOG.md" class="btn btn-ghost px-5 py-2.5 text-sm">Full changelog</a>
+      </div>
+    </article>
 
-    <div class="mt-7 flex flex-wrap gap-3">
-      <a href="https://github.com/Teddy563/mcwrench/releases/tag/v1.0.0" class="btn btn-gold px-5 py-2.5 text-sm">Release v1.0.0</a>
-      <a href="https://github.com/Teddy563/mcwrench/releases/download/v1.0.0/mcwrench-v1.0.0.zip" class="btn btn-ghost px-5 py-2.5 text-sm">Source zip</a>
-    </div>
-  </article>
+    <!-- 1.0.0 -->
+    <article class="release pl-7 sm:pl-9">
+      <div class="border-b-2 border-line pb-6">
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
+          <h2 class="font-pixel text-3xl font-bold text-white">v1.0.0</h2>
+          <span class="ml-auto font-mono text-sm text-rock">2026-06-07</span>
+        </div>
+        <p class="mt-3 text-lg text-rock-light">First public release.</p>
+        <p class="mt-3 text-sm text-rock">A gamemode-agnostic Minecraft server config and operations assistant, packaged for Claude Code, Claude.ai, OpenAI Codex, Google Antigravity, and Gemini CLI from one source of truth.</p>
+      </div>
+
+      <h3 class="eyebrow mt-6 text-gold">Skills (10)</h3>
+      <ul class="mt-3 space-y-2 text-sm">
+        <li class="flex gap-3"><span class="select-none text-gold">+</span><span>minecraft-server-router, the always-on hub</span></li>
+        <li class="flex gap-3"><span class="select-none text-gold">+</span><span>audit-config, with scan-server-tree and diff-against-defaults helpers</span></li>
+        <li class="flex gap-3"><span class="select-none text-gold">+</span><span>performance-tuning (Spark, Aikar vs Java-25 ZGC, view and sim distance)</span></li>
+        <li class="flex gap-3"><span class="select-none text-gold">+</span><span>permissions-helper, proxy-network, skript-author</span></li>
+        <li class="flex gap-3"><span class="select-none text-gold">+</span><span>gamemode-stacks, 11 archetypes</span></li>
+        <li class="flex gap-3"><span class="select-none text-gold">+</span><span>new-server-bootstrap, with a Fill v3 Paper downloader</span></li>
+        <li class="flex gap-3"><span class="select-none text-gold">+</span><span>pterodactyl-ops (Pterodactyl and Pelican)</span></li>
+        <li class="flex gap-3"><span class="select-none text-gold">+</span><span>learn-plugin-docs, the on-demand docs engine</span></li>
+      </ul>
+
+      <h3 class="eyebrow mt-7 text-rock">Highlights</h3>
+      <ul class="mt-3 space-y-2 text-sm">
+        <li class="flex gap-3"><span class="select-none text-rock-dark">~</span><span>Docs-learner with live-tested adapters: Modrinth, Hangar, GitHub, Oraxen, SpigotMC, Skript Hub, PaperMC; GitBook and Readability best-effort.</span></li>
+        <li class="flex gap-3"><span class="select-none text-rock-dark">~</span><span>One source of truth in <code>skills/</code> with no duplicated SKILL.md, plus per-tool wrappers and a Claude.ai zip packer.</span></li>
+        <li class="flex gap-3"><span class="select-none text-rock-dark">~</span><span>Knowledge dated 2026-06-07: Minecraft 26.1.x, Paper requires Java 25, Velocity 3.5.0-SNAPSHOT, Fill v3 downloads.</span></li>
+      </ul>
+
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="https://github.com/Teddy563/mcwrench/releases/tag/v1.0.0" class="btn btn-gold px-5 py-2.5 text-sm">Release v1.0.0</a>
+        <a href="https://github.com/Teddy563/mcwrench/releases/download/v1.0.0/mcwrench-v1.0.0.zip" class="btn btn-ghost px-5 py-2.5 text-sm">Source zip</a>
+      </div>
+    </article>
+
+  </div>
 
   <div class="mt-16 border-t-[3px] border-line pt-8">
     <a href="../" class="btn btn-ghost px-5 py-2.5 text-sm">Back home</a>

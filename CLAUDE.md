@@ -18,11 +18,17 @@ on Paper, Purpur, Folia, Vanilla, Velocity, and Pterodactyl/Pelican.
 | `performance-tuning` | Lag / TPS / MSPT / OOM / GC; Spark profiling; Aikar's flags; view/sim distance; entity & chunk tuning. |
 | `permissions-helper` | LuckPerms groups, tracks, contexts, meta; Vault bridging; node conventions. |
 | `proxy-network` | Velocity/Bungee/Waterfall; modern forwarding; the forwarding.secret handshake. |
-| `gamemode-stacks` | Canonical plugin stacks for 11 archetypes (SMP, skyblock, prison, factions, towny, minigames, RPG/MMO, anarchy, creative, KitPvP, lifesteal). |
+| `gamemode-stacks` | Canonical plugin stacks for 25 archetypes (SMP, skyblock, prison, factions, towny, minigames, RPG/MMO, anarchy, creative, KitPvP, lifesteal). |
+| `server-branding` | Brand kit from a name + vibe: identity, MOTD (right format per plugin), rank ladder, store/Discord copy, tone presets, MiniMessage↔legacy helper. |
 | `new-server-bootstrap` | Greenfield Paper/Velocity setup; Fill v3 Paper downloader; Java-25 + Aikar startup; EULA; starter configs. |
 | `pterodactyl-ops` | Pterodactyl/Pelican panel: RCON (secondary allocation), Xmx/AlwaysPreTouch OOM, non-atomic backups, client API. |
 | `skript-author` | Write/debug Skript; fetch live syntax from the Skript Hub API. |
-| `learn-plugin-docs` | Fetch + condense ANY plugin's docs on demand into `skills/_cache/<slug>/REFERENCE.md`. |
+| `learn-plugin-docs` | Fetch + condense ANY plugin's docs on demand; 64 popular plugins pre-loaded in `library/`; `--pin` stores permanently. |
+
+**Server profile:** `audit-config`'s `scan-server-tree.mjs --write-profile` writes
+`skills/_cache/server-profile.json` (software, version, host, RAM, gamemode, proxy, online-mode,
+plugins, worlds, chat formatter). **Read it first and tailor answers; don't re-ask known facts.**
+`check-conflicts.mjs` flags plugin conflicts / missing deps / proxy-Folia mismatches.
 
 ## Operating rules
 
@@ -46,7 +52,8 @@ on Paper, Purpur, Folia, Vanilla, Velocity, and Pterodactyl/Pelican.
   source of truth — never duplicate a SKILL.md.
 - Slash commands in `commands/` are thin Claude-Code-only aliases (`/mcwrench:audit`,
   `/mcwrench:learn`, `/mcwrench:perf`, `/mcwrench:perms`, `/mcwrench:proxy`, `/mcwrench:bootstrap`,
-  `/mcwrench:panel`, `/mcwrench:gamemode`, `/mcwrench:skript`) that just invoke the matching skill.
+  `/mcwrench:panel`, `/mcwrench:gamemode`, `/mcwrench:conflicts`, `/mcwrench:brand`,
+  `/mcwrench:profile`, `/mcwrench:skript`) that just invoke the matching skill.
   On Claude.ai/Codex there are no custom slash commands — skills auto-trigger from their
   (deliberately pushy) descriptions. `agents/` holds optional subagents (config-auditor,
   docs-learner) for heavy forked work.
