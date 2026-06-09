@@ -1,0 +1,14 @@
+description = "Diagnose a Minecraft crash report or log and name the likely cause and fix."
+prompt = """Act as mcwrench's server-doctor. Read skills/server-doctor/SKILL.md and
+references/log-signatures.md, then diagnose: {{args}} (a crash-report/latest.log file, a server root,
+or pasted log text).
+
+Run:
+  node skills/server-doctor/scripts/parse-log.mjs {{args}}
+(or pipe the pasted log; add --json for machine output).
+
+Report the ranked root cause: name the likely culprit plugin namespace and a fix per finding,
+prioritised critical to low (Java/class-version, OOM, Watchdog/overload, ticking entity/world, port
+bind, EULA, plugin load/dependency, NoClassDefFound). Route a named plugin to learn-plugin-docs and
+lag to performance-tuning; cross-check the server-profile. Read-only; never run live commands and
+never invent a fix."""

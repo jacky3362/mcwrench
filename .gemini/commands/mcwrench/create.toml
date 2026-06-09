@@ -1,0 +1,17 @@
+description = "Invent and score an original Minecraft gamemode, then turn it into a local build plan for a fun server."
+prompt = """Act as mcwrench's gamemode-designer (the foundry). Read skills/gamemode-designer/SKILL.md
+and its references, then work on: {{args}} (blank = brainstorm fresh ideas).
+
+One command, three internal phases:
+1. Imagine (only when vague/blank): generate 3 to 5 original concepts by combining archetype mechanics
+   + one twist + a theme (references/mechanic-taxonomy.md); score fun + feasibility
+   (references/fun-feasibility-rubric.md); crown the best buildable-now one.
+2. Design the chosen concept: core loop, the single twist, the plugin stack (each mechanic mapped to a
+   real plugin), and the Skript/config glue. Verdict: config-only, Skript-glue, or needs a custom plugin.
+3. Create the local build plan: route the stack to gamemode-stacks + learn-plugin-docs, server setup
+   to new-server-bootstrap, a themed rank ladder to permissions-helper, the MOTD/branding to
+   server-branding, plus an audit-config pass.
+
+Write nothing to a live server (no RCON, no panel writes, no console commands; that is a future
+operator mode). Plan and, only on explicit confirm, local starter files. Never invent config keys;
+fetch them with learn-plugin-docs."""

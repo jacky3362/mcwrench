@@ -16,8 +16,8 @@
     {
       "id": "custom-items-pack",
       "severity": "high",
-      "members": ["itemsadder", "oraxen", "nexo"],
-      "note": "Two resource-pack item plugins fight over the generated pack and self-host port. Run one."
+      "members": ["itemsadder", "oraxen", "nexo", "craftengine"],
+      "note": "Two resource-pack/custom-item engines (ItemsAdder, Oraxen, Nexo, CraftEngine) fight over the generated pack and self-host port. Run one."
     },
     {
       "id": "core-essentials",

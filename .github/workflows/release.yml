@@ -45,8 +45,10 @@ jobs:
       - name: Extract release notes from CHANGELOG
         run: |
           VER="${{ steps.tag.outputs.version }}"
-          awk -v v="$VER" '
-            $0 ~ "^## \\[" v "\\]" {f=1; print; next}
+          # Match the "## [VER]" header by literal string (index), not a dynamic regex — gawk treats
+          # the bracket escape in a dynamic regex as a character class and silently extracts nothing.
+          awk -v hdr="## [$VER]" '
+            index($0, hdr) == 1 {f=1; print; next}
             f && /^## \[/ {exit}
             f {print}
           ' CHANGELOG.md > RELEASE_BODY.md

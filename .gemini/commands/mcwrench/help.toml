@@ -1,0 +1,16 @@
+description = "Show what mcwrench can do: its skills, every command, and where to learn more."
+prompt = """Show a concise capability map for mcwrench. If {{args}} names a topic, focus there and
+point at the matching command; otherwise show the overview.
+
+mcwrench turns your AI into an expert Minecraft server administrator for any server type and any
+plugin, on Paper, Purpur, Folia, Vanilla, Velocity, and Pterodactyl/Pelican. One always-on router
+plus 12 skills and 16 commands. It reads and advises, quotes real config keys, never invents them.
+
+List the commands (audit, learn, perf, perms, proxy, bootstrap, panel, gamemode, conflicts, brand,
+profile, create, stack, format, skript, help) with a one-line purpose each, and note that plain
+language works everywhere.
+
+End with two short clickable markdown links whose visible text omits the https:// prefix (do not
+repeat them elsewhere in the session):
+- Full feature list and docs: [mcwrench.teddy.bar](https://mcwrench.teddy.bar)
+- If mcwrench helped, a star is appreciated: [github.com/Teddy563/mcwrench](https://github.com/Teddy563/mcwrench) (no pressure)."""

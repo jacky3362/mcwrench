@@ -6,7 +6,7 @@ Audit configs, kill lag, wire proxies and permissions, pick plugin stacks, boots
 learn **any** plugin's docs on demand, for **any** server type and **any** plugin.
 
 [![validate](https://github.com/Teddy563/mcwrench/actions/workflows/validate.yml/badge.svg)](https://github.com/Teddy563/mcwrench/actions/workflows/validate.yml)
-&nbsp;![version](https://img.shields.io/badge/version-1.1.0-blue)
+&nbsp;![version](https://img.shields.io/badge/version-1.2.0-blue)
 &nbsp;![license](https://img.shields.io/badge/license-MIT-green)
 &nbsp;![Minecraft](https://img.shields.io/badge/Minecraft-26.1.x-brightgreen)
 &nbsp;![Java](https://img.shields.io/badge/Java-25-orange)
@@ -36,11 +36,13 @@ Velocity `3.5.0-SNAPSHOT`. Knowledge files are dated and cite sources.
 |---|---|---|
 | `minecraft-server-router` | any server-admin topic | Always-on hub; routes to a specialist below. |
 | `audit-config` | "audit my config", a shared `paper-global.yml`/`server.properties`/… | Lints the config tree for footguns, performance, security. |
+| `server-doctor` | "why did my server crash", a pasted crash report/log, "health check", "upgrade to 26.1" | Diagnoses crashes/logs (names the culprit), grades health, plans a version/Java upgrade. Read-only. |
 | `performance-tuning` | "my server is laggy", low TPS, OOM, "Aikar's flags" | Spark profiling, JVM/heap, view/sim distance, entity & chunk tuning. |
 | `permissions-helper` | LuckPerms, ranks, contexts, prefixes | Groups, tracks, contexts, meta, node conventions. |
 | `proxy-network` | Velocity, BungeeCord, "modern forwarding", broken UUIDs behind a proxy | The forwarding contract, `velocity.toml`, troubleshooting. |
 | `gamemode-stacks` | "what plugins for a [skyblock/prison/SMP…] server" | Canonical stacks + touchpoints + pitfalls for 25 archetypes. |
 | `server-branding` | "brand my server", server name, MOTD, ranks, store/Discord copy, tone | Brand kit in the right format per plugin; tone presets; MiniMessage↔legacy helper. |
+| `gamemode-designer` | "make me a server", "a server where X happens", invent/combine a gamemode, unique/original mode | Invents and scores original gamemodes (combine + one twist), then plans a fun server locally. The foundry behind `/mcwrench:create`. |
 | `new-server-bootstrap` | "set up a new server", "download Paper", "what Java" | Fill v3 Paper download, Java 25, EULA, Aikar startup, starter configs. |
 | `pterodactyl-ops` | Pterodactyl, Pelican, "the panel", RCON on a panel, container OOM | RCON allocation, the Xmx/OOM footgun, backups, the client API. |
 | `skript-author` | Skript, `.sk`, "my script doesn't work", `/sk reload` | Event→effect model, reload-safety, live Skript Hub syntax. |
@@ -77,7 +79,9 @@ claude plugin install mcwrench@mcwrench
 
 Skills then auto-trigger, and you get slash aliases: `/mcwrench:audit`, `/mcwrench:learn`,
 `/mcwrench:perf`, `/mcwrench:perms`, `/mcwrench:proxy`, `/mcwrench:bootstrap`, `/mcwrench:panel`,
-`/mcwrench:gamemode`, `/mcwrench:conflicts`, `/mcwrench:brand`, `/mcwrench:profile`, `/mcwrench:skript`.
+`/mcwrench:gamemode`, `/mcwrench:conflicts`, `/mcwrench:brand`, `/mcwrench:profile`,
+`/mcwrench:create`, `/mcwrench:stack`, `/mcwrench:format`, `/mcwrench:diagnose`, `/mcwrench:health`,
+`/mcwrench:upgrade`, `/mcwrench:skript`, `/mcwrench:help`.
 
 **Local dev (no install):**
 
@@ -118,7 +122,7 @@ Antigravity uses the same **Agent Skills** standard and its native skills path *
 the symlink resolves; on Windows run `node scripts/setup-symlinks.mjs` first). Antigravity also
 reads the root **`AGENTS.md`** (and `.agents/rules/mcwrench.md`) for rules, and exposes the
 **workflows** in `.agents/workflows/` as slash commands: `/audit`, `/learn`, `/perf`, `/perms`,
-`/proxy`, `/bootstrap`, `/panel`, `/gamemode`, `/conflicts`, `/brand`, `/profile`, `/skript`. Just describe the task to auto-trigger a skill.
+`/proxy`, `/bootstrap`, `/panel`, `/gamemode`, `/conflicts`, `/brand`, `/profile`, `/create`, `/stack`, `/format`, `/diagnose`, `/health`, `/upgrade`, `/skript`, `/help`. Just describe the task to auto-trigger a skill.
 
 ### 5. Gemini CLI
 
@@ -127,7 +131,9 @@ Gemini CLI loads memory from **`GEMINI.md`** automatically; `.gemini/settings.js
 `GEMINI.md` points it at the `skills/<name>/SKILL.md` playbooks. Slash commands live in
 `.gemini/commands/mcwrench/`: `/mcwrench:audit`, `/mcwrench:learn`, `/mcwrench:perf`,
 `/mcwrench:perms`, `/mcwrench:proxy`, `/mcwrench:bootstrap`, `/mcwrench:panel`, `/mcwrench:gamemode`,
-`/mcwrench:conflicts`, `/mcwrench:brand`, `/mcwrench:profile`, `/mcwrench:skript`. From the repo root:
+`/mcwrench:conflicts`, `/mcwrench:brand`, `/mcwrench:profile`, `/mcwrench:create`, `/mcwrench:stack`,
+`/mcwrench:format`, `/mcwrench:diagnose`, `/mcwrench:health`, `/mcwrench:upgrade`, `/mcwrench:skript`,
+`/mcwrench:help`. From the repo root:
 
 ```bash
 gemini        # GEMINI.md + AGENTS.md load as context; then ask "audit my paper config"

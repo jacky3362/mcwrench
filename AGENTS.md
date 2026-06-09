@@ -12,17 +12,21 @@ Antigravity's native skills path). Each folder has a `SKILL.md` with `name` + `d
 Invoke a skill explicitly (Codex `$skill-name`, e.g. `$audit-config`) or let the agent auto-select
 by description. **Antigravity** also exposes the `.agents/workflows/` files as slash commands
 (`/audit`, `/learn`, `/perf`, `/perms`, `/proxy`, `/bootstrap`, `/panel`, `/gamemode`, `/conflicts`,
-`/brand`, `/profile`, `/skript`) and reads `.agents/rules/mcwrench.md`.
+`/brand`, `/profile`, `/create`, `/stack`, `/format`, `/diagnose`, `/health`, `/upgrade`, `/skript`,
+`/help`) and reads
+`.agents/rules/mcwrench.md`.
 
 | Skill | Use for |
 |---|---|
 | `minecraft-server-router` | Always-on hub for ANY Minecraft server-admin topic; routes to a specialist. |
 | `audit-config` | Lint a config tree for footguns, performance, and security; `--write-profile` + `check-conflicts.mjs`. |
+| `server-doctor` | Day-2 ops (read-only): diagnose a crash/log, grade server health, plan a 26.1/Java-25 upgrade. `parse-log.mjs` + `check-plugin-versions.mjs`. |
 | `performance-tuning` | Lag / TPS / MSPT / OOM; Spark profiling; Aikar's flags; view/sim distance; entity & chunk tuning. |
 | `permissions-helper` | LuckPerms groups, tracks, contexts, meta; Vault; node conventions. |
 | `proxy-network` | Velocity/Bungee modern forwarding and the forwarding.secret handshake. |
 | `gamemode-stacks` | Canonical plugin stacks for 25 archetypes (SMP, skyblock, prison, factions, towny, minigames, RPG/MMO, anarchy, creative, KitPvP, lifesteal). |
 | `server-branding` | Brand kit from a name + vibe: identity, MOTD (right format per plugin), ranks, store/Discord copy, tone presets, MiniMessage↔legacy helper. |
+| `gamemode-designer` | Invent + score original gamemodes (combine archetypes + one twist), then plan a fun server locally. The foundry behind `/create`; plans only, no live connectors. |
 | `new-server-bootstrap` | Greenfield Paper/Velocity setup; Fill v3 Paper downloader; Java-25 + Aikar startup; starter configs. |
 | `pterodactyl-ops` | Pterodactyl/Pelican panel: RCON, Xmx/AlwaysPreTouch OOM, non-atomic backups, client API. |
 | `skript-author` | Write/debug Skript; fetch live syntax from Skript Hub. |

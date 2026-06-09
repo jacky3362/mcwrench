@@ -1,10 +1,30 @@
-# mcwrench v1.1.0 — release notes
+# mcwrench v1.2.0 — release notes
 
 **mcwrench** turns Claude (or Codex / Antigravity / Gemini) into an expert Minecraft **server
 administrator** — for any server type and any plugin, on Paper, Purpur, Folia, Vanilla, Velocity,
 and Pterodactyl/Pelican. It audits configs, diagnoses lag, tunes performance, sets up proxies and
 permissions, picks gamemode plugin stacks, bootstraps new servers, and **learns any plugin's docs
 on demand**.
+
+## New in 1.2.0 — invent, build, and keep it running
+
+- **The foundry: `gamemode-designer` + `/mcwrench:create`.** Take an idea (or nothing) and get a fun,
+  buildable server. It imagines and scores original gamemode concepts by combining archetypes with one
+  twist, designs the chosen one (loop, stack, glue, feasibility verdict), and assembles a local build
+  plan across bootstrap, stacks, permissions, branding, and audit. Plans only, no live connectors.
+- **`server-doctor` + `/mcwrench:diagnose`.** Paste a crash report or `latest.log` (or point at a
+  server folder) and get a ranked root cause that names the likely culprit plugin and a fix:
+  Java/class-version, OOM, Watchdog overload, ticking-entity crashes, port-bind, EULA, plugin
+  load/dependency failures. **`/mcwrench:health`** grades a server folder; **`/mcwrench:upgrade`**
+  plans a 26.1 / Java-25 migration with each plugin labelled has-a-build / none / unknown.
+- **`learn --stack <gamemode>` / `/mcwrench:stack`** — pre-load a whole server type's plugin docs in
+  one command. **`/mcwrench:format`** — convert one string between MiniMessage and legacy color.
+- **github-wiki adapter** for wiki-only plugins, marketplace keywords, and coverage for CraftEngine,
+  Nexo, the NightExpress economy suite, AdvancedTeleport, and PvPManager.
+- **13 skills, 19 commands** across every runtime, including a `/mcwrench:help` capability map.
+
+> Everything in 1.2.0 is local. Running live console commands and writing to a panel (RCON,
+> Pterodactyl/Pelican client API) are deferred to a later operator mode.
 
 ## New in 1.1.0 — durable docs, branding, double the gamemodes
 
@@ -23,9 +43,10 @@ on demand**.
 
 ## Highlights
 
-- **11 skills**, including the always-on `minecraft-server-router` and specialists for auditing,
-  performance, permissions, proxies, gamemode stacks (25 archetypes), branding, new-server bootstrap,
-  Pterodactyl/Pelican ops, and Skript.
+- **13 skills and 19 commands**, including the always-on `minecraft-server-router` and specialists for
+  auditing, the server-doctor (crash/log/upgrade), performance, permissions, proxies, gamemode stacks
+  (25 archetypes), branding, the gamemode-designer foundry, new-server bootstrap, Pterodactyl/Pelican
+  ops, and Skript.
 - **Docs-learner** that routes to the cheapest channel per host (Modrinth, Hangar, GitHub, Oraxen,
   SpigotMC, Skript Hub, PaperMC) and caches a condensed reference — every adapter live-tested.
 - **Five runtimes, one source of truth**: Claude Code (plugin + `/mcwrench:*`), Claude.ai (zip

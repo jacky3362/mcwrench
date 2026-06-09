@@ -77,12 +77,46 @@
   <!-- timeline -->
   <div class="mt-12 space-y-12">
 
-    <!-- 1.1.0 latest -->
+    <!-- 1.2.0 latest -->
     <article class="release latest pl-7 sm:pl-9">
       <div class="border-b-2 border-line pb-6">
         <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
-          <h2 class="font-pixel text-3xl font-bold text-white">v1.1.0</h2>
+          <h2 class="font-pixel text-3xl font-bold text-white">v1.2.0</h2>
           <span class="border-2 border-gold px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-gold-light">latest</span>
+          <span class="ml-auto font-mono text-sm text-rock">2026-06-09</span>
+        </div>
+        <p class="mt-3 text-lg text-rock-light">Invent, build, and keep it running.</p>
+        <div class="mt-4 flex flex-wrap gap-2">
+          <span class="tagchip">Gamemode foundry</span>
+          <span class="tagchip">server-doctor</span>
+          <span class="tagchip">/create</span>
+          <span class="tagchip">/diagnose</span>
+          <span class="tagchip">learn --stack</span>
+        </div>
+      </div>
+
+      <h3 class="eyebrow mt-6 text-gold">Added</h3>
+      <ul class="mt-3 space-y-3 text-sm">
+        <li class="flex gap-3"><span class="select-none text-gold">+</span><span><b class="text-white">The foundry: gamemode-designer + <code>/mcwrench:create</code>.</b> One command imagines and scores original gamemodes (combine archetypes + one twist), designs the chosen one, and assembles a local build plan across bootstrap, stacks, permissions, branding, and audit. Plans only, no live connectors.</span></li>
+        <li class="flex gap-3"><span class="select-none text-gold">+</span><span><b class="text-white">server-doctor + <code>/mcwrench:diagnose</code>.</b> Paste a crash report or <code>latest.log</code> (or point at a server folder) and get a ranked root cause that names the likely culprit plugin and a fix: Java/class-version, OOM, Watchdog overload, ticking-entity crashes, port-bind, EULA, plugin load/dependency. <b class="text-white"><code>/mcwrench:health</code></b> grades a server folder; <b class="text-white"><code>/mcwrench:upgrade</code></b> plans a 26.1 / Java 25 migration.</span></li>
+        <li class="flex gap-3"><span class="select-none text-gold">+</span><span><b class="text-white">learn --stack and <code>/mcwrench:stack</code></b> pre-load a whole gamemode's plugin docs in one command; <b class="text-white"><code>/mcwrench:format</code></b> converts MiniMessage to/from legacy color.</span></li>
+        <li class="flex gap-3"><span class="select-none text-gold">+</span><span><b class="text-white">github-wiki adapter</b>, marketplace keywords, a <code>/mcwrench:help</code> capability map, and coverage for CraftEngine, Nexo, the NightExpress economy suite, AdvancedTeleport, and PvPManager. Now 13 skills and 19 commands.</span></li>
+      </ul>
+      <h3 class="eyebrow mt-7 text-rock">Notes</h3>
+      <ul class="mt-3 space-y-3 text-sm">
+        <li class="flex gap-3"><span class="select-none text-rock-dark">~</span><span>Local-only. Running live console commands and writing to a panel (RCON, Pterodactyl/Pelican client API) are deferred to a later operator mode; the crash/log parser is the engine that mode would wrap.</span></li>
+      </ul>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="https://github.com/Teddy563/mcwrench/releases/tag/v1.2.0" class="btn btn-gold px-5 py-2.5 text-sm">Release v1.2.0</a>
+        <a href="https://github.com/Teddy563/mcwrench/blob/main/CHANGELOG.md" class="btn btn-ghost px-5 py-2.5 text-sm">Full changelog</a>
+      </div>
+    </article>
+
+    <!-- 1.1.0 -->
+    <article class="release pl-7 sm:pl-9">
+      <div class="border-b-2 border-line pb-6">
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
+          <h2 class="font-pixel text-3xl font-bold text-white">v1.1.0</h2>
           <span class="ml-auto font-mono text-sm text-rock">2026-06-08</span>
         </div>
         <p class="mt-3 text-lg text-rock-light">Durable docs, branding, and double the gamemodes.</p>

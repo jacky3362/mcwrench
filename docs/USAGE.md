@@ -132,6 +132,38 @@ Canonical plugin stacks + config touchpoints + pitfalls for 25 archetypes.
   footguns (e.g. *one* claims plugin, *one* skyblock engine), then a hand-off to `learn-plugin-docs`
   for exact keys.
 
+### `/mcwrench:create` — invent a gamemode and plan a server
+The foundry (the `gamemode-designer` skill). Takes an idea (or nothing) and turns it into a fun,
+buildable server, all locally.
+
+- **Slash:** `/mcwrench:create a server where the sea floods every night` · `/mcwrench:create` (brainstorm)
+- **Natural:** *"make me a server"*, *"invent an original gamemode"*, *"a server where you age and die"*
+- **You get:** three internal phases. **Imagine** (when vague) generates and scores 3 to 5 original
+  concepts by combining archetype mechanics with one twist and a theme. **Design** locks the chosen
+  one's loop, twist, plugin stack, and the Skript/config glue, with a feasibility verdict (config-only,
+  Skript-glue, or needs a custom plugin). **Create** assembles a local build plan: stack
+  (`gamemode-stacks` + `learn-plugin-docs`), setup (`new-server-bootstrap`), themed ranks
+  (`permissions-helper`), MOTD/branding (`server-branding`), and an `audit-config` pass. It writes
+  nothing to a live server (no RCON, no panel writes, no console commands; that is a future operator
+  mode).
+
+### `/mcwrench:stack` — pre-load a gamemode's docs
+Pins every plugin in a gamemode's canonical stack in one go, so the whole server type is local.
+
+- **Slash:** `/mcwrench:stack skyblock` · `/mcwrench:stack rpg-mmo` · `/mcwrench:stack --list`
+- **You get:** `node scripts/learn-stack.mjs <gamemode>` pins each plugin via `learn-docs --pin`
+  (tolerant of failures), reading `skills/learn-plugin-docs/library/stacks.json`. Then it hands off to
+  `gamemode-stacks` for that archetype.
+
+### `/mcwrench:format` — MiniMessage to/from legacy color
+Converts a single string between MiniMessage and legacy `&`/`&#RRGGBB`, for a MOTD line, a rank
+prefix, or a hologram.
+
+- **Slash:** `/mcwrench:format --to-legacy "<gradient:#FF6B6B:#FFD93D>Aether</gradient>"`
+- **You get:** `node skills/server-branding/scripts/format.mjs --to-legacy | --to-mm | --preview`.
+  Lossy for hover/click; see `server-branding/references/format-target-matrix.md` for which target
+  wants which format.
+
 ### `/mcwrench:conflicts` — check plugin conflicts
 Flags clashing plugins, missing dependencies, and proxy or Folia mismatches in a plugin set.
 
@@ -163,6 +195,32 @@ re-asking the version, host, and stack.
   chat formatter — read first by every skill. Set `java`/`host`/`ramMB` manually; confirm the
   auto-detected MC version and formatter before relying on them.
 
+### `/mcwrench:diagnose` — read a crash report or log
+The headline of server-doctor. Paste a crash report / `latest.log` (or point at a server folder) and
+get a ranked root cause.
+
+- **Slash:** `/mcwrench:diagnose ./myserver` · `/mcwrench:diagnose crash-2026-06-09.txt`
+- **Natural:** *"why did my server crash"*, *"my server won't start, here's the log"*
+- **You get:** `node skills/server-doctor/scripts/parse-log.mjs <file-or-root>` names the likely
+  culprit plugin namespace and a fix per finding, prioritised critical to low (Java/class-version,
+  OOM, Watchdog, ticking entity/world, port bind, EULA, plugin load/dependency, NoClassDefFound).
+  Routes a named plugin to `learn-plugin-docs`. Read-only.
+
+### `/mcwrench:health` — graded server scorecard
+One report for a server folder, composing the read-only scanners.
+
+- **Slash:** `/mcwrench:health ./myserver`
+- **You get:** `scan-server-tree` + `check-conflicts` + `check-plugin-versions` + `parse-log` rolled
+  into a graded report (security, performance, durability, currency) with the top fixes.
+
+### `/mcwrench:upgrade` — plan a version/Java upgrade
+A go/no-go runbook for moving to a new MC version (26.1 / Java 25).
+
+- **Slash:** `/mcwrench:upgrade 26.1.2`
+- **You get:** Java-25 + unobfuscated-jar checks, each plugin labelled has-a-build / none / unknown
+  (`check-plugin-versions.mjs`), and an ordered runbook: back up → bump Java → update plugins → test
+  on a copy → upgrade world → re-audit. Read-only; confirms before any irreversible step.
+
 ### `/mcwrench:skript` — write/debug Skript
 Event→effect modelling, reload-safety, and live syntax from Skript Hub.
 
@@ -175,6 +233,15 @@ Event→effect modelling, reload-safety, and live syntax from Skript Hub.
   ```
 - **You get:** the `.sk` written against the installed addon's real syntax, plus the
   `/sk reload` + back-up-`variables.csv` safety steps.
+
+### `/mcwrench:help` — what can it do
+A capability map: the router, all 12 skills, every command, and where to learn more.
+
+- **Slash:** `/mcwrench:help` · `/mcwrench:help permissions` (focus a topic)
+- **Natural:** *"what can mcwrench do?"*
+- **You get:** a grouped list of the 16 commands with one-line purposes, a note that plain language
+  works everywhere, a link to **https://mcwrench.teddy.bar** for the full feature list, and a soft,
+  optional GitHub-star line. Not pushy, shown once.
 
 ### `minecraft-server-router` — always on (no command)
 The hub. It engages automatically on any Minecraft server-admin topic and routes to the right
@@ -224,9 +291,13 @@ and `RAW.md` (full). The cache is git-ignored. Re-running within the TTL reuses 
 | `skills/audit-config/scripts/scan-server-tree.mjs <root> [--json\|--write-profile]` | Manifest a tree; `--write-profile` saves the server profile. |
 | `skills/audit-config/scripts/server-profile.mjs [get\|set\|clear …]` | Show / edit the server profile. |
 | `skills/audit-config/scripts/check-conflicts.mjs <root>\|--list "A,B"\|--profile` | Flag plugin conflicts + missing deps. |
+| `skills/server-doctor/scripts/parse-log.mjs <file-or-root>` | Diagnose a crash report / log (read-only). |
+| `skills/server-doctor/scripts/check-plugin-versions.mjs <root> [--offline]` | Report outdated / no-build-for-this-MC plugins. |
 | `skills/audit-config/scripts/diff-against-defaults.mjs <cfg> <defaults>` | Show overridden keys. |
 | `skills/server-branding/scripts/format.mjs --to-legacy\|--to-mm\|--preview "<text>"` | Convert MiniMessage ↔ legacy color. |
 | `scripts/refresh-library.mjs [plugin]` | Re-pin the committed plugin library from canonical sources. |
+| `scripts/learn-stack.mjs <gamemode>` | Pin every plugin's docs for a gamemode's stack at once. |
+| `skills/server-branding/scripts/format.mjs --to-legacy\|--to-mm\|--preview "<text>"` | MiniMessage to/from legacy color. |
 | `scripts/validate.mjs [--strict]` | Validate the repo structure + portability. |
 | `scripts/pack-skill.mjs <name> \| --all` | Zip a skill folder for Claude.ai. |
 | `scripts/setup-symlinks.mjs` | Recreate `.agents/skills` locally on Windows. |

@@ -14,11 +14,13 @@ any plugin, on Paper, Purpur, Folia, Vanilla, Velocity, and Pterodactyl/Pelican.
 |---|---|
 | `minecraft-server-router` | Any Minecraft server-admin topic — start here, then go to a specialist. |
 | `audit-config` | Lint a config tree (`server.properties`, `paper-global.yml`, `spigot.yml`, `velocity.toml`, …) for footguns, performance, security. |
+| `server-doctor` | Day-2 ops (read-only): diagnose a crash/log (`node skills/server-doctor/scripts/parse-log.mjs`), grade health, plan a 26.1/Java-25 upgrade. |
 | `performance-tuning` | Lag / TPS / MSPT / OOM / GC; Spark; Aikar's flags; view/sim distance; entity & chunk tuning. |
 | `permissions-helper` | LuckPerms groups, tracks, contexts, meta; Vault; node conventions. |
 | `proxy-network` | Velocity/Bungee modern forwarding and the forwarding.secret handshake. |
 | `gamemode-stacks` | Plugin stacks for 25 archetypes (SMP, skyblock, prison, factions, towny, minigames, RPG/MMO, anarchy, creative, KitPvP, lifesteal). |
 | `server-branding` | Brand kit from a name + vibe: identity, MOTD (right format per plugin), ranks, store/Discord copy, tone presets, MiniMessage↔legacy (`node skills/server-branding/scripts/format.mjs`). |
+| `gamemode-designer` | Invent + score original gamemodes (combine archetypes + one twist), then plan a fun server locally. The foundry behind `/mcwrench:create`; plans only, no live connectors. |
 | `new-server-bootstrap` | Greenfield Paper/Velocity: `node skills/new-server-bootstrap/scripts/fetch-paper.mjs`; Java 25 + Aikar startup; starter configs. |
 | `pterodactyl-ops` | Pterodactyl/Pelican panel: RCON, Xmx/AlwaysPreTouch OOM, non-atomic backups, client API. |
 | `skript-author` | Write/debug Skript: `node skills/skript-author/scripts/fetch-skripthub.mjs --addon <Addon>`. |
@@ -31,7 +33,9 @@ online-mode, plugins, worlds, chat formatter). Read it first; don't re-ask known
 
 Slash commands (in `.gemini/commands/mcwrench/`): `/mcwrench:audit`, `/mcwrench:learn`,
 `/mcwrench:perf`, `/mcwrench:perms`, `/mcwrench:proxy`, `/mcwrench:bootstrap`, `/mcwrench:panel`,
-`/mcwrench:gamemode`, `/mcwrench:conflicts`, `/mcwrench:brand`, `/mcwrench:profile`, `/mcwrench:skript`.
+`/mcwrench:gamemode`, `/mcwrench:conflicts`, `/mcwrench:brand`, `/mcwrench:profile`,
+`/mcwrench:create`, `/mcwrench:stack`, `/mcwrench:format`, `/mcwrench:diagnose`, `/mcwrench:health`,
+`/mcwrench:upgrade`, `/mcwrench:skript`, `/mcwrench:help`.
 
 ## Operating rules
 

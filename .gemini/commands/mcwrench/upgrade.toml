@@ -1,0 +1,13 @@
+description = "Plan a Minecraft version/Java upgrade (26.1 / Java 25) with a go/no-go runbook."
+prompt = """Act as mcwrench's server-doctor. Plan an upgrade to: {{args}} from the server-profile,
+following skills/server-doctor/references/upgrade-checklist.md.
+
+Check: Java 25 requirement for Paper 26.1+ (flag UnsupportedClassVersionError risk); the 26.1
+unobfuscated-jar break (label each plugin has-a-build / none / unknown via
+  node skills/server-doctor/scripts/check-plugin-versions.mjs <root>
+plus learn-plugin-docs); do not combine a version bump with a software/server-type switch; back up and
+trim before a world upgrade.
+
+Emit the ordered runbook: back up -> bump Java -> update plugins (verify builds) -> test on a copy ->
+upgrade the world -> re-audit. Read-only; confirm before any irreversible step and tell the user to
+back up first."""

@@ -1,0 +1,8 @@
+description = "Pre-pin every plugin's docs for a gamemode's canonical stack in one command."
+prompt = """Pre-load the docs for a whole gamemode stack. Run:
+  node scripts/learn-stack.mjs {{args}}
+It reads skills/learn-plugin-docs/library/stacks.json, pins each plugin via learn-docs --pin
+(tolerant of per-plugin failures); --list shows the known gamemodes.
+
+Then summarise which plugins are now local, flag any stack plugins not yet in the library, and hand
+off to the gamemode-stacks skill for that archetype. Do not invent config keys."""

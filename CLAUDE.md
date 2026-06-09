@@ -15,11 +15,13 @@ on Paper, Purpur, Folia, Vanilla, Velocity, and Pterodactyl/Pelican.
 |---|---|
 | `minecraft-server-router` | Always-on hub. Engage on ANY server-admin topic; route to a specialist below. |
 | `audit-config` | Lint a config tree (server.properties, paper-global.yml, spigot.yml, velocity.toml, …) for footguns, perf, security. |
+| `server-doctor` | Day-2 ops (read-only): diagnose a crash/log (names the culprit plugin), grade server health, plan a 26.1/Java-25 upgrade. |
 | `performance-tuning` | Lag / TPS / MSPT / OOM / GC; Spark profiling; Aikar's flags; view/sim distance; entity & chunk tuning. |
 | `permissions-helper` | LuckPerms groups, tracks, contexts, meta; Vault bridging; node conventions. |
 | `proxy-network` | Velocity/Bungee/Waterfall; modern forwarding; the forwarding.secret handshake. |
 | `gamemode-stacks` | Canonical plugin stacks for 25 archetypes (SMP, skyblock, prison, factions, towny, minigames, RPG/MMO, anarchy, creative, KitPvP, lifesteal). |
 | `server-branding` | Brand kit from a name + vibe: identity, MOTD (right format per plugin), rank ladder, store/Discord copy, tone presets, MiniMessage↔legacy helper. |
+| `gamemode-designer` | Invent + score original gamemodes (combine archetypes + one twist), then plan a fun server locally. The foundry behind `/mcwrench:create`; plans only, no live connectors. |
 | `new-server-bootstrap` | Greenfield Paper/Velocity setup; Fill v3 Paper downloader; Java-25 + Aikar startup; EULA; starter configs. |
 | `pterodactyl-ops` | Pterodactyl/Pelican panel: RCON (secondary allocation), Xmx/AlwaysPreTouch OOM, non-atomic backups, client API. |
 | `skript-author` | Write/debug Skript; fetch live syntax from the Skript Hub API. |
@@ -53,7 +55,9 @@ plugins, worlds, chat formatter). **Read it first and tailor answers; don't re-a
 - Slash commands in `commands/` are thin Claude-Code-only aliases (`/mcwrench:audit`,
   `/mcwrench:learn`, `/mcwrench:perf`, `/mcwrench:perms`, `/mcwrench:proxy`, `/mcwrench:bootstrap`,
   `/mcwrench:panel`, `/mcwrench:gamemode`, `/mcwrench:conflicts`, `/mcwrench:brand`,
-  `/mcwrench:profile`, `/mcwrench:skript`) that just invoke the matching skill.
+  `/mcwrench:profile`, `/mcwrench:create`, `/mcwrench:stack`, `/mcwrench:format`, `/mcwrench:diagnose`,
+  `/mcwrench:health`, `/mcwrench:upgrade`, `/mcwrench:skript`, `/mcwrench:help`) that just invoke the
+  matching skill.
   On Claude.ai/Codex there are no custom slash commands — skills auto-trigger from their
   (deliberately pushy) descriptions. `agents/` holds optional subagents (config-auditor,
   docs-learner) for heavy forked work.

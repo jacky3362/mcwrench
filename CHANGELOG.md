@@ -4,6 +4,54 @@ All notable changes to **mcwrench** are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] — 2026-06-09
+
+Theme: **invent, build, and keep it running.** A creative foundry turns an idea into a fun, buildable
+server; whole gamemode stacks pre-load in one command; the docs engine reaches further; and a
+read-only doctor diagnoses crashes, grades a server, and plans upgrades. Everything is local: no
+live-server connectors (RCON, panel writes, console commands) — those stay a later operator mode.
+
+### Added
+- **`gamemode-designer` skill + `/mcwrench:create`** — the foundry. One command, three internal
+  phases: **imagine** (generate + score original gamemode concepts by combining archetype mechanics
+  with one twist and a theme), **design** (lock the loop, twist, plugin stack, and the Skript/config
+  glue, with a feasibility verdict), and **create** (assemble a local build plan: stack →
+  `gamemode-stacks` + `learn --stack`, setup → `new-server-bootstrap`, ranks → `permissions-helper`,
+  MOTD → `server-branding`, then an `audit-config` pass). Plans only; writes nothing to a live server.
+- **`server-doctor` skill + three read-only commands:**
+  - **`/mcwrench:diagnose`** — paste a crash report / `latest.log` (or point at a server folder) and
+    get a ranked root cause. `parse-log.mjs` names the **likely culprit plugin namespace** and matches
+    signatures: `UnsupportedClassVersionError` (Java too old — class file version 69 = Java 25),
+    `OutOfMemoryError`, Watchdog/single-tick overload, ticking entity/world crashes, port-bind, EULA,
+    plugin load failures, `NoClassDefFoundError`/`NoSuchMethodError`. Each finding has a fix recipe.
+  - **`/mcwrench:health`** — a graded scorecard composing `scan-server-tree` + `check-conflicts` +
+    `check-plugin-versions` + `parse-log` (security, performance, durability, currency).
+  - **`/mcwrench:upgrade`** — a 26.1 / Java-25 migration runbook (each plugin labelled has-a-build /
+    none / unknown via `check-plugin-versions.mjs`; ordered back-up → bump-Java → update → test-on-a-
+    copy → upgrade-world plan).
+- **`learn --stack <gamemode>`** — `scripts/learn-stack.mjs` pins every plugin's docs in a gamemode's
+  canonical stack in one go, from `library/stacks.json` (25 archetypes → registry plugins). Surfaced
+  as **`/mcwrench:stack`**.
+- **`/mcwrench:format`** — surfaces `server-branding/scripts/format.mjs` (MiniMessage to/from legacy
+  `&#RRGGBB`) as its own command, for a single MOTD line, prefix, or hologram.
+- **`/mcwrench:help`** — a capability map (the router, all skills, every command) with a link to
+  mcwrench.teddy.bar and a soft, optional GitHub-star note.
+- **github-wiki adapter** — resolves GitHub `/wiki` pages (`raw.githubusercontent.com/wiki/...`).
+- **Ecosystem coverage:** registry entries for CraftEngine, Nexo, the NightExpress "Excellent" suite
+  (Economy/Shop/Crates), AdvancedTeleport, and PvPManager; CraftEngine added to the custom-item
+  conflict group.
+- **plugin.json keywords** — `server-branding`, `motd`, `minimessage`, `gamemode-designer`,
+  `server-profile`, `conflict-checker`, `plugin-docs`.
+- **Counts:** **13 skills** and **19 commands** across all surfaces (Claude Code, Gemini CLI,
+  Antigravity workflows).
+
+### Notes
+- Local-only by design. RCON execution, Pterodactyl/Pelican client-API writes, and live console
+  testing are deferred to a future operator mode (v2). The crash/log parser is the engine that mode
+  would later wrap.
+
+[1.2.0]: https://github.com/Teddy563/mcwrench/releases/tag/v1.2.0
+
 ## [1.1.0] — 2026-06-08
 
 Theme: **durable docs, branding, and double the gamemodes.** Popular plugins load instantly with

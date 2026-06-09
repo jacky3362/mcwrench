@@ -22,6 +22,7 @@ import * as modrinth from './adapters/modrinth.mjs';
 import * as hangar from './adapters/hangar.mjs';
 import * as gitbook from './adapters/gitbook.mjs';
 import * as githubReadme from './adapters/github-readme.mjs';
+import * as githubWiki from './adapters/github-wiki.mjs';
 import * as oraxen from './adapters/oraxen.mjs';
 import * as spigot from './adapters/spigot.mjs';
 import * as skripthub from './adapters/skripthub.mjs';
@@ -133,8 +134,9 @@ function parseTarget(arg) {
   return { kind: 'name', name: raw, raw };
 }
 
-// Map a URL host to a wired/stub adapter.
-function adapterForHost(host) {
+// Map a URL host (+ path) to a wired adapter.
+function adapterForHost(host, pathname = '') {
+  if (host.includes('github.com') && /\/wiki(\/|$)/.test(pathname)) return githubWiki;
   if (host.includes('modrinth.com')) return modrinth;
   if (host.includes('hangar.papermc.io')) return hangar;
   if (host.includes('github.com') || host.includes('raw.githubusercontent.com')) return githubReadme;
@@ -158,7 +160,7 @@ async function isFresh(refPath) {
 async function resolveAndFetch(target) {
   // Returns { markdown, sourceUrl, meta:{name,slug,host,adapter}, warnings:[] } or throws.
   if (target.kind === 'url') {
-    const adapter = adapterForHost(target.host);
+    const adapter = adapterForHost(target.host, target.url.pathname);
     try {
       return await adapter.fetchFromUrl(target.url, { userAgent: USER_AGENT });
     } catch (e) {

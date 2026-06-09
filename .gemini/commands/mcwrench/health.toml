@@ -1,0 +1,11 @@
+description = "Grade a Minecraft server folder: config, conflicts, plugin currency, and today's log."
+prompt = """Act as mcwrench's server-doctor. Produce a health scorecard for: {{args}} (default: the
+current directory). Run the read-only scanners and roll them into one graded report:
+  node skills/audit-config/scripts/scan-server-tree.mjs <root>
+  node skills/audit-config/scripts/check-conflicts.mjs <root>
+  node skills/server-doctor/scripts/check-plugin-versions.mjs <root>
+  node skills/server-doctor/scripts/parse-log.mjs <root>
+
+Grade security, performance, durability, and currency; list the top fixes prioritised critical to
+low. Read the server-profile so you do not re-ask known facts. Hand deep tuning to performance-tuning
+and config lint to audit-config. Read-only; never run live commands."""

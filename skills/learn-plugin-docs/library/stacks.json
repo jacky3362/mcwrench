@@ -1,0 +1,227 @@
+{
+  "_comment": "Gamemode -> registry plugin slugs for: learn-stack.mjs <gamemode> (pins each plugin's docs). Grounded in the gamemode-stacks references intersected with the library registry. Curate freely; plugins not yet in the registry (e.g. some skyblock/prison engines) are added over time.",
+  "stacks": {
+    "anarchy": [
+      "viaversion",
+      "coreprotect",
+      "griefprevention",
+      "grimac",
+      "maintenance",
+      "vulcan"
+    ],
+    "bedwars": [
+      "luckperms",
+      "placeholderapi",
+      "viaversion",
+      "shopkeepers"
+    ],
+    "boxpvp": [
+      "luckperms",
+      "vault",
+      "placeholderapi",
+      "combatlogx",
+      "lands",
+      "shopguiplus",
+      "economyshopgui"
+    ],
+    "creative-build": [
+      "worldedit",
+      "worldguard",
+      "tab",
+      "multiverse-core",
+      "plotsquared",
+      "fastasyncworldedit",
+      "headdatabase"
+    ],
+    "earth-smp": [
+      "luckperms",
+      "essentialsx",
+      "vault",
+      "placeholderapi",
+      "towny",
+      "dynmap",
+      "bluemap",
+      "chunky",
+      "multiverse-core"
+    ],
+    "factions": [
+      "essentialsx",
+      "vault",
+      "coreprotect",
+      "mcmmo",
+      "combatlogx"
+    ],
+    "genpvp": [
+      "luckperms",
+      "vault",
+      "placeholderapi",
+      "viaversion",
+      "viabackwards",
+      "tab",
+      "combatlogx",
+      "shopguiplus",
+      "economyshopgui"
+    ],
+    "hcf": [
+      "luckperms",
+      "placeholderapi",
+      "viaversion",
+      "viabackwards",
+      "skript",
+      "tab",
+      "protocollib",
+      "combatlogx"
+    ],
+    "kitpvp": [
+      "luckperms",
+      "viaversion",
+      "viabackwards",
+      "protocollib",
+      "combatlogx"
+    ],
+    "lifesteal": [
+      "luckperms",
+      "essentialsx",
+      "vault",
+      "placeholderapi",
+      "discordsrv",
+      "griefprevention",
+      "combatlogx",
+      "lands"
+    ],
+    "minigames-network": [
+      "luckperms",
+      "viaversion",
+      "citizens",
+      "tab",
+      "multiverse-core",
+      "minimotd"
+    ],
+    "oneblock": [
+      "luckperms",
+      "vault",
+      "placeholderapi",
+      "lands",
+      "iris"
+    ],
+    "op-factions": [
+      "luckperms",
+      "vault",
+      "placeholderapi",
+      "combatlogx",
+      "shopguiplus",
+      "economyshopgui"
+    ],
+    "op-prison": [
+      "luckperms",
+      "vault",
+      "placeholderapi",
+      "tab",
+      "jobs"
+    ],
+    "op-skyblock": [
+      "luckperms",
+      "vault",
+      "placeholderapi",
+      "lands",
+      "shopguiplus",
+      "economyshopgui"
+    ],
+    "practice-pvp": [
+      "luckperms",
+      "placeholderapi",
+      "viaversion",
+      "viabackwards",
+      "tab",
+      "protocollib"
+    ],
+    "prison": [
+      "luckperms",
+      "vault",
+      "placeholderapi",
+      "tab",
+      "jobs",
+      "combatlogx",
+      "shopguiplus",
+      "economyshopgui"
+    ],
+    "rpg-mmo": [
+      "luckperms",
+      "vault",
+      "placeholderapi",
+      "itemsadder",
+      "oraxen",
+      "citizens",
+      "mythicmobs",
+      "spark",
+      "betonquest",
+      "modelengine",
+      "mmoitems",
+      "mmocore",
+      "auraskills",
+      "iris"
+    ],
+    "skyblock": [
+      "luckperms",
+      "vault",
+      "placeholderapi",
+      "lands"
+    ],
+    "skypvp": [
+      "luckperms",
+      "placeholderapi",
+      "viaversion",
+      "viabackwards",
+      "protocollib",
+      "combatlogx",
+      "lands"
+    ],
+    "skywars": [
+      "luckperms",
+      "placeholderapi",
+      "viaversion",
+      "tab",
+      "lands",
+      "iris"
+    ],
+    "survival-games": [
+      "luckperms",
+      "placeholderapi",
+      "viaversion",
+      "chunky",
+      "tab",
+      "maintenance"
+    ],
+    "survival-smp": [
+      "luckperms",
+      "essentialsx",
+      "vault",
+      "placeholderapi",
+      "coreprotect",
+      "discordsrv",
+      "griefprevention",
+      "dynmap",
+      "bluemap",
+      "tab",
+      "multiverse-core",
+      "lands"
+    ],
+    "the-pit": [
+      "luckperms",
+      "placeholderapi",
+      "viaversion",
+      "skript",
+      "protocollib",
+      "combatlogx",
+      "auraskills"
+    ],
+    "towny": [
+      "luckperms",
+      "essentialsx",
+      "placeholderapi",
+      "towny",
+      "dynmap",
+      "plotsquared"
+    ]
+  }
+}

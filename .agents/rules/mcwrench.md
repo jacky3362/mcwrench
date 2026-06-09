@@ -22,4 +22,4 @@ software, version, host, RAM, gamemode, proxy, online-mode, plugins, or chat for
 
 Full guidance is in `AGENTS.md`. Slash commands are in `.agents/workflows/` (`/audit`, `/learn`,
 `/perf`, `/perms`, `/proxy`, `/bootstrap`, `/panel`, `/gamemode`, `/conflicts`, `/brand`, `/profile`,
-`/skript`).
+`/create`, `/stack`, `/format`, `/diagnose`, `/health`, `/upgrade`, `/skript`, `/help`).
